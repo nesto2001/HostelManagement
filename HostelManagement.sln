@@ -13,7 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessObject", "BusinessO
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DataAccess", "DataAccess\DataAccess.csproj", "{EB18E639-1F85-4B37-90CF-7B8E473BD14E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "HostelManagement", "HostelManagement\HostelManagement.csproj", "{EBFC6574-197E-4242-A42C-23ABEF40F374}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "HostelManagement", "HostelManagement\HostelManagement.csproj", "{EBFC6574-197E-4242-A42C-23ABEF40F374}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

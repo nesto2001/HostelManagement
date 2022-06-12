@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -15,7 +16,15 @@ namespace BusinessObject.BusinessObject
         }
 
         public int UserId { get; set; }
+        [Required]
+        [DataType(DataType.EmailAddress)]
+        [Display(Name = "Email")]
+        [StringLength(50, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 5)]
         public string UserEmail { get; set; }
+        [Required]
+        [StringLength(50, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 6)]
+        [DataType(DataType.Password)]
+        [Display(Name = "Password")]
         public string UserPassword { get; set; }
         public string RoleName { get; set; }
         public int Status { get; set; }
