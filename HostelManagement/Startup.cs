@@ -1,4 +1,6 @@
 using DataAccess.Data;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -29,6 +31,13 @@ namespace HostelManagement
             services.AddSession();
             services.AddDbContext<HostelManagementDBContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("HostelManagementDBContext")));
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
+                .AddCookie(options => {
+                    options.AccessDeniedPath = "/AccessDenied";
+                    options.LoginPath = "/Login";
+                    options.LogoutPath = "/Logout";
+                });
+            services.AddScoped<IAccountRepository, AccountRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -51,6 +60,7 @@ namespace HostelManagement
             app.UseRouting();
 
             app.UseAuthorization();
+            app.UseAuthentication();
 
             app.UseSession();
 

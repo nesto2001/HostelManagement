@@ -1,6 +1,8 @@
 ﻿@page
 @model HostelManagement.Pages.Accounts.LoginModel
 @{
+    var hidden = false;
+    if (Model.message == null) hidden = true;
 }
         <div class="container border" style="padding:20px">
             <form method="post">
@@ -28,13 +30,17 @@
                         <input type="submit" class="btn btn-primary" value="Login" />
                     </div>
                 </div>
+
+                <div hidden="@hidden">
+                    <span class="text-danger">@Model.message</span>
+                </div>
             </form>
 
         </div>
         <p id="emailHelp" class="form-text text-center">
             Dont have an ancount?
-            <a href="/Account/Register" class="text-decoration-none">Register here</a>
+            <a href="/Accounts/Register" class="text-decoration-none">Register here</a>
         </p>
         <p class="text-center">
-            <a class="text-decoration-none" href="/Account/ForgotPassword">Forgot password?</a>
+            <a class="text-decoration-none" href="/Accounts/ForgotPassword">Forgot password?</a>
         </p>
