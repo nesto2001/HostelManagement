@@ -5,15 +5,15 @@ using BusinessObject.BusinessObject;
 
 #nullable disable
 
-namespace DataAccess.Data
+namespace DataAccess
 {
-    public partial class HostelManagementDBContext : DbContext
+    public partial class HostelManagementContext : DbContext
     {
-        public HostelManagementDBContext()
+        public HostelManagementContext()
         {
         }
 
-        public HostelManagementDBContext(DbContextOptions<HostelManagementDBContext> options)
+        public HostelManagementContext(DbContextOptions<HostelManagementContext> options)
             : base(options)
         {
         }
@@ -39,7 +39,7 @@ namespace DataAccess.Data
             if (!optionsBuilder.IsConfigured)
             {
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-                optionsBuilder.UseSqlServer("server =localhost; database = HostelManagementDB;uid=sa;pwd=1234567890;");
+                optionsBuilder.UseSqlServer("server =localhost; database = HostelManagement;uid=sa;pwd=1234567890;");
             }
         }
 
@@ -50,16 +50,14 @@ namespace DataAccess.Data
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Account__CB9A1CFFE7D18940");
+                    .HasName("PK__Account__CB9A1CFF1868D937");
 
                 entity.ToTable("Account");
 
-                entity.HasIndex(e => e.UserEmail, "UQ__Account__D54ADF558256E55E")
+                entity.HasIndex(e => e.UserEmail, "UQ__Account__D54ADF5599C5F874")
                     .IsUnique();
 
-                entity.Property(e => e.UserId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("userId");
+                entity.Property(e => e.UserId).HasColumnName("userId");
 
                 entity.Property(e => e.Dob)
                     .HasColumnType("date")
@@ -109,7 +107,7 @@ namespace DataAccess.Data
                 entity.ToTable("Bill");
 
                 entity.Property(e => e.BillId)
-                    .ValueGeneratedNever()
+                    .ValueGeneratedOnAdd()
                     .HasColumnName("billId");
 
                 entity.Property(e => e.CreatedDate)
@@ -133,9 +131,12 @@ namespace DataAccess.Data
             {
                 entity.ToTable("BillDetail");
 
-                entity.Property(e => e.BillDetailId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("billDetailId");
+                entity.Property(e => e.BillDetailId).HasColumnName("billDetailId");
+
+                entity.Property(e => e.BillDescription)
+                    .IsRequired()
+                    .HasMaxLength(500)
+                    .HasColumnName("billDescription");
 
                 entity.Property(e => e.BillId).HasColumnName("billId");
 
@@ -146,11 +147,6 @@ namespace DataAccess.Data
                 entity.Property(e => e.Fee)
                     .HasColumnType("decimal(18, 0)")
                     .HasColumnName("fee");
-
-                entity.Property(e => e.IllDescription)
-                    .IsRequired()
-                    .HasMaxLength(500)
-                    .HasColumnName("illDescription");
 
                 entity.HasOne(d => d.Bill)
                     .WithMany(p => p.BillDetails)
@@ -163,9 +159,7 @@ namespace DataAccess.Data
             {
                 entity.ToTable("Category");
 
-                entity.Property(e => e.CategoryId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("categoryId");
+                entity.Property(e => e.CategoryId).HasColumnName("categoryId");
 
                 entity.Property(e => e.CategoryName)
                     .IsRequired()
@@ -199,9 +193,7 @@ namespace DataAccess.Data
             {
                 entity.ToTable("Hostel");
 
-                entity.Property(e => e.HostelId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("hostelId");
+                entity.Property(e => e.HostelId).HasColumnName("hostelId");
 
                 entity.Property(e => e.CategoryId).HasColumnName("categoryId");
 
@@ -244,9 +236,7 @@ namespace DataAccess.Data
             {
                 entity.HasKey(e => e.HostelPicsId);
 
-                entity.Property(e => e.HostelPicsId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("hostelPicsId");
+                entity.Property(e => e.HostelPicsId).HasColumnName("hostelPicsId");
 
                 entity.Property(e => e.HostelId).HasColumnName("hostelId");
 
@@ -321,9 +311,7 @@ namespace DataAccess.Data
             {
                 entity.ToTable("Rent");
 
-                entity.Property(e => e.RentId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("rentId");
+                entity.Property(e => e.RentId).HasColumnName("rentId");
 
                 entity.Property(e => e.EndRentDate)
                     .HasColumnType("date")
@@ -362,9 +350,7 @@ namespace DataAccess.Data
             {
                 entity.ToTable("Room");
 
-                entity.Property(e => e.RoomId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("roomId");
+                entity.Property(e => e.RoomId).HasColumnName("roomId");
 
                 entity.Property(e => e.Deposit)
                     .HasColumnType("decimal(18, 0)")
@@ -401,9 +387,7 @@ namespace DataAccess.Data
             {
                 entity.ToTable("RoomMember");
 
-                entity.Property(e => e.RoomMemberId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("roomMemberId");
+                entity.Property(e => e.RoomMemberId).HasColumnName("roomMemberId");
 
                 entity.Property(e => e.IsPresentator).HasColumnName("isPresentator");
 
@@ -434,9 +418,7 @@ namespace DataAccess.Data
             {
                 entity.HasKey(e => e.RoomPicsId);
 
-                entity.Property(e => e.RoomPicsId)
-                    .ValueGeneratedNever()
-                    .HasColumnName("roomPicsId");
+                entity.Property(e => e.RoomPicsId).HasColumnName("roomPicsId");
 
                 entity.Property(e => e.RoomId).HasColumnName("roomId");
 

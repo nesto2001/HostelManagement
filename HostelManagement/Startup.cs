@@ -1,4 +1,4 @@
-using DataAccess.Data;
+using DataAccess;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
@@ -29,8 +29,8 @@ namespace HostelManagement
         {
             services.AddRazorPages();
             services.AddSession();
-            services.AddDbContext<HostelManagementDBContext>(options =>
-            options.UseSqlServer(Configuration.GetConnectionString("HostelManagementDBContext")));
+            services.AddDbContext<HostelManagementContext>(options =>
+            options.UseSqlServer(Configuration.GetConnectionString("HostelManagementContext")));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options => {
                     options.AccessDeniedPath = "/AccessDenied";

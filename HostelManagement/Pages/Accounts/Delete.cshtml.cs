@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
-using DataAccess.Data;
+using DataAccess;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccess.Data.HostelManagementDBContext _context;
+        private readonly DataAccess.HostelManagementContext _context;
 
-        public DeleteModel(DataAccess.Data.HostelManagementDBContext context)
+        public DeleteModel(DataAccess.HostelManagementContext context)
         {
             _context = context;
         }

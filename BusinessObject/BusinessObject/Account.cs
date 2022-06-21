@@ -22,13 +22,16 @@ namespace BusinessObject.BusinessObject
         [StringLength(50, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 5)]
         public string UserEmail { get; set; }
         [Required]
-        [StringLength(50, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 6)]
+        [StringLength(30, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string UserPassword { get; set; }
         public string RoleName { get; set; }
         public int Status { get; set; }
         public string FullName { get; set; }
+        [Required]
+        [Phone]
+        [StringLength(20, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 9)]
         public string PhoneNumber { get; set; }
         public DateTime? Dob { get; set; }
         public string ProfilePicUrl { get; set; }

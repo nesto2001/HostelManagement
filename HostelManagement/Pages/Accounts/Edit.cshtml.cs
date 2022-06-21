@@ -7,15 +7,15 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
-using DataAccess.Data;
+using DataAccess;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccess.Data.HostelManagementDBContext _context;
+        private readonly DataAccess.HostelManagementContext _context;
 
-        public EditModel(DataAccess.Data.HostelManagementDBContext context)
+        public EditModel(DataAccess.HostelManagementContext context)
         {
             _context = context;
         }

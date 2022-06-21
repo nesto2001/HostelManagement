@@ -1,5 +1,4 @@
 ﻿using BusinessObject.BusinessObject;
-using DataAccess.Data;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -11,17 +10,17 @@ namespace DataAccess.Repository
 {
     public class AccountRepository : IAccountRepository
     {
-        private HostelManagementDBContext hostelManagementDBContext { get; set; }
-        public AccountRepository(HostelManagementDBContext context)
+        private HostelManagementContext HostelManagementContext { get; set; }
+        public AccountRepository(HostelManagementContext context)
         {
-            hostelManagementDBContext = context;
+            HostelManagementContext = context;
         }
         public async Task AddAccount(Account Account)
         {
             try
             {
-                hostelManagementDBContext.Attach(Account).State = EntityState.Added;
-                await hostelManagementDBContext.SaveChangesAsync();
+                HostelManagementContext.Attach(Account).State = EntityState.Added;
+                await HostelManagementContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -33,8 +32,8 @@ namespace DataAccess.Repository
         {
             try
             {
-                hostelManagementDBContext.Accounts.Remove(Account);
-                await hostelManagementDBContext.SaveChangesAsync();
+                HostelManagementContext.Accounts.Remove(Account);
+                await HostelManagementContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {
@@ -46,7 +45,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                return await hostelManagementDBContext.Accounts.SingleOrDefaultAsync(account => account.UserEmail == email);
+                return await HostelManagementContext.Accounts.SingleOrDefaultAsync(account => account.UserEmail == email);
             }
             catch (Exception ex)
             {
@@ -58,7 +57,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                return await hostelManagementDBContext.Accounts.SingleOrDefaultAsync(account => account.UserId == id);
+                return await HostelManagementContext.Accounts.SingleOrDefaultAsync(account => account.UserId == id);
             }
             catch (Exception ex)
             {
@@ -70,7 +69,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                return await hostelManagementDBContext.Accounts.ToListAsync();
+                return await HostelManagementContext.Accounts.ToListAsync();
             }
             catch (Exception ex)
             {
@@ -82,7 +81,7 @@ namespace DataAccess.Repository
         {
             try
             {
-                return await hostelManagementDBContext.Accounts.SingleOrDefaultAsync(account => account.UserEmail == email && account.UserPassword == password);
+                return await HostelManagementContext.Accounts.SingleOrDefaultAsync(account => account.UserEmail == email && account.UserPassword == password);
             }
             catch (Exception ex)
             {
@@ -94,8 +93,8 @@ namespace DataAccess.Repository
         {
             try
             {
-                hostelManagementDBContext.Attach(Account).State = EntityState.Modified;
-                await hostelManagementDBContext.SaveChangesAsync();
+                HostelManagementContext.Attach(Account).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
             }
             catch (Exception ex)
             {

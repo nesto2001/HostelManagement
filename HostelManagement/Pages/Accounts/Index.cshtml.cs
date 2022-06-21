@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
-using DataAccess.Data;
+using DataAccess;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class IndexModel : PageModel
     {
-        private readonly DataAccess.Data.HostelManagementDBContext _context;
+        private readonly DataAccess.HostelManagementContext _context;
 
-        public IndexModel(DataAccess.Data.HostelManagementDBContext context)
+        public IndexModel(DataAccess.HostelManagementContext context)
         {
             _context = context;
         }

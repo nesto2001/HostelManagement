@@ -9,7 +9,7 @@ namespace BusinessObject.BusinessObject
     {
         public int BillDetailId { get; set; }
         public int BillId { get; set; }
-        public string IllDescription { get; set; }
+        public string BillDescription { get; set; }
         public decimal Fee { get; set; }
         public DateTime DateIssued { get; set; }
 

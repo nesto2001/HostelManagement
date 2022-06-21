@@ -6,15 +6,15 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.BusinessObject;
-using DataAccess.Data;
+using DataAccess;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class CreateModel : PageModel
     {
-        private readonly DataAccess.Data.HostelManagementDBContext _context;
+        private readonly DataAccess.HostelManagementContext _context;
 
-        public CreateModel(DataAccess.Data.HostelManagementDBContext context)
+        public CreateModel(DataAccess.HostelManagementContext context)
         {
             _context = context;
         }
