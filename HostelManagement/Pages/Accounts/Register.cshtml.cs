@@ -1,14 +1,10 @@
-using System;
-using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Threading.Tasks;
 using BusinessObject.BusinessObject;
 using DataAccess.Repository;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.Extensions.Configuration;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Accounts
 {
@@ -45,6 +41,7 @@ namespace HostelManagement.Pages.Accounts
 
         public void OnGet()
         {
+            //fixed
             //if (HttpContext.Session.GetInt32("isLoggedIn") == 1)
             //{
             //    Response.Redirect("/index");
