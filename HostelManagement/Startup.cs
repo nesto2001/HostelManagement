@@ -29,6 +29,7 @@ namespace HostelManagement
         {
             services.AddRazorPages();
             services.AddSession();
+            services.AddMvc();
             services.AddDbContext<HostelManagementContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("HostelManagementContext")));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
@@ -38,6 +39,12 @@ namespace HostelManagement
                     options.LogoutPath = "/Logout";
                 });
             services.AddScoped<IAccountRepository, AccountRepository>();
+            services.AddScoped<IHostelRepository, HostelRepository>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
+            services.AddScoped<IProvinceRepository, ProvinceRepository>();
+            services.AddScoped<IDistrictRepository, DistrictRepository>();
+            services.AddScoped<IWardRepository, WardRepository>();
+            services.AddScoped<ILocationRepository, LocationRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
