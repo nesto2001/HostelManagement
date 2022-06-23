@@ -69,3 +69,63 @@ body {
   white-space: nowrap;
   line-height: 60px; /* Vertically center the text there */
 }
+
+.nav-item{
+    font-weight: 600;
+}
+
+button a{
+    display: block;
+    width: 100%;
+    color: inherit;
+}
+
+.btn-renter {
+    color: rgba(255, 86, 125,1);
+    border: 1px solid rgba(255, 86, 125,1);
+    border-radius: 4px;
+    padding: 12px 12px;
+    background: white;
+    font-size: 14px;
+    transition: all 0.15s ease-in-out 0s;
+}
+
+    .btn-renter:hover {
+        background: rgba(255, 86, 125,1);
+        color: white;
+    }
+
+a, a:hover{
+    color: unset;
+    text-decoration: none;
+}
+
+.btn-login {
+    color: #00b4d8;
+    font-weight: 400;
+    transition: all 0.15s ease-in-out 0s;
+    border-radius: 4px;
+}
+.btn-login a{
+    color: inherit
+}
+    .btn-login:hover {
+        background: #0083CC;
+        color:white;
+    }
+
+button.btn-login {
+    color: #00b4d8;
+    border: 1px solid #0083CC;
+    padding: 12px 12px;
+    background: white;
+    font-size: 14px;    
+}
+
+.nav-item.link-only{
+    padding: 12px;
+}
+
+.nav-item.link-only a{
+    padding: 12px;
+}

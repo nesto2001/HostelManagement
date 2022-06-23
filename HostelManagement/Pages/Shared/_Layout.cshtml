@@ -11,7 +11,9 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">HostelManagement</a>
+                <a class="navbar-brand" asp-area="" asp-page="/Index">
+                    <img class="site-logo" src="images/rentel-logo_v3.png" width="68" height="42"/>    
+                </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -23,6 +25,19 @@
                         </li>
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                        </li>
+                    </ul>
+                </div>
+                <div class="user-nav d-sm-inline-flex justify-content-end">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <button class="btn-renter"><a class="a-link" asp-area="" asp-page="">List your place</a></button>
+                        </li>
+                        <li class="nav-item link-only">
+                            <a class="btn-login a-link" asp-area="" asp-page="">Sign in</a>
+                        </li>
+                        <li class="nav-item">
+                            <button class="btn-login"><a class="a-link" asp-area="" asp-page="">Create account</a></button>
                         </li>
                     </ul>
                 </div>
