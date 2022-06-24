@@ -11,7 +11,6 @@ namespace DataAccess.Repository
     {
         Task<Location> GetLocationByID(int id);
         Task UpdateLocation(Location Location);
-        Task DeleteLocation(Location Location);
         Task AddLocation(Location Location);
         Task<IEnumerable<Location>> GetLocationsList();
     }
