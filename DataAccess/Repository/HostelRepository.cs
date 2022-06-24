@@ -1,4 +1,5 @@
 ﻿using BusinessObject.BusinessObject;
+using DataAccess.DAO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,42 +11,13 @@ namespace DataAccess.Repository
 {
     public class HostelRepository : IHostelRepository
     {
-        private HostelManagementContext HostelManagementContext { get; set; }
-        public HostelRepository(HostelManagementContext context)
-        {
-            HostelManagementContext = context;
-        }
-        public async Task AddHostel(Hostel hostel)
-        {
-            try
-            {
-                HostelManagementContext.Attach(hostel).State = EntityState.Added;
-                await HostelManagementContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        public async Task AddHostel(Hostel hostel) => await HostelDAO.Instance.AddHostel(hostel);
+        public async Task DeleteHostel(Hostel hostel) => await HostelDAO.Instance.DeleteHostel(hostel);
 
-        public Task DeleteHostel(Hostel hostel)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Hostel> GetHostelByID(int id) => await HostelDAO.Instance.GetHostelByID(id);
 
-        public Task<Hostel> GetHostelByID(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<IEnumerable<Hostel>> GetHostelsList() => await HostelDAO.Instance.GetHostelsList();
 
-        public Task<IEnumerable<Hostel>> GetHostelsList()
-        {
-            throw new NotImplementedException();
-        }
-
-        public Task UpdateHostel(Hostel Account)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task UpdateHostel(Hostel hostel) => await HostelDAO.Instance.UpdateHostel(hostel);
     }
 }

@@ -1,4 +1,5 @@
 ﻿using BusinessObject.BusinessObject;
+using DataAccess.DAO;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -10,45 +11,13 @@ namespace DataAccess.Repository
 {
     public class LocationRepository : ILocationRepository
     {
-        private HostelManagementContext HostelManagementContext { get; set; }
-        public LocationRepository(HostelManagementContext context)
-        {
-            HostelManagementContext = context;
-        }
-        public async Task AddLocation(Location Location)
-        {
-            try
-            {
-                HostelManagementContext.Attach(Location).State = EntityState.Added;
-                await HostelManagementContext.SaveChangesAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
-
-        public Task DeleteLocation(Location Location)
-        {
-            throw new NotImplementedException();
-        }
-
+        public async Task AddLocation(Location Location) => await LocationDAO.Instance.AddLocation(Location);
         public Task<Location> GetLocationByID(int id)
         {
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Location>> GetLocationsList()
-        {
-            try
-            {
-                return await HostelManagementContext.Locations.ToListAsync();
-            }
-            catch (Exception ex)
-            {
-                throw new Exception(ex.Message);
-            }
-        }
+        public async Task<IEnumerable<Location>> GetLocationsList() => await LocationDAO.Instance.GetLocationsList();
 
         public Task UpdateLocation(Location Account)
         {
