@@ -28,12 +28,12 @@ namespace HostelManagement.Pages.Hostels
         private IWardRepository wardRepository;
         private ILocationRepository locationRepository;
         private IHostelPicRepository hostelPicRepository;
-        private IHostingEnvironment environment;
+        private IRoomRepository roomRepository;
 
         public CreateModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IHostingEnvironment _environment)
+            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
         {
             hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
@@ -43,7 +43,7 @@ namespace HostelManagement.Pages.Hostels
             wardRepository = _wardRepository;
             locationRepository = _locationRepository;
             hostelPicRepository = _hostelPicRepository;
-            environment = _environment;
+            roomRepository = _roomRepository;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -71,6 +71,8 @@ namespace HostelManagement.Pages.Hostels
         public Location Location { get; set; }
         [BindProperty]
         public HostelPic HostelPic { get; set; }
+        [BindProperty]
+        public Room[] Rooms { get; set; }
         public int locID { get; set; }
         public string UserEmail { get; set; }
         [Required(ErrorMessage = "Please chose at least one file.")]
@@ -106,6 +108,11 @@ namespace HostelManagement.Pages.Hostels
                     HostelPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\", FileUpload.FileName);
                     await hostelPicRepository.AddHostelPic(HostelPic);
                 }
+            }
+            foreach (var Room in Rooms)
+            {
+                Room.HostelId = Hostel.HostelId;
+                await roomRepository.AddRoom(Room);
             }
             return RedirectToPage("./Index");
         }

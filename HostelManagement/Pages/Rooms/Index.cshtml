@@ -1,0 +1,78 @@
+﻿@page
+@model HostelManagement.Pages.Rooms.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].RoomTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].RoomDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].RomMaxCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].RoomCurrentCapacity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Deposit)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Price)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Room[0].Hostel)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Room) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RomMaxCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Deposit)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Price)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Hostel.HostelOwnerEmail)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.RoomId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.RoomId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.RoomId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

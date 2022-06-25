@@ -1,0 +1,68 @@
+﻿@page
+@model HostelManagement.Pages.Rooms.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Room</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Room.HostelId" class="control-label"></label>
+                <select asp-for="Room.HostelId" class ="form-control" asp-items="ViewBag.HostelId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.RoomTitle" class="control-label"></label>
+                <input asp-for="Room.RoomTitle" class="form-control" />
+                <span asp-validation-for="Room.RoomTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.RoomDescription" class="control-label"></label>
+                <input asp-for="Room.RoomDescription" class="form-control" />
+                <span asp-validation-for="Room.RoomDescription" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.RomMaxCapacity" class="control-label"></label>
+                <input asp-for="Room.RomMaxCapacity" class="form-control" />
+                <span asp-validation-for="Room.RomMaxCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.RoomCurrentCapacity" class="control-label"></label>
+                <input asp-for="Room.RoomCurrentCapacity" class="form-control" />
+                <span asp-validation-for="Room.RoomCurrentCapacity" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.Status" class="control-label"></label>
+                <input asp-for="Room.Status" class="form-control" />
+                <span asp-validation-for="Room.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.Deposit" class="control-label"></label>
+                <input asp-for="Room.Deposit" class="form-control" />
+                <span asp-validation-for="Room.Deposit" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Room.Price" class="control-label"></label>
+                <input asp-for="Room.Price" class="form-control" />
+                <span asp-validation-for="Room.Price" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
