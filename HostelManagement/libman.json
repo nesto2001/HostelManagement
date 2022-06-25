@@ -1,0 +1,14 @@
+{
+  "version": "1.0",
+  "defaultProvider": "unpkg",
+  "libraries": [
+    {
+      "library": "boxicons@2.1.2",
+      "destination": "wwwroot/css/",
+      "files": [
+        "css/boxicons.css",
+        "css/boxicons.min.css"
+      ]
+    }
+  ]
+}

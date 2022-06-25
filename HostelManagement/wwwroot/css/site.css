@@ -74,6 +74,16 @@ body {
     font-weight: 600;
 }
 
+a.navbar-brand{
+  width: 90px;
+}
+
+.site-logo{
+  width: 100%;
+  text-align: left;
+  float: left;
+}
+
 button a{
     display: block;
     width: 100%;
@@ -196,4 +206,239 @@ button.btn-login {
   height: 320px;
   border-radius: 16px;
   background: #f2f3f3;
+  padding: 48px;
+}
+
+.search-input{
+  border: 1px solid #dddfe2;;
+  border-radius: 8px;
+  -webkit-box-shadow: none;
+  box-shadow: none;
+  font-size: 16px;
+  height: 66px;
+  padding: 0;
+  background: #fff;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+  vertical-align: top;
+  width: 100%;
+}
+
+.search-input-wrapper{
+  padding: 0 10px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+i.bx{
+  padding: 12px 14px;
+  font-size: 30px;
+  text-align: left;
+  color: #333;
+}
+
+.input-search{
+    background-color: #fff;
+    border: none;
+    border-radius: 4px;
+    color: #232f31;
+    cursor: pointer;
+    font-size: 16px;
+    margin-top: 12px;
+    text-overflow: ellipsis;
+}
+
+.search-input-inner{
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 70px);
+  margin-top: -20px;
+}
+
+.input-search {
+  font-weight: 500;
+  line-height: 1.25;
+  margin: 0;
+  padding: 0;
+  width: 100%;
+}
+
+.input-search::placeholder {
+  font-weight: 500;
+}
+
+.input-search:focus-visible{
+  border: none;
+  outline: none;
+}
+
+.search-input{
+  margin-bottom: 12px;
+}
+
+.selectbox{
+  background-color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  margin: 0 5px 0 0;
+  padding: 10px 5px;
+  position: relative;
+  vertical-align: top;  
+}
+
+.search-wrapper .selectbox{
+  margin: 0 0 12px;
+  border: 1px solid;
+  border-radius: 8px;
+  font-size: 16px;
+  height: 66px;
+  padding: 0;
+  margin-bottom: 0;
+  width: 25%;
+  border-color: #dddfe2;
+}
+
+.select-location.select-province{
+  border-bottom-right-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.select-district::before{
+  left:-5px;
+  background: #fff;
+  content: "";
+  height: calc(100% + 0.1px);
+  position: absolute;
+  top: -0.1px;
+  width: 5px;
+}
+
+.select-district::after{
+  border-right: 1px solid #ccc;
+  bottom: 10px;
+  content: "";
+  position: absolute;
+  top: 10px;
+  left: 0;
+}
+
+
+.select-location.select-district{
+  border-bottom-left-radius: 0;
+  border-top-left-radius: 0;
+}
+
+.selectbox-wrapper{
+  padding: 0 10px;
+  position: absolute;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  transform: translateY(-50%);
+  width: 100%;
+}
+
+.selectbox i{
+  padding: 12px 14px;
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.selectbox i{
+  padding-left: 6px;
+  padding-right: 16px;
+}
+
+.selectcontent{
+  width: 20px;
+  display: inline-block;
+  vertical-align: middle;
+  width: calc(100% - 60px);
+  text-align: start;
+  height: 100%;
+  font-weight: 500;
+}
+
+.selectcontent select{
+  border: none;
+  width: 100%;
+  height: 100%;
+  border-radius: none;
+  font-weight: 500;
+}
+
+.selectcontent select:focus-visible{
+  border: none;
+  outline: none;
+}
+
+.selectbox.select-capacity{
+  width: calc(50% - 12px);
+  margin-left: 7px;
+  cursor: default;
+}
+
+.selectcontent input{
+  border: none;
+  width: 100%;
+  height: 100%;
+  border-radius: none;
+}
+
+
+.selectcontent input:focus-visible{
+  border: none;
+  outline: none;
+}
+
+.input-control {
+  position: absolute;
+  right: 1px;
+  width: 35px;
+  height: 35px;
+  text-align: center;
+  border: 1px solid #ccc  ;
+  border-radius: 24px;
+  top: 18%;
+  font-size: 16px;
+  line-height: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  user-select:none;
+  -moz-user-select:none;
+  -ms-user-select:none;
+}
+
+.input-control{
+  padding: 8px;
+}
+
+.input-control.btn-addnum{
+ left: calc(100% - 50px);
+}
+.input-control.btn-subnum{
+  left: calc(100% - 100px);
+}
+
+.form-btn-wrapper{
+  margin-top: 36px;
+}
+
+.btn-search{
+  position: relative;
+  border: none;
+  user-select: none;
+  padding: 12px;
+  border-radius: 8px;
+  background-color: rgb(83, 146, 249);
+  color: rgb(255, 255, 255);
+  box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px 1px;
+  transition: all 0.15s ease-in-out 0s;
+  width: 490px;
+  height: 64px;
+  font-size: 20px;
+  font-weight: 600;
 }

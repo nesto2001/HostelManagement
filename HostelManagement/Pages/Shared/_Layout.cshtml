@@ -6,13 +6,14 @@
     <title>@ViewData["Title"] - HostelManagement</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 </head>
 <body>
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <img class="site-logo" src="~/images/rentel-logo_v3.png" width="68" height="42"/>    
+                    <img class="site-logo" src="~/images/rentel-logo_v3.png"/>    
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
@@ -34,10 +35,10 @@
                             <button class="btn-renter"><a class="a-link" asp-area="" asp-page="">List your place</a></button>
                         </li>
                         <li class="nav-item link-only">
-                            <a class="btn-login a-link" asp-area="" asp-page="">Sign in</a>
+                            <a class="btn-login a-link" asp-area="" asp-page="/Accounts/Login">Sign in</a>
                         </li>
                         <li class="nav-item">
-                            <button class="btn-login"><a class="a-link" asp-area="" asp-page="">Create account</a></button>
+                            <button class="btn-login"><a class="a-link" asp-area="" asp-page="/Accounts/Register">Create account</a></button>
                         </li>
                     </ul>
                 </div>

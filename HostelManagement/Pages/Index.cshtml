@@ -16,7 +16,70 @@
                 </div>
             </div>
             <div class="searchbox">
-                2
+                <form method="get" asp-page-handler="">
+                    <div class="search-wrapper">
+                        <div class="search-input">
+                            <div class="search-input-wrapper">
+                                <i class='bx bx-search'></i>
+                                <div class="search-input-inner">
+                                    <input type="text" name="searchKey" placeholder="Search place or hostel" class="input-search" autocomplete="off"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selectbox select-location select-province">
+                            <div class="selectbox-wrapper">
+                                <i class='bx bxs-city'></i>
+                                <div class="selectcontent">
+                                    <select name="sl-city" id="sl-city">
+                                        <option selected value="">
+                                            City
+                                        </option>
+                                        <option>
+                                            Ho Chi Minh
+                                        </option>
+                                        <option>
+                                            Hanoi
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div><!--
+                        --><div class="selectbox select-location select-district">
+                            <div class="selectbox-wrapper">
+                                <i class='bx bxs-building-house' ></i>
+                                <div class="selectcontent">
+                                    <select name="sl-dist" id="sl-dist">
+                                        <option selected value="">
+                                            District
+                                        </option>
+                                        <option>
+                                            Quan 6
+                                        </option>
+                                        <option>
+                                            Quan 7
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="selectbox select-capacity">
+                            <div class="selectbox-wrapper">
+                                <i class='bx bx-group' ></i>
+                                <div class="selectcontent">
+                                    <span data-target="capacityVal" data-value="1" class="display-capacity"></span>
+                                    <input type="hidden" name="capacity" value="1" class="input-capacity">
+                                    <div class="input-control btn-addnum">+</div>
+                                    <div class="input-control btn-subnum">-</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="form-btn-wrapper search-button">
+                        <button type="submit" class="btn-search">
+                            SEARCH
+                        </button>
+                    </div>
+                </form>
             </div>
         </div>
     </section>
