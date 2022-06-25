@@ -52,7 +52,15 @@ namespace DataAccess.DAO
 
         public async Task<IEnumerable<Hostel>> GetHostelsList()
         {
-            throw new NotImplementedException();
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Hostels.ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task UpdateHostel(Hostel hostel)

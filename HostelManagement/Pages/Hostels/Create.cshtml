@@ -11,7 +11,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Hostel.HostelName" class="control-label"></label>
@@ -32,10 +32,7 @@
                 <label asp-for="Hostel.CategoryId" class="control-label"></label>
                 <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
             </div>
-            <div class="form-group"> <!--Lấy email của người đăng nhập => hiển thị dưới dạng tên-->
-                <label asp-for="Hostel.HostelOwnerEmail" class="control-label"></label>
-                <select asp-for="Hostel.HostelOwnerEmail" class="form-control" asp-items="ViewBag.HostelOwnerEmail"></select>
-            </div>
+
             <div class="form-group">
                 <label class="control-label">Province</label>
                 <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
@@ -60,6 +57,13 @@
                 <span asp-validation-for="Location.AddressString" class="text-danger"></span>
             </div>
             <!--Còn cả hostelPic với add room chưa xử lý-->
+
+            <div class="form-group">
+                <label asp-for="HostelPic.HostelPicUrl" class="control-label"></label>
+
+                <input name="fThumb" type="file" class="form-control-file" asp-for="HostelPic.HostelPicUrl" required>
+                <span asp-validation-for="HostelPic.HostelPicUrl" class="text-danger"></span>
+            </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

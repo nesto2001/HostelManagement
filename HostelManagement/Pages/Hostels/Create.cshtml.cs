@@ -10,6 +10,8 @@ using DataAccess;
 using Microsoft.EntityFrameworkCore;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
+using HostelManagement.Helpers;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -22,11 +24,12 @@ namespace HostelManagement.Pages.Hostels
         private IDistrictRepository districtRepository;
         private IWardRepository wardRepository;
         private ILocationRepository locationRepository;
+        private IHostelPicRepository hostelPicRepository;
 
         public CreateModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository)
+            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository)
         {
             hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
@@ -35,15 +38,23 @@ namespace HostelManagement.Pages.Hostels
             districtRepository = _districtRepository;
             wardRepository = _wardRepository;
             locationRepository = _locationRepository;
+            hostelPicRepository = _hostelPicRepository;
         }
 
         public async Task<IActionResult> OnGetAsync()
         {
+            var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            int UId = Int32.Parse(userId);
+            var account = await accountRepository.GetAccountByID(UId);
+            UserEmail = account.UserEmail;
+            HttpContext.Session.SetString("UserEmail", UserEmail);
+            //UserEmail = HttpContext.Session.GetString("UserEmail");
+             //Hostel.HostelOwnerEmail = account.UserEmail;
             var locas = await locationRepository.GetLocationsList();
-            locID = locas.Count() + 1;
+            locID = locas.OrderByDescending(l => l.LocationId).FirstOrDefault().LocationId + 1;
             HttpContext.Session.SetInt32("locID", locID);
+            
             ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
-            ViewData["HostelOwnerEmail"] = new SelectList(await accountRepository.GetAccountList(), "UserEmail", "PhoneNumber");
             //ViewData["LocationId"] = new SelectList(_context.Locations, "LocationId", "AddressString");
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             return Page();
@@ -53,22 +64,36 @@ namespace HostelManagement.Pages.Hostels
         public Hostel Hostel { get; set; }
         [BindProperty]
         public Location Location { get; set; }
+        [BindProperty]
+        public HostelPic HostelPic { get; set; }
         public int locID { get; set; }
+        public string UserEmail { get; set; }
 
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(Microsoft.AspNetCore.Http.IFormFile fThumb)
         {
             if (!ModelState.IsValid)
             {
+                ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
+                ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
+                //UserEmail = HttpContext.Session.GetString("UserEmail");
                 return Page();
             }
             locID = (int)HttpContext.Session.GetInt32("locID");
             Hostel.LocationId = locID;
             Location.LocationId = locID;
+            UserEmail = HttpContext.Session.GetString("UserEmail");
+            Hostel.HostelOwnerEmail = UserEmail;
             await locationRepository.AddLocation(Location);
             await hostelRepository.AddHostel(Hostel);
-
+            if (fThumb != null)
+            {
+                HostelPic.HostelPicUrl = await Utilities.UploadFile(fThumb, @"images\", fThumb.FileName);
+                HostelPic.HostelId = Hostel.HostelId;
+                HostelPic.Hostel = Hostel;
+                await hostelPicRepository.AddHostelPic(HostelPic);
+            }
             return RedirectToPage("./Index");
         }
 
