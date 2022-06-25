@@ -31,10 +31,13 @@ namespace DataAccess.DAO
         {
             try
             {
+                hostelPic.HostelPicsId = 0;
                 var HostelManagementContext = new HostelManagementContext();
                 HostelManagementContext.Attach(hostelPic).State = EntityState.Added;
                 int a = 3;
+                await HostelManagementContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [HostelManagement].[dbo].[HostelPics] ON");
                 await HostelManagementContext.SaveChangesAsync();
+                await HostelManagementContext.Database.ExecuteSqlRawAsync("SET IDENTITY_INSERT [HostelManagement].[dbo].[HostelPics] OFF");
             }
             catch (Exception ex)
             {

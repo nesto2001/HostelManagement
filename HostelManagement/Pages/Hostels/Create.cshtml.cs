@@ -12,6 +12,9 @@ using DataAccess.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using HostelManagement.Helpers;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -25,11 +28,12 @@ namespace HostelManagement.Pages.Hostels
         private IWardRepository wardRepository;
         private ILocationRepository locationRepository;
         private IHostelPicRepository hostelPicRepository;
+        private IHostingEnvironment environment;
 
         public CreateModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository)
+            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IHostingEnvironment _environment)
         {
             hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
@@ -39,6 +43,7 @@ namespace HostelManagement.Pages.Hostels
             wardRepository = _wardRepository;
             locationRepository = _locationRepository;
             hostelPicRepository = _hostelPicRepository;
+            environment = _environment;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -68,10 +73,15 @@ namespace HostelManagement.Pages.Hostels
         public HostelPic HostelPic { get; set; }
         public int locID { get; set; }
         public string UserEmail { get; set; }
-
+        [Required(ErrorMessage = "Please chose at least one file.")]
+        [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Choose Hostel images(s)")]
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
-        public async Task<IActionResult> OnPostAsync(Microsoft.AspNetCore.Http.IFormFile fThumb)
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
@@ -87,12 +97,15 @@ namespace HostelManagement.Pages.Hostels
             Hostel.HostelOwnerEmail = UserEmail;
             await locationRepository.AddLocation(Location);
             await hostelRepository.AddHostel(Hostel);
-            if (fThumb != null)
+            if (FileUploads != null)
             {
-                HostelPic.HostelPicUrl = await Utilities.UploadFile(fThumb, @"images\", fThumb.FileName);
                 HostelPic.HostelId = Hostel.HostelId;
                 HostelPic.Hostel = Hostel;
-                await hostelPicRepository.AddHostelPic(HostelPic);
+                foreach (var FileUpload in FileUploads)
+                {
+                    HostelPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\", FileUpload.FileName);
+                    await hostelPicRepository.AddHostelPic(HostelPic);
+                }
             }
             return RedirectToPage("./Index");
         }

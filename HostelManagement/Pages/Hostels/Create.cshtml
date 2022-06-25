@@ -59,10 +59,9 @@
             <!--Còn cả hostelPic với add room chưa xử lý-->
 
             <div class="form-group">
-                <label asp-for="HostelPic.HostelPicUrl" class="control-label"></label>
-
-                <input name="fThumb" type="file" class="form-control-file" asp-for="HostelPic.HostelPicUrl" required>
-                <span asp-validation-for="HostelPic.HostelPicUrl" class="text-danger"></span>
+                <label asp-for="@Model.FileUploads"></label>
+                <input asp-for="@Model.FileUploads" />
+                <span asp-validation-foraction="@Model.FileUploads"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
