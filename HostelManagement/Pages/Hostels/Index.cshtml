@@ -3,13 +3,29 @@
 
 @{
     ViewData["Title"] = "Index";
+    Layout = "_OwnerLayout";
 }
 
-<h1>Index</h1>
-
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
+<section class="action-section searchbox-owner">
+    <div class="row">
+        <div class="col-4">
+            <form method="get" asp-page-handler="">
+                <div class="form-group">
+                    <input placeholder="Search property name" name="searchHostel" type="text" id="searchBox" class="form-control" value="">
+                    <i class='bx bx-search'></i>
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-5">
+            <div class="action-button">
+                <button class="atn-btn btn-addnew">
+                    <a asp-page="Create">Add a listing</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 <table class="table">
     <thead>
         <tr>
