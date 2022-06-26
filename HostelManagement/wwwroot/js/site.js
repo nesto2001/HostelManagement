@@ -2,43 +2,7 @@
 // for details on configuring this project to bundle and minify static web assets.
 
 // Write your JavaScript code.
-$(document).ready(function () {
-    $("#ProvinceList").change(function () {
-        var selectedProvince = $("#ProvinceList").val();
-        $("#DistrictList").empty();
-        $("#WardList").empty();
-        $.ajax({
-            type: "POST",
-            url: "/Hostels/Create?handler=LoadDistrict",
 
-            data: selectedProvince,
-            contentType: "json; charset=utf-8",
-
-            success: function (districts) {
-
-                $.each(districts, function (i, district) {
-                    $("#DistrictList").append('<option value="' + district.DistrictId + '">' +
-                        district.DistrictName + '</option>');
-                });
-            },
-            error: function (ex) { alert($("#ProvinceList").val() + ex); }
-        });
-        return false;
-    })
-})
-
-$(function () {
-    $("#ProvinceList").on("change", function () {
-        var ProvinceId = $(this).val();
-        $("#DistrictList").empty();
-        $("#DistrictList").append("<option value=''>Select SubCategory</option>");
-        $.getJSON(`?handler=LoadDistrict&ProvinceId=${ProvinceId}`, (data) => {
-            $.each(data, function (i, item) {
-                $("#DistrictList").append(`<option value="${item.DistrictId}">${item.DistrictName}</option>`);
-            });
-        });
-    });
-});
 
 $('.search-input').click(function(){
     $('.input-search').focus();
@@ -67,3 +31,16 @@ $('.btn-subnum').click(function(){
         $('.input-capacity').val(displayValue);
     }
 })
+
+document.getElementById('ProvinceList').addEventListener('change', (e) => {
+    document.getElementById('DistrictList').innerHTML = "<option value=''>Select District</option>";
+    fetch(`?handler=LoadDistrict&ProvinceId=${e.target.value}`)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            Array.prototype.forEach.call(data, function (item, i) {
+                $("#DistrictList").append(`<option value="${item.districtId}">${item.districtName}</option>`);
+            });
+        });
+});

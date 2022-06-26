@@ -1,5 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -10,16 +13,35 @@ namespace HostelManagement.Pages
 {
     public class IndexModel : PageModel
     {
-        private readonly ILogger<IndexModel> _logger;
-
-        public IndexModel(ILogger<IndexModel> logger)
+        private IProvinceRepository provinceRepository;
+        private IDistrictRepository districtRepository;
+        public IndexModel(IProvinceRepository _provinceRepository, IDistrictRepository _districtRepository)
         {
-            _logger = logger;
+            provinceRepository = _provinceRepository;
+            districtRepository = _districtRepository;
         }
 
-        public void OnGet()
+        public async Task OnGetAsync(string searchKey, int sl_city, int sl_dist, int capacity)
         {
+            ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
+            if (!String.IsNullOrEmpty(searchKey))
+            {
+                if (sl_city != 0)
+                {
+                    if (sl_dist != 0)
+                    {
+                        if (capacity != 0)
+                        {
 
+                        }
+                    }
+                }
+            }
+        }
+        public async Task<JsonResult> OnGetLoadDistrict(int ProvinceId)
+        {
+            IEnumerable<District> districts = await districtRepository.GetDistrictListByProvinceId(ProvinceId);
+            return new JsonResult(districts);
         }
     }
 }

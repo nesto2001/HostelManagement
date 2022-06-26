@@ -30,15 +30,9 @@
                             <div class="selectbox-wrapper">
                                 <i class='bx bxs-city'></i>
                                 <div class="selectcontent">
-                                    <select name="sl-city" id="sl-city">
+                                    <select name="sl_city" id="ProvinceList" asp-items="@ViewBag.ProvinceId">
                                         <option selected value="">
                                             City
-                                        </option>
-                                        <option>
-                                            Ho Chi Minh
-                                        </option>
-                                        <option>
-                                            Hanoi
                                         </option>
                                     </select>
                                 </div>
@@ -48,15 +42,9 @@
                             <div class="selectbox-wrapper">
                                 <i class='bx bxs-building-house' ></i>
                                 <div class="selectcontent">
-                                    <select name="sl-dist" id="sl-dist">
+                                    <select name="sl_dist" id="DistrictList">
                                         <option selected value="">
                                             District
-                                        </option>
-                                        <option>
-                                            Quan 6
-                                        </option>
-                                        <option>
-                                            Quan 7
                                         </option>
                                     </select>
                                 </div>
