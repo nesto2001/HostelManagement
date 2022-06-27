@@ -139,18 +139,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 <script>
-    document.getElementById('ProvinceList').addEventListener('change', (e) => {
-        document.getElementById('DistrictList').innerHTML = "<option value=''>Select District</option>";
-        fetch(`?handler=LoadDistrict&ProvinceId=${e.target.value}`)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                Array.prototype.forEach.call(data, function (item, i) {
-                    $("#DistrictList").append(`<option value="${item.districtId}">${item.districtName}</option>`);
-                });
-            });
-    });
     document.getElementById('DistrictList').addEventListener('change', (e) => {
         $("#WardList").empty();
         document.getElementById('WardList').innerHTML = "<option value=''>Select Ward</option>";
