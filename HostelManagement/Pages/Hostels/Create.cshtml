@@ -40,11 +40,7 @@
                 </div>
                 <span class="group-input-title">Location</span>
                 <div class="group-input-hostel">
-                    <div class="form-group">
-                        <label asp-for="Location.AddressString" class="control-label"></label>
-                        <input asp-for="Location.AddressString" class="form-control" />
-                        <span asp-validation-for="Location.AddressString" class="text-danger"></span>
-                    </div>
+
                     <div class="form-group">
                         <label class="control-label">Province</label>
                         <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
@@ -63,6 +59,11 @@
                             <option>Select Ward</option>
                         </select>
                     </div>
+                    <div class="form-group">
+                        <label asp-for="Location.AddressString" class="control-label"></label>
+                        <input asp-for="Location.AddressString" class="form-control" />
+                        <span asp-validation-for="Location.AddressString" class="text-danger"></span>
+                    </div>
                 </div>
                 <span class="group-input-title">Upload some images of your hostel</span>
                 <div class="group-input-hostel">
@@ -76,7 +77,7 @@
 
                 Room</br>
                 <!--Room-->
-                @for (int i = 0; i < roomCount; i++)
+                @for (int i = 0; i < 2; i++)
                 {
                     
             <div class="roomform">
@@ -139,18 +140,6 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 
 <script>
-    document.getElementById('ProvinceList').addEventListener('change', (e) => {
-        document.getElementById('DistrictList').innerHTML = "<option value=''>Select District</option>";
-        fetch(`?handler=LoadDistrict&ProvinceId=${e.target.value}`)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                Array.prototype.forEach.call(data, function (item, i) {
-                    $("#DistrictList").append(`<option value="${item.districtId}">${item.districtName}</option>`);
-                });
-            });
-    });
     document.getElementById('DistrictList').addEventListener('change', (e) => {
         $("#WardList").empty();
         document.getElementById('WardList').innerHTML = "<option value=''>Select Ward</option>";

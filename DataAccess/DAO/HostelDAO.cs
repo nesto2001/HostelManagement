@@ -47,7 +47,15 @@ namespace DataAccess.DAO
 
         public async Task<Hostel> GetHostelByID(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Hostels.SingleOrDefaultAsync(hostel => hostel.HostelId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<Hostel>> GetHostelsList()
@@ -55,7 +63,15 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Hostels.ToListAsync();
+                return await HostelManagementContext.Hostels
+                    .Include(h => h.Rooms)
+                    .Include(h => h.Category)
+                    .Include(h => h.Location)
+                        .ThenInclude(h => h.Ward)
+                            .ThenInclude(h => h.District)
+                    .Include(h => h.HostelPics)
+                    .Include(h => h.HostelOwnerEmailNavigation)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
