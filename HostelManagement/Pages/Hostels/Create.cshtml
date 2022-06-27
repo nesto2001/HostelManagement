@@ -4,113 +4,126 @@
 @{
     ViewData["Title"] = "Create";
     var roomCount = 1;
+    Layout = "_OwnerLayout";
 }
 
 <h1>Create</h1>
-
 <h4>Hostel</h4>
 <hr />
-<div class="row">
-    <div class="col-md-4">
-        <form method="post" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Hostel.HostelName" class="control-label"></label>
-                <input asp-for="Hostel.HostelName" class="form-control" />
-                <span asp-validation-for="Hostel.HostelName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.Description" class="control-label"></label>
-                <input asp-for="Hostel.Description" class="form-control" />
-                <span asp-validation-for="Hostel.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="Hostel.Status" class="control-label"></label>
-                <input asp-for="Hostel.Status" class="form-control" value="0" readonly />
-                <span asp-validation-for="Hostel.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.CategoryId" class="control-label"></label>
-                <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-            </div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-4">
+            <form method="post" enctype="multipart/form-data">
+                Hostel
+                <div class="group-input-hostel">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <div class="form-group">
+                        <label asp-for="Hostel.HostelName" class="control-label"></label>
+                        <input asp-for="Hostel.HostelName" class="form-control" />
+                        <span asp-validation-for="Hostel.HostelName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Hostel.Description" class="control-label"></label>
+                        <input asp-for="Hostel.Description" class="form-control" />
+                        <span asp-validation-for="Hostel.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Hostel.Status" class="control-label"></label>
+                        <input asp-for="Hostel.Status" class="form-control" value="0" readonly />
+                        <span asp-validation-for="Hostel.Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Hostel.CategoryId" class="control-label"></label>
+                        <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                    </div>
+                </div>
+                Location
+                <div class="group-input-hostel">
+                    <div class="form-group">
+                        <label asp-for="Location.AddressString" class="control-label"></label>
+                        <input asp-for="Location.AddressString" class="form-control" />
+                        <span asp-validation-for="Location.AddressString" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Province</label>
+                        <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
+                            <option>Select Province</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">District</label>
+                        <select id="DistrictList" class="form-control">
+                            <option>Select District</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Ward</label>
+                        <select id="WardList" class="form-control" asp-for="Location.WardId">
+                            <option>Select Ward</option>
+                        </select>
+                    </div>
+                </div>
+                Upload some images of your hostel
+                <div class="form-group">
+                    <label asp-for="@Model.FileUploads"></label>
+                    <input asp-for="@Model.FileUploads" />
+                    <span asp-validation-foraction="@Model.FileUploads"></span>
+                </div>
+                
 
-            <div class="form-group">
-                <label class="control-label">Province</label>
-                <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
-                    <option>Select Province</option>
-                </select>
+                Room</br>
+                <!--Room-->
+                @for (int i = 0; i < roomCount; i++)
+                {
+                    <text>Room @roomCount</text>
+            <div class="roomform">
+                <div class="form-group">
+                    <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
+                    <span asp-validation-for="@Model.Rooms[i].RoomTitle" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Rooms[i].RoomDescription" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].RoomDescription" class="form-control" />
+                    <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Rooms[i].RomMaxCapacity" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].RomMaxCapacity" class="form-control" />
+                    <span asp-validation-for="@Model.Rooms[i].RomMaxCapacity" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="form-control" />
+                    <span asp-validation-for="@Model.Rooms[i].RoomCurrentCapacity" class="text-danger"></span>
+                </div>
+                <div class="form-group" hidden="hidden">
+                    <label asp-for="@Model.Rooms[i].Status" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].Status" class="form-control" value="0" />
+                    <span asp-validation-for="@Model.Rooms[i].Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Rooms[i].Deposit" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].Deposit" class="form-control" />
+                    <span asp-validation-for="@Model.Rooms[i].Deposit" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="@Model.Rooms[i].Price" class="control-label"></label>
+                    <input asp-for="@Model.Rooms[i].Price" class="form-control" />
+                    <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
+                </div>
+                <div class="room-action">
+                    <span class="addroom">Add more room!</span>
+                </div>
             </div>
-            <div class="form-group">
-                <label class="control-label">District</label>
-                <select id="DistrictList" class="form-control">
-                    <option>Select District</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label class="control-label">Ward</label>
-                <select id="WardList" class="form-control" asp-for="Location.WardId">
-                    <option>Select Ward</option>
-                </select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Location.AddressString" class="control-label"></label>
-                <input asp-for="Location.AddressString" class="form-control" />
-                <span asp-validation-for="Location.AddressString" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.FileUploads"></label>
-                <input asp-for="@Model.FileUploads" />
-                <span asp-validation-foraction="@Model.FileUploads"></span>
-            </div>
-
-            <!--Room-->
-            @for (int i = 0; i < roomCount; i++)
-            {
-        <div class="roomform">
-            <div class="form-group">
-                <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
-                <span asp-validation-for="@Model.Rooms[i].RoomTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Rooms[i].RoomDescription" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].RoomDescription" class="form-control" />
-                <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Rooms[i].RomMaxCapacity" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].RomMaxCapacity" class="form-control" />
-                <span asp-validation-for="@Model.Rooms[i].RomMaxCapacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="form-control" />
-                <span asp-validation-for="@Model.Rooms[i].RoomCurrentCapacity" class="text-danger"></span>
-            </div>
-            <div class="form-group" hidden="hidden">
-                <label asp-for="@Model.Rooms[i].Status" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].Status" class="form-control" value="0" />
-                <span asp-validation-for="@Model.Rooms[i].Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Rooms[i].Deposit" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].Deposit" class="form-control" />
-                <span asp-validation-for="@Model.Rooms[i].Deposit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="@Model.Rooms[i].Price" class="control-label"></label>
-                <input asp-for="@Model.Rooms[i].Price" class="form-control" />
-                <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
-            </div>
+                }
+                <div class="form-group">
+                    <input type="submit" value="Create" class="btn btn-primary" />
+                </div>
+            </form>
         </div>
-            }
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
     </div>
 </div>
-
 <div>
     <a asp-page="Index">Back to List</a>
 </div>

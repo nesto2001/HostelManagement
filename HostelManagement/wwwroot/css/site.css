@@ -1,6 +1,13 @@
 ﻿/* Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 for details on configuring this project to bundle and minify static web assets. */
 
+@media (min-width: 1440px){
+  .container {
+      width: 1440px;
+      max-width: 1440px;
+  }
+}
+
 a.navbar-brand {
   white-space: normal;
   text-align: center;
@@ -441,4 +448,73 @@ i.bx{
   height: 64px;
   font-size: 20px;
   font-weight: 600;
+}
+
+.owner-page header .navbar{
+  background: #0083CC !important;
+}
+
+.owner-page header .navbar .nav-item .nav-link{
+  color: #fff;
+}
+
+.action-section{
+  padding: 32px 32px;
+}
+
+.searchbox-owner .form-group{
+  display: inline-block;
+  vertical-align: middle;
+  margin: 0;
+}
+
+.action-section #searchBox{
+  width: 411px;
+  height: 40px;
+  padding-bottom: 8px;
+}
+
+.action-section #searchBox::placeholder{
+  font-weight: 200;
+}
+
+.searchbox-owner .form-group i{
+  float: right;
+  margin-right: 10px;
+  margin-top: -31px;
+  cursor: pointer;
+  padding:0;
+  font-size: 24px;
+  font-weight: 200;
+  color: #ccc
+}
+
+.action-section .action-button{
+  float: right;
+}
+
+.action-section .action-button .atn-btn{
+  color: white;
+  font-weight: 600;
+  transition: all 0.15s ease-in-out 0s;
+  border-radius: 4px;
+  background: #0083CC;
+  font-size: 14px;
+  border: none;
+}
+
+.action-section .action-button .atn-btn a{
+  padding: 8px 24px;
+}
+
+.action-section{
+  background: #fff;
+  box-shadow: 0 0 10px 0 rgb(0 0 0 / 10%);
+  position: relative;
+  z-index: 1;
+  border-bottom: 1px solid #dddfe2;
+}
+
+.owner-page{
+  background: #fcfcfc;
 }
