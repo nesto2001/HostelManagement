@@ -5,6 +5,7 @@
     ViewData["Title"] = "Create";
     var roomCount = 1;
     Layout = "_OwnerLayout";
+    var activeNav = "listings-nav";
 }
 
 <h1>Create</h1>
@@ -12,9 +13,9 @@
 <hr />
 <div class="container">
     <div class="row">
-        <div class="col-md-4">
+        <div class="col-md-8">
             <form method="post" enctype="multipart/form-data">
-                Hostel
+                <span class="group-input-title">Hostel</span>
                 <div class="group-input-hostel">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -37,7 +38,7 @@
                         <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
                 </div>
-                Location
+                <span class="group-input-title">Location</span>
                 <div class="group-input-hostel">
                     <div class="form-group">
                         <label asp-for="Location.AddressString" class="control-label"></label>
@@ -63,11 +64,13 @@
                         </select>
                     </div>
                 </div>
-                Upload some images of your hostel
-                <div class="form-group">
-                    <label asp-for="@Model.FileUploads"></label>
-                    <input asp-for="@Model.FileUploads" />
-                    <span asp-validation-foraction="@Model.FileUploads"></span>
+                <span class="group-input-title">Upload some images of your hostel</span>
+                <div class="group-input-hostel">
+                    <div class="form-group">
+                        <label asp-for="@Model.FileUploads"></label>
+                        <input asp-for="@Model.FileUploads" />
+                        <span asp-validation-foraction="@Model.FileUploads"></span>
+                    </div>
                 </div>
                 
 
@@ -75,8 +78,9 @@
                 <!--Room-->
                 @for (int i = 0; i < roomCount; i++)
                 {
-                    <text>Room @roomCount</text>
+                    
             <div class="roomform">
+                <span class="room-no" data-value="@roomCount">Room @roomCount</span>
                 <div class="form-group">
                     <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
                     <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
@@ -113,10 +117,13 @@
                     <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
                 </div>
                 <div class="room-action">
-                    <span class="addroom">Add more room!</span>
+                    <span class="removeroom" style="display: none;">Remove room</span>
                 </div>
             </div>
                 }
+                <div class="room-action">
+                    <span class="addroom">Add more room!</span>
+                </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
@@ -156,6 +163,32 @@
                     $("#WardList").append(`<option value="${item.wardId}">${item.wardName}</option>`);
                 });
             });
+    });
+
+    $('#@activeNav').addClass('active');
+
+    var count = $('.roomform').last().find('.room-no').data('value');
+
+    function numberingRoom(){
+        var roomlist = $('.roomform');
+        for (var i = 0; i < roomlist.length; i++){
+            roomlist[i].querySelector('.room-no').innerHTML = "Room " + (i+1);
+        }
+    };  
+
+    $(window).on('load',function(){
+
+        $(document).on('click','.addroom',function(){
+            var html = $('.roomform').first().clone();
+            $(html).find('.removeroom').show();
+            $('.roomform').last().after(html);
+            numberingRoom();
+        });
+ 
+        $(document).on('click','.removeroom',function(){
+            $(this).parents('.roomform').remove();
+            numberingRoom();
+        });
     });
 </script>
 }

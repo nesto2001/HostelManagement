@@ -78,7 +78,8 @@ body {
 }
 
 .nav-item{
-    font-weight: 600;
+  position: relative;
+  font-weight: 600;
 }
 
 a.navbar-brand{
@@ -517,4 +518,33 @@ i.bx{
 
 .owner-page{
   background: #fcfcfc;
+}
+
+.nav-item.active::after{
+  width: 100%;
+  background-color: white;
+  height: 5px;
+  display: block;
+  content: "";
+  position: absolute;
+  top: calc(100% + 15px)
+}
+
+.group-input-title{
+  font-size: 20px;
+  font-weight: 700;
+}
+
+.group-input-hostel{
+  width: 100%;
+  border: 1px solid #ccc;
+  padding: 12px 12px 32px;
+  margin-top: 12px;
+  border-radius: 4px;
+  margin-bottom: 24px;
+}
+
+.group-input-hostel label{
+  font-weight: 600;
+  font-size: 14px;
 }

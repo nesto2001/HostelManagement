@@ -44,14 +44,3 @@ document.getElementById('ProvinceList').addEventListener('change', (e) => {
             });
         });
     });
-    
-$('.addroom').click(function(){
-    var html = $('.roomform').first().clone();
-    $(html).find('.room-action').html("<span class='removeroom'>Remove room!</span>")
-    $('.roomform').last().after(html);
-});
-
-$('.removeroom').click(function(){
-    console.log("abc");
-    $(this).parents('.roomform').remove();
-});

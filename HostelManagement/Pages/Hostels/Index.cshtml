@@ -4,6 +4,7 @@
 @{
     ViewData["Title"] = "Index";
     Layout = "_OwnerLayout";
+    var activeNav = "listings-nav";
 }
 
 <section class="action-section searchbox-owner">
@@ -80,3 +81,8 @@
 }
     </tbody>
 </table>
+@section Scripts {
+<script type="text/javascript">
+    $('#@activeNav').addClass('active');
+</script>
+}

@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAO
@@ -32,7 +31,7 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Wards.Where(d => d.DistrictId == DistrictId).ToListAsync();
+                return await HostelManagementContext.Wards.Where(d => d.DistrictId == DistrictId).OrderBy(w => w.WardName).ToListAsync();
             }
             catch (Exception ex)
             {
