@@ -16,6 +16,7 @@ namespace DataAccess.Repository
         public async Task<Room> GetRoomByID(int id) => await RoomDAO.Instance.GetRoomByID(id);
 
         public async Task<IEnumerable<Room>> GetRoomList() => await RoomDAO.Instance.GetRoomsList();
+        public async Task<IEnumerable<Room>> GetRoomsOfAHostel(int hostelId) => await RoomDAO.Instance.GetRoomsOfAHostel(hostelId);
 
         public async Task UpdateRoom(Room Room) => await RoomDAO.Instance.UpdateRoom(Room);
     }

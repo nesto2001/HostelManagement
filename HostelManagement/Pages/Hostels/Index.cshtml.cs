@@ -7,26 +7,35 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using DataAccess.Repository;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
+    [Authorize]
+
     public class IndexModel : PageModel
     {
-        private readonly DataAccess.HostelManagementContext _context;
+        private IHostelRepository hostelRepository;
+        private IAccountRepository accountRepository;
 
-        public IndexModel(DataAccess.HostelManagementContext context)
+        public IndexModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository)
         {
-            _context = context;
+            hostelRepository = _hostelRepository;
+            accountRepository = _accountRepository;
         }
 
-        public IList<Hostel> Hostel { get;set; }
+        public IEnumerable<Hostel> Hostels { get;set; }
 
         public async Task OnGetAsync()
         {
-            Hostel = await _context.Hostels
-                .Include(h => h.Category)
-                .Include(h => h.HostelOwnerEmailNavigation)
-                .Include(h => h.Location).ToListAsync();
+            var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            int UId = Int32.Parse(userId);
+            var account = await accountRepository.GetAccountByID(UId);
+            var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            if (role == "Owner") Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
+            else if (role == "Admin") Hostels = await hostelRepository.GetHostelsList();
         }
     }
 }

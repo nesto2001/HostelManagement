@@ -31,28 +31,28 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Hostel[0].HostelName)
+                @Html.DisplayNameFor(model => model.Hostels.First().HostelName)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hostel[0].Description)
+                @Html.DisplayNameFor(model => model.Hostels.First().Description)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hostel[0].Status)
+                @Html.DisplayNameFor(model => model.Hostels.First().Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hostel[0].Category)
+                @Html.DisplayNameFor(model => model.Hostels.First().Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hostel[0].HostelOwnerEmailNavigation)
+                @Html.DisplayNameFor(model => model.Hostels.First().HostelOwnerEmailNavigation)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hostel[0].Location)
+                @Html.DisplayNameFor(model => model.Hostels.First().Location)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Hostel) {
+@foreach (var item in Model.Hostels) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.HostelName)

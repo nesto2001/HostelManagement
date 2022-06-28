@@ -83,5 +83,28 @@ namespace DataAccess.DAO
         {
             throw new NotImplementedException();
         }
+
+        public async Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Hostels
+                    .Include(h => h.Rooms)
+                    .Include(h => h.Category)
+                    .Include(h => h.Location)
+                        .ThenInclude(h => h.Ward)
+                            .ThenInclude(h => h.District)
+                    .Include(h => h.HostelPics)
+                    .Include(h => h.HostelOwnerEmailNavigation)
+                        //.ThenInclude(h => h.UserId)
+                    .Where(h => h.HostelOwnerEmailNavigation.UserId == id)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

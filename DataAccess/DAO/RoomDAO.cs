@@ -63,6 +63,21 @@ namespace DataAccess.DAO
                 }
             }
 
+            public async Task<IEnumerable<Room>> GetRoomsOfAHostel(int hostelId)
+            {
+                try
+                {
+                    var HostelManagementContext = new HostelManagementContext();
+                    return await HostelManagementContext.Rooms
+                         .Where(r => r.HostelId == hostelId)
+                         .ToListAsync();
+                }
+                catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
+            }
+
             public async Task UpdateRoom(Room Room)
             {
                 throw new NotImplementedException();
