@@ -3,19 +3,66 @@
 
 @{
     ViewData["Title"] = "Create";
-    var roomCount = 1;
+    int roomCount = 1;
     Layout = "_OwnerLayout";
     var activeNav = "listings-nav";
 }
 
-<h1>Create</h1>
-<h4>Hostel</h4>
-<hr />
-<div class="container">
+<hr class="my-0"/>
+<div class="container main-container" id="main-content">
     <div class="row">
-        <div class="col-md-8">
+        <div class="col-3 sider sidebar" id="sider-navbar">
+            <div class="sidebar__inner">
+                <div class="sider-nav">
+                    <ul>
+                        <li class="sider-nav-item">
+                            <a href="#Hostel">
+                                <div class="bullet">
+                                    <div class="circle"></div>
+                                </div>
+                                <span class="nav-item-text">
+                                    <strong class="">Hostel</strong>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="sider-nav-item">
+                            <a href="#Location">
+                                <div class="bullet">
+                                    <div class="circle"></div>
+                                </div>
+                                <span class="nav-item-text">
+                                    <strong class="">Location</strong>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="sider-nav-item">
+                            <a href="#Images">
+                                <div class="bullet">
+                                    <div class="circle"></div>
+                                </div>
+                                <span class="nav-item-text">
+                                    <strong class="">Upload Images</strong>
+                                </span>
+                            </a>
+                        </li>
+                        <li class="sider-nav-item">
+                            <a href="#Room">
+                                <div class="bullet">
+                                    <div class="circle"></div>
+                                </div>
+                                <span class="nav-item-text">
+                                    <strong class="">Room</strong>
+                                </span>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-9 main-content">
+            <h1 class="mb-3">Create hostel</h1>
             <form method="post" enctype="multipart/form-data">
-                <span class="group-input-title">Hostel</span>
+                <span class="group-input-title" id="Hostel">Hostel</span>
                 <div class="group-input-hostel">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
@@ -38,7 +85,7 @@
                         <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
                     </div>
                 </div>
-                <span class="group-input-title">Location</span>
+                <span class="group-input-title" id="Location">Location</span>
                 <div class="group-input-hostel">
 
                     <div class="form-group">
@@ -65,7 +112,7 @@
                         <span asp-validation-for="Location.AddressString" class="text-danger"></span>
                     </div>
                 </div>
-                <span class="group-input-title">Upload some images of your hostel</span>
+                <span class="group-input-title" id="Images">Upload some images of your hostel</span>
                 <div class="group-input-hostel">
                     <div class="form-group">
                         <label asp-for="@Model.FileUploads"></label>
@@ -75,56 +122,48 @@
                 </div>
                 
 
-                Room</br>
+                <span class="group-input-title" id="Room">Room</span>
                 <!--Room-->
-                @for (int i = 0; i < 2; i++)
+                @for (int i = 0; i < roomCount; i++)
                 {
-                    
-            <div class="roomform">
-                <span class="room-no" data-value="@roomCount">Room @roomCount</span>
-                <div class="form-group">
-                    <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
-                    <span asp-validation-for="@Model.Rooms[i].RoomTitle" class="text-danger"></span>
+                <div class="roomform group-input-hostel">
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RoomTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RoomDescription" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RoomDescription" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RomMaxCapacity" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RomMaxCapacity" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RomMaxCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RoomCurrentCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="@Model.Rooms[i].Status" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].Status" class="form-control" value="0" />
+                        <span asp-validation-for="@Model.Rooms[i].Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].Deposit" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].Deposit" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].Deposit" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].Price" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].Price" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Rooms[i].RoomDescription" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].RoomDescription" class="form-control" />
-                    <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Rooms[i].RomMaxCapacity" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].RomMaxCapacity" class="form-control" />
-                    <span asp-validation-for="@Model.Rooms[i].RomMaxCapacity" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="form-control" />
-                    <span asp-validation-for="@Model.Rooms[i].RoomCurrentCapacity" class="text-danger"></span>
-                </div>
-                <div class="form-group" hidden="hidden">
-                    <label asp-for="@Model.Rooms[i].Status" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].Status" class="form-control" value="0" />
-                    <span asp-validation-for="@Model.Rooms[i].Status" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Rooms[i].Deposit" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].Deposit" class="form-control" />
-                    <span asp-validation-for="@Model.Rooms[i].Deposit" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="@Model.Rooms[i].Price" class="control-label"></label>
-                    <input asp-for="@Model.Rooms[i].Price" class="form-control" />
-                    <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
-                </div>
-                <div class="room-action">
-                    <span class="removeroom" style="display: none;">Remove room</span>
-                </div>
-            </div>
                 }
-                <div class="room-action">
-                    <span class="addroom">Add more room!</span>
-                </div>
                 <div class="form-group">
                     <input type="submit" value="Create" class="btn btn-primary" />
                 </div>
@@ -132,13 +171,11 @@
         </div>
     </div>
 </div>
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
+
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
+<script type="text/javascript" src="~/js/sticky-sidebar.js"></script>
 <script>
     document.getElementById('DistrictList').addEventListener('change', (e) => {
         $("#WardList").empty();
@@ -156,7 +193,7 @@
 
     $('#@activeNav').addClass('active');
 
-    var count = $('.roomform').last().find('.room-no').data('value');
+    @* var count = $('.roomform').last().find('.room-no').data('value');
 
     function numberingRoom(){
         var roomlist = $('.roomform');
@@ -178,6 +215,14 @@
             $(this).parents('.roomform').remove();
             numberingRoom();
         });
+    }); *@
+
+    var sidebar = new StickySidebar('#sider-navbar', {
+        containerSelector: '#main-content',
+        innerWrapperSelector: '.sidebar__inner',
+        topSpacing: 20,
+        bottomSpacing: 20,
+        leftSpacing: 20
     });
 </script>
 }
