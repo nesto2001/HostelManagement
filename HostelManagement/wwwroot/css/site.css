@@ -2,7 +2,7 @@
 for details on configuring this project to bundle and minify static web assets. */
 
 @media (min-width: 1440px){
-  .container {
+  .container:not(.container.main-container) {
       width: 1440px;
       max-width: 1440px;
   }
@@ -547,4 +547,95 @@ i.bx{
 .group-input-hostel label{
   font-weight: 600;
   font-size: 14px;
+}
+
+.sider{
+  background: #fff;
+}
+
+.main-content{
+  border-left: 1px solid #dddfe2;
+  background: #fcfcfc;
+  padding-top: 24px;
+  padding-left: 50px;
+}
+
+.sider{
+  padding-top: 55px;
+  min-height: 100%;
+  z-index: 1;
+  display: block;
+}
+
+.sider .sider-nav{
+  border-left: 2px solid #eee;
+  font-size: 16px;
+  font-weight: 500; 
+  color: #2a2a2e;
+}
+
+.sider-nav ul{
+  padding-left: 0;
+  list-style: none;
+}
+
+ol, ul {
+  margin-top: 0;
+  margin-bottom: 10px;
+}
+
+.sider-nav .sider-nav-item{
+  padding-left: 27px;
+  position: relative;
+  line-height: 1;
+}
+
+.sider-nav .sider-nav-item:not(:first-child){
+  margin-top: 40px;
+}
+
+.sider-nav-item a .bullet{
+  position: absolute;
+  left: -9px;
+  width: 16px;
+}
+
+.bullet .circle{
+  position: relative;
+  width: 1em;
+  height: 1em;
+  border-radius: 50%;
+  float: none;
+  margin: 0 auto;
+}
+
+.bullet .circle{
+  margin-top: 3px;
+  background-color: #fff;
+  border: 2px solid #777;
+  font-size: 12px;
+}
+
+.container.main-container{
+  min-height: calc(100% - 145px);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+}
+
+.sticky {
+  position: fixed;
+  top: 0;
+}
+
+.sider.is-affixed .sidebar__inner{
+  padding-left: 15px;
+}
+
+.sider-nav-item:hover a{
+  transition: all 0.15s ease-in-out;
+}
+
+.sider-nav-item:hover a{
+  color: #0083CC;
 }
