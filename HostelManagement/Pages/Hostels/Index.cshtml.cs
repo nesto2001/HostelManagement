@@ -1,20 +1,16 @@
-﻿using System;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Hostels
 {
-    [Authorize]
-
+    [Authorize(Roles = "Owner")]
     public class IndexModel : PageModel
     {
         private IHostelRepository hostelRepository;
@@ -26,7 +22,7 @@ namespace HostelManagement.Pages.Hostels
             accountRepository = _accountRepository;
         }
 
-        public IEnumerable<Hostel> Hostels { get;set; }
+        public IEnumerable<Hostel> Hostels { get; set; }
 
         public async Task OnGetAsync()
         {

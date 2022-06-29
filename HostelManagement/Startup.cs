@@ -3,15 +3,10 @@ using DataAccess.Repository;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace HostelManagement
 {
@@ -33,7 +28,8 @@ namespace HostelManagement
             services.AddDbContext<HostelManagementContext>(options =>
             options.UseSqlServer(Configuration.GetConnectionString("HostelManagementContext")));
             services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
-                .AddCookie(options => {
+                .AddCookie(options =>
+                {
                     options.AccessDeniedPath = "/AccessDenied";
                     options.LoginPath = "/Login";
                     options.LogoutPath = "/Logout";
@@ -68,8 +64,9 @@ namespace HostelManagement
 
             app.UseRouting();
 
-            app.UseAuthorization();
+
             app.UseAuthentication();
+            app.UseAuthorization();
 
             app.UseSession();
 

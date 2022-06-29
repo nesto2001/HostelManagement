@@ -1,8 +1,3 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Security.Claims;
-using System.Threading.Tasks;
 using BusinessObject.BusinessObject;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Authentication;
@@ -10,6 +5,9 @@ using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Collections.Generic;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Accounts
 {
@@ -85,7 +83,7 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ID", cus.Result.CustomerId);
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Overview");
             }
             else if (acc.Result.RoleName.Equals("renter"))
             {
