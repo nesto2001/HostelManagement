@@ -1,0 +1,54 @@
+﻿@page "{handler?}"
+@model HostelManagement.Pages.SearchModel
+@{
+}
+
+<div class="container main-container" id="main-content">
+    <div class="row">
+        <div class="col-3 sider sidebar" id="sider-navbar">
+            <div class="sidebar__inner">
+                <div class="sider-nav">
+                    <ul>
+                        <li class="sider-nav-item">
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-9 main-content">
+            <div class="hostel-list mt-3">
+                <div class="hostel-list-wrapper">
+                    @foreach (var item in Model.Hostels) {
+                    <div class="hostel-item">
+                        <div class="hostel-item-inner d-flex">
+                            <div class="hostel-dt hostel-images col p-0">
+                                <div class="hostel-thumb">
+                                    <img src="~/images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl" alt="">
+                                </div>
+                                <div class="hostel-imgs d-flex">
+                                    @for( int i = 1; i < item.HostelPics.Count; i++){
+                                        <div class="hostel-img">
+                                            <img src="~/images/hostels/@item.HostelPics.ElementAt(i).HostelPicUrl" alt="">
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                            <div class="hostel-info col">
+                                <div class="hostel-name">@item.HostelName</div>
+                                <div class="hostel-cate">@item.Category.CategoryName</div>
+                                <div class="hostel-location"><a href="https://www.google.com/maps/place/Hanoi,+Hoan+Kiem/" target="_blank"><i class='bx bxs-map'></i> Hanoi, Hoan Kiem</a></div>
+                            </div>
+                            <div class="hostel-price col">
+                                <div class="col p-0"></div>
+                                <div class="price col"></div>
+                                <div class="col">
+                                    <button class="btn btn-primary"><a  asp-page="" asp-route-id="@item.HostelId">Select</a></button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

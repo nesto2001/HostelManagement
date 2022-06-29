@@ -1,6 +1,5 @@
-﻿using BusinessObject.BusinessObject;
+using BusinessObject.BusinessObject;
 using DataAccess.Repository;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
@@ -10,18 +9,19 @@ using System.Threading.Tasks;
 
 namespace HostelManagement.Pages
 {
-    public class IndexModel : PageModel
+    public class SearchModel : PageModel
     {
         private IProvinceRepository provinceRepository;
         private IDistrictRepository districtRepository;
         private IHostelRepository hostelRepository;
-        public IndexModel(IProvinceRepository _provinceRepository, IDistrictRepository _districtRepository, IHostelRepository _hostelRepository)
+        public SearchModel(IProvinceRepository _provinceRepository, IDistrictRepository _districtRepository, IHostelRepository _hostelRepository)
         {
             provinceRepository = _provinceRepository;
             districtRepository = _districtRepository;
             hostelRepository = _hostelRepository;
         }
         public IEnumerable<Hostel> Hostels { get; set; }
+
         public async Task OnGetAsync(string searchKey, int sl_city, int sl_dist, int capacity)
         {
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
@@ -54,12 +54,6 @@ namespace HostelManagement.Pages
                 }
             }
             Hostels = HostelsSearchKey.Where(h => HostelsDistrictFilter.Contains(h)).Where(k => HostelsCapaictyFilter.Contains(k)).ToList();
-        }
-
-        public async Task<JsonResult> OnGetLoadDistrict(int ProvinceId)
-        {
-            IEnumerable<District> districts = await districtRepository.GetDistrictListByProvinceId(ProvinceId);
-            return new JsonResult(districts);
         }
     }
 }

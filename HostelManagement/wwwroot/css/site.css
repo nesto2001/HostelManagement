@@ -553,7 +553,7 @@ i.bx{
   background: #fff;
 }
 
-.main-content{
+.main-content.create-content{
   border-left: 1px solid #dddfe2;
   background: #fcfcfc;
   padding-top: 24px;
@@ -638,4 +638,90 @@ ol, ul {
 
 .sider-nav-item:hover a{
   color: #0083CC;
+}
+
+.hostel-item{
+  border-radius: 8px;
+}
+
+.hostel-list .hostel-item .hostel-images .hostel-thumb img{
+  width: 100%;
+  height: 182px;
+  object-fit: cover;
+  vertical-align: middle;
+}
+
+.hostel-list .hostel-item .hostel-images{
+  box-sizing: border-box;
+  margin: 0px;
+  display: block;
+  flex-basis: 33.3333%;
+  -webkit-box-flex: 0;
+  flex-grow: 0;
+  max-width: 33.3333%;
+}
+
+.hostel-img{
+  width: calc(25% - 1px);
+  margin-top: 1px;
+}
+
+.hostel-img:not(:last-child){
+  margin-right: 1px; 
+}
+
+.hostel-img:last-child{
+  flex-grow: 1;
+}
+
+.hostel-img img{
+  width: 100%;
+  object-fit: cover;
+  vertical-align: middle;
+  height: 100%;
+  max-height: 40px;
+}
+
+.hostel-info{
+  padding-top: 15px;
+}
+
+.hostel-info .hostel-name{
+  font-weight: 600;
+  font-size: 20px;
+}
+.hostel-info .hostel-cate{
+  display: inline-block;
+  border: 1px solid #ccc;
+  padding: 2px 8px;
+  font-weight: 500;
+  font-size: 14px;
+  border-radius: 8px;
+}
+.hostel-info div:not(:first-child){
+ margin-top: 4px; 
+}
+
+.hostel-info .hostel-location{
+  font-weight: 600;
+  color: #0083CC;
+}
+
+.hostel-location i{
+  padding: 0;
+  font-size: 16px;
+  position: relative;
+  bottom: -2px;
+  color: inherit;
+}
+
+.hostel-price{
+  display: flex;
+  align-items: flex-end;
+  padding: 0px 10px 20px 0px
+}
+
+.hostel-item{
+  border: 1px solid #ccc;
+  overflow: hidden;
 }
