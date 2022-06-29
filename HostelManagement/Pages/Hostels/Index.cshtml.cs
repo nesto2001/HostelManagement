@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Hostels
 {
-    [Authorize(Roles = "Owner")]
+    //[Authorize(Roles = "Owner")]
     public class IndexModel : PageModel
     {
         private IHostelRepository hostelRepository;

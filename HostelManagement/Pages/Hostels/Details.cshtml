@@ -36,17 +36,18 @@
             @Html.DisplayFor(model => model.Hostel.Category.CategoryName)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.HostelOwnerEmailNavigation)
+            @Html.DisplayNameFor(model => model.Hostel.HostelOwnerEmail)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.HostelOwnerEmailNavigation.UserEmail)
+            @Html.DisplayFor(model => model.Hostel.HostelOwnerEmail)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Hostel.Location)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.Location.AddressString) - @Html.DisplayFor(model => model.Hostel.Location.Ward.WardName) - 
-            @Html.DisplayFor(model => model.Hostel.Location.Ward.District.DistrictName) - @Html.DisplayFor(model => model.Hostel.Location.Ward.District.Province.ProvinceName)
+            @Html.DisplayFor(model => model.Hostel.Location.AddressString) - @Html.DisplayFor(model => model.Hostel.Location.Ward.WardName) -
+            @Html.DisplayFor(model => model.Hostel.Location.Ward.District.DistrictName) - @Html.DisplayFor(model => model.Hostel.Location.Ward.District.Province.ProvinceName) |
+            <a asp-page="../Locations/Edit" asp-route-id="@Model.Hostel.LocationId">Edit</a>
 
         </dd>
         <dt class="col-sm-2">
@@ -57,6 +58,8 @@
             {
                 <img src="~/Images/@(item.HostelPicUrl)" width="200" />
             }
+            |
+            <a asp-page="./HostelPics" asp-route-id="@Model.Hostel.HostelId">Edit</a>
         </dd>
     </dl>
 </div>

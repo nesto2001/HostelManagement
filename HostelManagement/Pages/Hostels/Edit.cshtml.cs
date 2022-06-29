@@ -8,20 +8,49 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using DataAccess.Repository;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Http;
 
 namespace HostelManagement.Pages.Hostels
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccess.HostelManagementContext _context;
+        private IHostelRepository hostelRepository;
+        private IAccountRepository accountRepository;
+        private ICategoryRepository categoryRepository;
+        private IProvinceRepository provinceRepository;
+        private IDistrictRepository districtRepository;
+        private IWardRepository wardRepository;
+        private ILocationRepository locationRepository;
+        private IHostelPicRepository hostelPicRepository;
+        private IRoomRepository roomRepository;
 
-        public EditModel(DataAccess.HostelManagementContext context)
+        public EditModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
+            ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
+            IDistrictRepository _districtRepository, IWardRepository _wardRepository,
+            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
         {
-            _context = context;
+            hostelRepository = _hostelRepository;
+            accountRepository = _accountRepository;
+            categoryRepository = _categoryRepository;
+            provinceRepository = _provinceRepository;
+            districtRepository = _districtRepository;
+            wardRepository = _wardRepository;
+            locationRepository = _locationRepository;
+            hostelPicRepository = _hostelPicRepository;
+            roomRepository = _roomRepository;
         }
 
         [BindProperty]
         public Hostel Hostel { get; set; }
+
+        [Required(ErrorMessage = "Please chose at least one file.")]
+        [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Choose Hostel images(s)")]
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -30,18 +59,15 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
 
-            Hostel = await _context.Hostels
-                .Include(h => h.Category)
-                .Include(h => h.HostelOwnerEmailNavigation)
-                .Include(h => h.Location).FirstOrDefaultAsync(m => m.HostelId == id);
-
+            Hostel = await hostelRepository.GetHostelByID((int)id);
             if (Hostel == null)
             {
                 return NotFound();
             }
-           ViewData["CategoryId"] = new SelectList(_context.Categories, "CategoryId", "CategoryName");
-           ViewData["HostelOwnerEmail"] = new SelectList(_context.Accounts, "UserEmail", "PhoneNumber");
-           ViewData["LocationId"] = new SelectList(_context.Locations, "LocationId", "AddressString");
+
+            ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
+            ViewData["LocationId"] = Hostel.LocationId;
+            ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
             return Page();
         }
 
@@ -51,33 +77,15 @@ namespace HostelManagement.Pages.Hostels
         {
             if (!ModelState.IsValid)
             {
+                ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
+                ViewData["LocationId"] = Hostel.LocationId;
+                ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
                 return Page();
             }
 
-            _context.Attach(Hostel).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!HostelExists(Hostel.HostelId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
+            await hostelRepository.UpdateHostel(Hostel);
+            return RedirectToPage("./Details", new {id = Hostel.HostelId});
         }
 
-        private bool HostelExists(int id)
-        {
-            return _context.Hostels.Any(e => e.HostelId == id);
-        }
     }
 }

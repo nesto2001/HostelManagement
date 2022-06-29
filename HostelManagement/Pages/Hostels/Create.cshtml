@@ -177,7 +177,7 @@
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 <script type="text/javascript" src="~/js/sticky-sidebar.js"></script>
 <script>
-    document.getElementById('DistrictList').addEventListener('change', (e) => {
+    @*document.getElementById('DistrictList').addEventListener('change', (e) => {
         $("#WardList").empty();
         document.getElementById('WardList').innerHTML = "<option value=''>Select Ward</option>";
         fetch(`?handler=LoadWard&DistrictId=${e.target.value}`)
@@ -189,7 +189,7 @@
                     $("#WardList").append(`<option value="${item.wardId}">${item.wardName}</option>`);
                 });
             });
-    });
+    });*@
 
     $('#@activeNav').addClass('active');
 

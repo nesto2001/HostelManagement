@@ -43,4 +43,19 @@ document.getElementById('ProvinceList').addEventListener('change', (e) => {
                 $("#DistrictList").append(`<option value="${item.districtId}">${item.districtName}</option>`);
             });
         });
-    });
+});
+
+document.getElementById('DistrictList').addEventListener('change', (e) => {
+    $("#WardList").empty();
+    document.getElementById('WardList').innerHTML = "<option value=''>Select Ward</option>";
+    fetch(`?handler=LoadWard&DistrictId=${e.target.value}`)
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            Array.prototype.forEach.call(data, function (item, i) {
+                $("#WardList").append(`<option value="${item.wardId}">${item.wardName}</option>`);
+            });
+        });
+});
+

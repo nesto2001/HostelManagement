@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -16,6 +17,7 @@ namespace BusinessObject.BusinessObject
         public int HostelId { get; set; }
         public string HostelName { get; set; }
         public string Description { get; set; }
+        [Range(0, 1, ErrorMessage = "Only 0 or 1")]
         public int? Status { get; set; }
         public int? CategoryId { get; set; }
         public string HostelOwnerEmail { get; set; }

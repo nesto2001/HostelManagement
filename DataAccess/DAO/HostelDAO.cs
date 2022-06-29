@@ -90,7 +90,16 @@ namespace DataAccess.DAO
 
         public async Task UpdateHostel(Hostel hostel)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.Attach(hostel).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id)

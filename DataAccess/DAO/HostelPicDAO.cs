@@ -44,5 +44,35 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<IEnumerable<HostelPic>> GetHostelPicsOfAHostel(int hostelId)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.HostelPics
+                    .Include(h => h.Hostel)
+                    .Where(h => h.HostelId == hostelId)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task DeleteHostelPic(HostelPic hostelPic)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.HostelPics.Remove(hostelPic);
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

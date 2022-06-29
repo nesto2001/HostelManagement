@@ -43,9 +43,6 @@
                 @Html.DisplayNameFor(model => model.Hostels.First().Category)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Hostels.First().HostelOwnerEmailNavigation)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Hostels.First().Location)
             </th>
             <th></th>
@@ -67,10 +64,8 @@
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.HostelOwnerEmailNavigation.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.AddressString)
+                @Html.DisplayFor(modelItem => item.Location.AddressString) - @Html.DisplayFor(modelItem => item.Location.Ward.WardName) -
+                @Html.DisplayFor(modelItem => item.Location.Ward.District.DistrictName) - @Html.DisplayFor(modelItem => item.Location.Ward.District.Province.ProvinceName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.HostelId">Edit</a> |

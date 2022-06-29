@@ -7,21 +7,19 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
-using DataAccess.Repository;
-using Microsoft.AspNetCore.Http;
 
-namespace HostelManagement.Pages.Hostels
+namespace HostelManagement.Pages.Locations
 {
     public class DetailsModel : PageModel
     {
-        private IHostelRepository hostelRepository;
+        private readonly DataAccess.HostelManagementContext _context;
 
-        public DetailsModel(IHostelRepository _hostelRepository)
+        public DetailsModel(DataAccess.HostelManagementContext context)
         {
-            hostelRepository = _hostelRepository;
+            _context = context;
         }
 
-        public Hostel Hostel { get; set; }
+        public Location Location { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,10 +27,11 @@ namespace HostelManagement.Pages.Hostels
             {
                 return NotFound();
             }
-            HttpContext.Session.SetInt32("HostelID", (int)id);
-            Hostel = await hostelRepository.GetHostelByID((int)id);
 
-            if (Hostel == null)
+            Location = await _context.Locations
+                .Include(l => l.Ward).FirstOrDefaultAsync(m => m.LocationId == id);
+
+            if (Location == null)
             {
                 return NotFound();
             }

@@ -12,37 +12,40 @@
 <div class="row">
     <div class="col-md-4">
         <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Hostel.HostelId" />
-            <div class="form-group">
-                <label asp-for="Hostel.HostelName" class="control-label"></label>
-                <input asp-for="Hostel.HostelName" class="form-control" />
-                <span asp-validation-for="Hostel.HostelName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.Description" class="control-label"></label>
-                <input asp-for="Hostel.Description" class="form-control" />
-                <span asp-validation-for="Hostel.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.Status" class="control-label"></label>
-                <input asp-for="Hostel.Status" class="form-control" />
-                <span asp-validation-for="Hostel.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.CategoryId" class="control-label"></label>
-                <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
-                <span asp-validation-for="Hostel.CategoryId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.HostelOwnerEmail" class="control-label"></label>
-                <select asp-for="Hostel.HostelOwnerEmail" class="form-control" asp-items="ViewBag.HostelOwnerEmail"></select>
-                <span asp-validation-for="Hostel.HostelOwnerEmail" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Hostel.LocationId" class="control-label"></label>
-                <select asp-for="Hostel.LocationId" class="form-control" asp-items="ViewBag.LocationId"></select>
-                <span asp-validation-for="Hostel.LocationId" class="text-danger"></span>
+            <span class="group-input-title" id="Hostel">Hostel</span>
+            <div class="group-input-hostel">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Hostel.HostelId" />
+                <div class="form-group">
+                    <label asp-for="Hostel.HostelName" class="control-label"></label>
+                    <input asp-for="Hostel.HostelName" class="form-control" />
+                    <span asp-validation-for="Hostel.HostelName" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hostel.Description" class="control-label"></label>
+                    <input asp-for="Hostel.Description" class="form-control" />
+                    <span asp-validation-for="Hostel.Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hostel.Status" class="control-label"></label>
+                    <input asp-for="Hostel.Status" class="form-control" />
+                    <span asp-validation-for="Hostel.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hostel.CategoryId" class="control-label"></label>
+                    <select asp-for="Hostel.CategoryId" class="form-control" asp-items="ViewBag.CategoryId"></select>
+                    <span asp-validation-for="Hostel.CategoryId" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hostel.HostelOwnerEmail" class="control-label"></label>
+                    <input asp-for="Hostel.HostelOwnerEmail" class="form-control" asp-items="@ViewBag.HostelOwnerEmail"/>
+                    <span asp-validation-for="Hostel.HostelOwnerEmail" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Hostel.LocationId" class="control-label"></label>
+                    <input asp-for="Hostel.LocationId" class="form-control" asp-items="@ViewBag.LocationId"/>
+                    <span asp-validation-for="Hostel.LocationId" class="text-danger"></span>
+                </div>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

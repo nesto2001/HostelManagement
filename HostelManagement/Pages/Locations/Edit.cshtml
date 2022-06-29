@@ -1,0 +1,57 @@
+﻿@page
+@model HostelManagement.Pages.Locations.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Location</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Location.LocationId" />
+            <span class="group-input-title" id="Location">Location</span>
+            <div class="group-input-hostel">
+
+                <div class="form-group">
+                    <label class="control-label">Province</label>
+                    <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
+                        <option>Select Province</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">District</label>
+                    <select id="DistrictList" class="form-control">
+                        <option>Select District</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Ward</label>
+                    <select id="WardList" class="form-control" asp-for="Location.WardId">
+                        <option>Select Ward</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Location.AddressString" class="control-label"></label>
+                    <input asp-for="Location.AddressString" class="form-control" />
+                    <span asp-validation-for="Location.AddressString" class="text-danger"></span>
+                </div>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="../Hostels/Details" asp-route-id="@Model.HostelID">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

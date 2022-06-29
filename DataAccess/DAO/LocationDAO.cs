@@ -40,9 +40,17 @@ namespace DataAccess.DAO
             }
         }
 
-        public Task<Location> GetLocationByID(int id)
+        public async Task<Location> GetLocationByID(int id)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Locations.SingleOrDefaultAsync(location => location.LocationId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
 
         public async Task<IEnumerable<Location>> GetLocationsList()
@@ -58,9 +66,18 @@ namespace DataAccess.DAO
             }
         }
 
-        public Task UpdateLocation(Location Account)
+        public async Task UpdateLocation(Location location)
         {
-            throw new NotImplementedException();
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.Attach(location).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
         }
     }
 }

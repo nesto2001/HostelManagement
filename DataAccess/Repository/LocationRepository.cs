@@ -12,16 +12,10 @@ namespace DataAccess.Repository
     public class LocationRepository : ILocationRepository
     {
         public async Task AddLocation(Location Location) => await LocationDAO.Instance.AddLocation(Location);
-        public Task<Location> GetLocationByID(int id)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<Location> GetLocationByID(int id) => await LocationDAO.Instance.GetLocationByID(id);
 
         public async Task<IEnumerable<Location>> GetLocationsList() => await LocationDAO.Instance.GetLocationsList();
 
-        public Task UpdateLocation(Location Account)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task UpdateLocation(Location location) => await LocationDAO.Instance.UpdateLocation(location);
     }
 }
