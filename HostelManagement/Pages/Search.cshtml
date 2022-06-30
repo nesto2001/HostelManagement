@@ -35,7 +35,7 @@
                             <div class="hostel-info col">
                                 <div class="hostel-name">@item.HostelName</div>
                                 <div class="hostel-cate">@item.Category.CategoryName</div>
-                                <div class="hostel-location"><a href="https://www.google.com/maps/place/Hanoi,+Hoan+Kiem/" target="_blank"><i class='bx bxs-map'></i> Hanoi, Hoan Kiem</a></div>
+                                <div class="hostel-location"><a href="https://www.google.com/maps/place/@item.Location.Ward.District.Province.ProvinceName,@item.Location.Ward.District.DistrictName/" target="_blank"><i class='bx bxs-map'></i> @item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</a></div>
                             </div>
                             <div class="hostel-price col">
                                 <div class="col p-0"></div>

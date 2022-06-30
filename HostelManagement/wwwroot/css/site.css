@@ -684,6 +684,7 @@ ol, ul {
 
 .hostel-info{
   padding-top: 15px;
+  flex-basis: 20%;
 }
 
 .hostel-info .hostel-name{

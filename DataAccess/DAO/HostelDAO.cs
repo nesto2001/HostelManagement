@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAO
@@ -78,6 +77,7 @@ namespace DataAccess.DAO
                     .Include(h => h.Location)
                         .ThenInclude(h => h.Ward)
                             .ThenInclude(h => h.District)
+                                .ThenInclude(h => h.Province)
                     .Include(h => h.HostelPics)
                     .Include(h => h.HostelOwnerEmailNavigation)
                     .ToListAsync();
@@ -115,7 +115,7 @@ namespace DataAccess.DAO
                             .ThenInclude(h => h.District)
                     .Include(h => h.HostelPics)
                     .Include(h => h.HostelOwnerEmailNavigation)
-                        //.ThenInclude(h => h.UserId)
+                    //.ThenInclude(h => h.UserId)
                     .Where(h => h.HostelOwnerEmailNavigation.UserId == id)
                     .ToListAsync();
             }
