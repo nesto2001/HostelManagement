@@ -113,6 +113,7 @@ namespace DataAccess.DAO
                     .Include(h => h.Location)
                         .ThenInclude(h => h.Ward)
                             .ThenInclude(h => h.District)
+                                .ThenInclude(h => h.Province)
                     .Include(h => h.HostelPics)
                     .Include(h => h.HostelOwnerEmailNavigation)
                     //.ThenInclude(h => h.UserId)
