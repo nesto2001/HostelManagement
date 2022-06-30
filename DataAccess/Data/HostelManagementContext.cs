@@ -1,5 +1,8 @@
-﻿using BusinessObject.BusinessObject;
+﻿using System;
+using BusinessObject.BusinessObject;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Metadata;
+using BusinessObject.BusinessObject;
 using Microsoft.Extensions.Configuration;
 using System.IO;
 
@@ -54,11 +57,11 @@ namespace DataAccess
             modelBuilder.Entity<Account>(entity =>
             {
                 entity.HasKey(e => e.UserId)
-                    .HasName("PK__Account__CB9A1CFF1868D937");
+                    .HasName("PK__Account__CB9A1CFFD2A1D1E7");
 
                 entity.ToTable("Account");
 
-                entity.HasIndex(e => e.UserEmail, "UQ__Account__D54ADF5599C5F874")
+                entity.HasIndex(e => e.UserEmail, "UQ__Account__D54ADF559A30C3BB")
                     .IsUnique();
 
                 entity.Property(e => e.UserId).HasColumnName("userId");
@@ -110,9 +113,7 @@ namespace DataAccess
             {
                 entity.ToTable("Bill");
 
-                entity.Property(e => e.BillId)
-                    .ValueGeneratedOnAdd()
-                    .HasColumnName("billId");
+                entity.Property(e => e.BillId).HasColumnName("billId");
 
                 entity.Property(e => e.CreatedDate)
                     .HasColumnType("date")
@@ -122,11 +123,21 @@ namespace DataAccess
                     .HasColumnType("date")
                     .HasColumnName("dueDate");
 
+                entity.Property(e => e.EndRentDate)
+                    .HasColumnType("date")
+                    .HasColumnName("endRentDate");
+
                 entity.Property(e => e.RentId).HasColumnName("rentId");
 
-                entity.HasOne(d => d.BillNavigation)
-                    .WithOne(p => p.Bill)
-                    .HasForeignKey<Bill>(d => d.BillId)
+                entity.Property(e => e.RoomId).HasColumnName("roomId");
+
+                entity.Property(e => e.StartRentDate)
+                    .HasColumnType("date")
+                    .HasColumnName("startRentDate");
+
+                entity.HasOne(d => d.Rent)
+                    .WithMany(p => p.Bills)
+                    .HasForeignKey(d => new { d.RentId, d.RoomId, d.StartRentDate, d.EndRentDate })
                     .OnDelete(DeleteBehavior.ClientSetNull)
                     .HasConstraintName("FK_Bill_Bill");
             });
@@ -313,9 +324,19 @@ namespace DataAccess
 
             modelBuilder.Entity<Rent>(entity =>
             {
+                entity.HasKey(e => new { e.RentId, e.RoomId, e.StartRentDate, e.EndRentDate });
+
                 entity.ToTable("Rent");
 
-                entity.Property(e => e.RentId).HasColumnName("rentId");
+                entity.Property(e => e.RentId)
+                    .ValueGeneratedOnAdd()
+                    .HasColumnName("rentId");
+
+                entity.Property(e => e.RoomId).HasColumnName("roomId");
+
+                entity.Property(e => e.StartRentDate)
+                    .HasColumnType("date")
+                    .HasColumnName("startRentDate");
 
                 entity.Property(e => e.EndRentDate)
                     .HasColumnType("date")
@@ -328,13 +349,11 @@ namespace DataAccess
                     .HasMaxLength(50)
                     .HasColumnName("rentedBy");
 
-                entity.Property(e => e.RoomId).HasColumnName("roomId");
-
-                entity.Property(e => e.StartRentDate)
-                    .HasColumnType("date")
-                    .HasColumnName("startRentDate");
-
                 entity.Property(e => e.Status).HasColumnName("status");
+
+                entity.Property(e => e.Total)
+                    .HasColumnType("decimal(18, 0)")
+                    .HasColumnName("total");
 
                 entity.HasOne(d => d.RentedByNavigation)
                     .WithMany(p => p.Rents)
@@ -393,9 +412,19 @@ namespace DataAccess
 
                 entity.Property(e => e.RoomMemberId).HasColumnName("roomMemberId");
 
+                entity.Property(e => e.EndRentDate)
+                    .HasColumnType("date")
+                    .HasColumnName("endRentDate");
+
                 entity.Property(e => e.IsPresentator).HasColumnName("isPresentator");
 
+                entity.Property(e => e.RentId).HasColumnName("rentId");
+
                 entity.Property(e => e.RoomId).HasColumnName("roomId");
+
+                entity.Property(e => e.StartRentDate)
+                    .HasColumnType("date")
+                    .HasColumnName("startRentDate");
 
                 entity.Property(e => e.Status).HasColumnName("status");
 
@@ -404,18 +433,11 @@ namespace DataAccess
                     .HasMaxLength(50)
                     .HasColumnName("userEmail");
 
-                entity.HasOne(d => d.Room)
+                entity.HasOne(d => d.Rent)
                     .WithMany(p => p.RoomMembers)
-                    .HasForeignKey(d => d.RoomId)
+                    .HasForeignKey(d => new { d.RentId, d.RoomId, d.StartRentDate, d.EndRentDate })
                     .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomMember_Room");
-
-                entity.HasOne(d => d.UserEmailNavigation)
-                    .WithMany(p => p.RoomMembers)
-                    .HasPrincipalKey(p => p.UserEmail)
-                    .HasForeignKey(d => d.UserEmail)
-                    .OnDelete(DeleteBehavior.ClientSetNull)
-                    .HasConstraintName("FK_RoomMember_Account");
+                    .HasConstraintName("FK_RoomMember_Rent");
             });
 
             modelBuilder.Entity<RoomPic>(entity =>

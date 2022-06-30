@@ -12,7 +12,6 @@ namespace BusinessObject.BusinessObject
         {
             Hostels = new HashSet<Hostel>();
             Rents = new HashSet<Rent>();
-            RoomMembers = new HashSet<RoomMember>();
         }
 
         public int UserId { get; set; }
@@ -40,6 +39,5 @@ namespace BusinessObject.BusinessObject
         public virtual IdentityCard IdCardNumberNavigation { get; set; }
         public virtual ICollection<Hostel> Hostels { get; set; }
         public virtual ICollection<Rent> Rents { get; set; }
-        public virtual ICollection<RoomMember> RoomMembers { get; set; }
     }
 }
