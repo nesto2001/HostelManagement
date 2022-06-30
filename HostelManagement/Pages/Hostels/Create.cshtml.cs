@@ -114,7 +114,7 @@ namespace HostelManagement.Pages.Hostels
                 Room.HostelId = Hostel.HostelId;
                 await roomRepository.AddRoom(Room);
             }
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new {id= Hostel.HostelId });
         }
 
         public async Task<JsonResult> OnGetLoadDistrict(int ProvinceId)

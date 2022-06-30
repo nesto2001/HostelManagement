@@ -21,12 +21,12 @@ namespace HostelManagement.Pages
             hostelRepository = _hostelRepository;
         }
         public IEnumerable<Hostel> Hostels { get; set; }
-
+        public int capacityChoosen { get; set; }
         public async Task OnGetAsync(string searchKey, int sl_city, int sl_dist, int capacity)
         {
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             Hostels = await hostelRepository.GetHostelsList();
-
+            capacityChoosen = capacity;
             IEnumerable<Hostel> HostelsSearchKey = Hostels;
             IEnumerable<Hostel> HostelsDistrictFilter = Hostels;
             IEnumerable<Hostel> HostelsCapaictyFilter = Hostels;
