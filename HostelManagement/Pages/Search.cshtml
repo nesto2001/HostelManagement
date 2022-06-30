@@ -18,17 +18,19 @@
             <div class="hostel-list mt-3">
                 <div class="hostel-list-wrapper">
                     @foreach (var item in Model.Hostels) {
-                    <div class="hostel-item">
+                    <div class="hostel-item mb-4">
                         <div class="hostel-item-inner d-flex">
                             <div class="hostel-dt hostel-images col p-0">
                                 <div class="hostel-thumb">
                                     <img src="~/images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl" alt="">
                                 </div>
                                 <div class="hostel-imgs d-flex">
-                                    @for( int i = 1; i < item.HostelPics.Count; i++){
-                                        <div class="hostel-img">
-                                            <img src="~/images/hostels/@item.HostelPics.ElementAt(i).HostelPicUrl" alt="">
-                                        </div>
+                                    @if (@item.HostelPics.Count>4){
+                                        @for( int i = 1; i < item.HostelPics.Count; i++){
+                                            <div class="hostel-img">
+                                                <img src="~/images/hostels/@item.HostelPics.ElementAt(i).HostelPicUrl" alt="">
+                                            </div>
+                                        }
                                     }
                                 </div>
                             </div>
