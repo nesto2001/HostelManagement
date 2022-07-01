@@ -736,3 +736,88 @@ ol, ul {
   border: 1px solid #ccc;
   overflow: hidden;
 }
+
+.listings-hostel{
+  margin-top: 16px!important;
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+}
+
+.card-inner{
+    display: flex;
+    background-color: #fff;
+    border: 1px solid #dddfe2;
+    border-radius: 5px;
+}
+
+.hostel-listings-card .card-inner .card-img-thumb{
+  width: 100px;
+  height: 100px;
+  background-size: cover !important;
+  background-position: 50% !important;
+  display: inline-block;
+  margin: 8px;
+  border-radius: 2px;
+}  
+
+.hostel-listings-card .card-inner .card-details{
+  align-items: top;
+  padding-right: 25px;
+  display: flex;
+  justify-content: space-between;
+  position: relative;
+  margin: 4px 0;
+  margin-top: 12px;
+  margin-left: 4px;
+} 
+
+.hostel-listings-card .card-inner .card-details .card-info{
+  max-width: 500px;
+} 
+
+.card-details .card-info .card-title{
+  word-break: break-all;
+  margin-top: 0;
+  margin-bottom: 10px; 
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.card-status{
+  display: inline;
+  padding: 0.2em 0.6em 0.3em;
+  font-size: 75%;
+  font-weight: 700;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  border-radius: 0.25em;
+}
+
+.card-info .card-status{
+  margin-right: 4px;
+}
+
+.status-active {
+  background-color: #65a131;
+}
+
+.status-pending {
+  background-color: #ffc400;
+}
+
+.status-inactive {
+  background-color: #b6b6b6;
+}
+
+.status-denied {
+  background-color: #f03434;
+}
+
+.card-location {
+  color: #777;
+}

@@ -22,7 +22,12 @@
                         <div class="hostel-item-inner d-flex">
                             <div class="hostel-dt hostel-images col p-0">
                                 <div class="hostel-thumb">
+                                    @if (@item.HostelPics.Count>0){
                                     <img src="~/images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl" alt="">
+                                    }
+                                    else {
+                                        <img src="~/images/placeholder.png" alt="">
+                                    }
                                 </div>
                                 <div class="hostel-imgs d-flex">
                                     @if (@item.HostelPics.Count>4){
