@@ -1,18 +1,16 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
-using HostelManagement.Helpers;
 
 namespace HostelManagement.Pages.Rooms
 {
-    public class CreateModel : PageModel
+    public class InsertModel : PageModel
     {
         private IHostelRepository hostelRepository;
         private IAccountRepository accountRepository;
@@ -24,7 +22,7 @@ namespace HostelManagement.Pages.Rooms
         private IHostelPicRepository hostelPicRepository;
         private IRoomRepository roomRepository;
 
-        public CreateModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
+        public InsertModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
             ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
@@ -42,14 +40,12 @@ namespace HostelManagement.Pages.Rooms
 
 
         [BindProperty]
-        public Room[] Rooms { get; set; }
-        public int countPic { get; set; }
-        public int countRoom { get; set; }
+        public Room Room { get; set; }
+        //public int HostelId { get; set; }
 
-        public async Task<IActionResult> OnGetAsync(int countPics, int countRooms)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
-            countPic = countPics;
-            countRoom = countRooms;
+            HttpContext.Session.SetInt32("HostelId", id);
             return Page();
         }
 
@@ -60,31 +56,9 @@ namespace HostelManagement.Pages.Rooms
             {
                 return Page();
             }
-            Location location = SessionHelper.GetObjectFromJson<Location>(HttpContext.Session, "locationPending");
-            if (location != null)
-            {
-                await locationRepository.AddLocation(location);
-            }
-            Hostel hostel = SessionHelper.GetObjectFromJson<Hostel>(HttpContext.Session, "hostelPending");
-            if (hostel != null)
-            {
-                await hostelRepository.AddHostel(hostel);
-            }
-            for (int i = 1; i <= countPic; i++)
-            {
-                string key = $"hostelPicPending{i}";
-                HostelPic hostelPic = SessionHelper.GetObjectFromJson<HostelPic>(HttpContext.Session,key);
-                if (hostelPic != null)
-                {
-                    await hostelPicRepository.AddHostelPic(hostelPic);
-                }
-            }
-            foreach (var Room in Rooms)
-            {
-                Room.HostelId = hostel.HostelId;
-                await roomRepository.AddRoom(Room);
-            }
-            return RedirectToPage("../Hostels/Details", new {id=hostel.HostelId});
+            Room.HostelId = (int)HttpContext.Session.GetInt32("HostelId");
+            await roomRepository.AddRoom(Room);
+            return RedirectToPage("../Hostels/Details", new { id = Room.HostelId });
         }
     }
 }

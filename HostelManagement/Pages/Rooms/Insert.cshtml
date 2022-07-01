@@ -1,0 +1,66 @@
+﻿@page
+@model HostelManagement.Pages.Rooms.InsertModel
+@{
+}
+
+<h1>Insert</h1>
+
+<h4>Room</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <span class="group-input-title" id="Room">Room</span>
+            <!--Room-->
+                <div class="roomform group-input-hostel">
+                    <div class="form-group">
+                        <label asp-for="@Model.Room.RoomTitle" class="control-label"></label>
+                        <input asp-for="@Model.Room.RoomTitle" class="form-control" />
+                        <span asp-validation-for="@Model.Room.RoomTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Room.RoomDescription" class="control-label"></label>
+                        <input asp-for="@Model.Room.RoomDescription" class="form-control" />
+                        <span asp-validation-for="@Model.Room.RoomDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Room.RomMaxCapacity" class="control-label"></label>
+                        <input asp-for="@Model.Room.RomMaxCapacity" class="form-control" />
+                        <span asp-validation-for="@Model.Room.RomMaxCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Room.RoomCurrentCapacity" class="control-label"></label>
+                        <input asp-for="@Model.Room.RoomCurrentCapacity" class="form-control" />
+                        <span asp-validation-for="@Model.Room.RoomCurrentCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="@Model.Room.Status" class="control-label"></label>
+                        <input asp-for="@Model.Room.Status" class="form-control" value="0" />
+                        <span asp-validation-for="@Model.Room.Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Room.Deposit" class="control-label"></label>
+                        <input asp-for="@Model.Room.Deposit" class="form-control" />
+                        <span asp-validation-for="@Model.Room.Deposit" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Room.Price" class="control-label"></label>
+                        <input asp-for="@Model.Room.Price" class="form-control" />
+                        <span asp-validation-for="@Model.Room.Price" class="text-danger"></span>
+                    </div>
+                </div>
+            <div class="form-group">
+                <input type="submit" value="Insert" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

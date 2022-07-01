@@ -3,7 +3,6 @@
 
 @{
     ViewData["Title"] = "Create";
-    int roomCount = 1;
     Layout = "_OwnerLayout";
     var activeNav = "listings-nav";
 }
@@ -120,52 +119,15 @@
                         <span asp-validation-foraction="@Model.FileUploads"></span>
                     </div>
                 </div>
-                
-
-                <span class="group-input-title" id="Room">Room</span>
-                <!--Room-->
-                @for (int i = 0; i < roomCount; i++)
-                {
-                <div class="roomform group-input-hostel">
+                <div class="group-input-hostel">
                     <div class="form-group">
-                        <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
-                        <span asp-validation-for="@Model.Rooms[i].RoomTitle" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Rooms[i].RoomDescription" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].RoomDescription" class="form-control" />
-                        <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Rooms[i].RomMaxCapacity" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].RomMaxCapacity" class="form-control" />
-                        <span asp-validation-for="@Model.Rooms[i].RomMaxCapacity" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="form-control" />
-                        <span asp-validation-for="@Model.Rooms[i].RoomCurrentCapacity" class="text-danger"></span>
-                    </div>
-                    <div class="form-group" hidden="hidden">
-                        <label asp-for="@Model.Rooms[i].Status" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].Status" class="form-control" value="0" />
-                        <span asp-validation-for="@Model.Rooms[i].Status" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Rooms[i].Deposit" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].Deposit" class="form-control" />
-                        <span asp-validation-for="@Model.Rooms[i].Deposit" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.Rooms[i].Price" class="control-label"></label>
-                        <input asp-for="@Model.Rooms[i].Price" class="form-control" />
-                        <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
+                        <label asp-for="@Model.countRoom"></label>
+                        <input asp-for="@Model.countRoom" />
+                        <span asp-validation-foraction="@Model.countRoom"></span>
                     </div>
                 </div>
-                }
                 <div class="form-group">
-                    <input type="submit" value="Create" class="btn btn-primary" />
+                    <input type="submit" value="Next" class="btn btn-primary" />
                 </div>
             </form>
         </div>

@@ -72,7 +72,10 @@ namespace HostelManagement.Pages.Hostels
         [BindProperty]
         public HostelPic HostelPic { get; set; }
         [BindProperty]
-        public Room[] Rooms { get; set; }
+        [Required]
+        [Range(1, int.MaxValue, ErrorMessage = "Only positive number allowed")]
+        [Display(Name = "How many rooms of your hostel?")]
+        public int countRoom { get; set; }
         public int locID { get; set; }
         public string UserEmail { get; set; }
         [Required(ErrorMessage = "Please chose at least one file.")]
@@ -97,24 +100,33 @@ namespace HostelManagement.Pages.Hostels
             Location.LocationId = locID;
             UserEmail = HttpContext.Session.GetString("UserEmail");
             Hostel.HostelOwnerEmail = UserEmail;
-            await locationRepository.AddLocation(Location);
-            await hostelRepository.AddHostel(Hostel);
+            //await locationRepository.AddLocation(Location);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "locationPending", Location);
+            //await hostelRepository.AddHostel(Hostel);
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "hostelPending", Hostel);
+            int countPic = 0;
             if (FileUploads != null)
             {
                 HostelPic.HostelId = Hostel.HostelId;
                 HostelPic.Hostel = Hostel;
+                int i = 1;
+                countPic = FileUploads.Count();
                 foreach (var FileUpload in FileUploads)
                 {
                     HostelPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\", FileUpload.FileName);
-                    await hostelPicRepository.AddHostelPic(HostelPic);
+                    string key = $"hostelPicPending{i}";
+                    //await hostelPicRepository.AddHostelPic(HostelPic);
+                    SessionHelper.SetObjectAsJson(HttpContext.Session, key, HostelPic);
+                    i++;
                 }
             }
-            foreach (var Room in Rooms)
+            /*foreach (var Room in Rooms)
             {
                 Room.HostelId = Hostel.HostelId;
                 await roomRepository.AddRoom(Room);
             }
-            return RedirectToPage("./Details", new {id= Hostel.HostelId });
+            return RedirectToPage("./Details", new {id= Hostel.HostelId });*/
+            return RedirectToPage("../Rooms/Create", new {countPics = countPic, countRooms = countRoom});
         }
 
         public async Task<JsonResult> OnGetLoadDistrict(int ProvinceId)
