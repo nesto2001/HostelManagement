@@ -57,7 +57,7 @@
         <dd class="col-sm-10">
             @foreach (var item in Model.Hostel.HostelPics)
             {
-                <img src="~/Images/@(item.HostelPicUrl)" width="200" />
+                <img src="~/images/hostels/@(item.HostelPicUrl)" width="200" />
             }
             |
             <a asp-page="./HostelPics" asp-route-id="@Model.Hostel.HostelId">Edit</a>

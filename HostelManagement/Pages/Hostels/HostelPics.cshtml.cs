@@ -58,7 +58,7 @@ namespace HostelManagement.Pages.Hostels
                 hosPic.HostelId = HostelID;
                 foreach (var FileUpload in FileUploads)
                 {
-                    hosPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\", FileUpload.FileName);
+                    hosPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\hostels\", FileUpload.FileName);
                     await hostelPicRepository.AddHostelPic(hosPic);
                 }
             }

@@ -1,9 +1,11 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using HostelManagement.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -12,29 +14,12 @@ namespace HostelManagement.Pages.Rooms
 {
     public class InsertModel : PageModel
     {
-        private IHostelRepository hostelRepository;
-        private IAccountRepository accountRepository;
-        private ICategoryRepository categoryRepository;
-        private IProvinceRepository provinceRepository;
-        private IDistrictRepository districtRepository;
-        private IWardRepository wardRepository;
-        private ILocationRepository locationRepository;
-        private IHostelPicRepository hostelPicRepository;
+        private IRoomPicRepository roomPicRepository;
         private IRoomRepository roomRepository;
 
-        public InsertModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
-            ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
-            IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
+        public InsertModel(IRoomPicRepository _roomPicRepository, IRoomRepository _roomRepository)
         {
-            hostelRepository = _hostelRepository;
-            accountRepository = _accountRepository;
-            categoryRepository = _categoryRepository;
-            provinceRepository = _provinceRepository;
-            districtRepository = _districtRepository;
-            wardRepository = _wardRepository;
-            locationRepository = _locationRepository;
-            hostelPicRepository = _hostelPicRepository;
+            roomPicRepository = _roomPicRepository;
             roomRepository = _roomRepository;
         }
 
@@ -42,7 +27,13 @@ namespace HostelManagement.Pages.Rooms
         [BindProperty]
         public Room Room { get; set; }
         //public int HostelId { get; set; }
-
+        [Required(ErrorMessage = "Please chose at least one file.")]
+        [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Choose Room images(s)")]
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
+        public RoomPic RoomPic { get; set; }
         public async Task<IActionResult> OnGetAsync(int id)
         {
             HttpContext.Session.SetInt32("HostelId", id);
@@ -58,6 +49,18 @@ namespace HostelManagement.Pages.Rooms
             }
             Room.HostelId = (int)HttpContext.Session.GetInt32("HostelId");
             await roomRepository.AddRoom(Room);
+            if (FileUploads != null)
+            {
+                foreach (var FileUpload in FileUploads)
+                {
+                    RoomPic roomPic = new RoomPic
+                    {
+                        RoomId = Room.RoomId,
+                        RoomPicUrl = await Utilities.UploadFile(FileUpload, @"images\rooms\", FileUpload.FileName)
+                    };
+                    await roomPicRepository.AddRoomPic(roomPic);
+                }
+            }
             return RedirectToPage("../Hostels/Details", new { id = Room.HostelId });
         }
     }

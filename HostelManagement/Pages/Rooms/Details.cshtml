@@ -59,9 +59,20 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Room.Hostel.HostelOwnerEmail)
         </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.RoomPics)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in Model.Room.RoomPics)
+            {
+                <img src="~/images/rooms/@(item.RoomPicUrl)" width="200" />
+            }
+            |
+            <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId">Edit Pictures</a>
+        </dd>
     </dl>
 </div>
 <div>
-    <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a> |
+    <a asp-page="../Hostels/Details" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
 </div>

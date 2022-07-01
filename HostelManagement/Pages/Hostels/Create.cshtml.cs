@@ -113,7 +113,7 @@ namespace HostelManagement.Pages.Hostels
                 countPic = FileUploads.Count();
                 foreach (var FileUpload in FileUploads)
                 {
-                    HostelPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\", FileUpload.FileName);
+                    HostelPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\hostels\", FileUpload.FileName);
                     string key = $"hostelPicPending{i}";
                     //await hostelPicRepository.AddHostelPic(HostelPic);
                     SessionHelper.SetObjectAsJson(HttpContext.Session, key, HostelPic);

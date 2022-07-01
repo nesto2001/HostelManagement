@@ -29,7 +29,9 @@ namespace HostelManagement.Pages.Rooms
             }
 
             Room = await _context.Rooms
-                .Include(r => r.Hostel).FirstOrDefaultAsync(m => m.RoomId == id);
+                .Include(r => r.Hostel)
+                .Include(r => r.RoomPics)
+                .FirstOrDefaultAsync(m => m.RoomId == id);
 
             if (Room == null)
             {

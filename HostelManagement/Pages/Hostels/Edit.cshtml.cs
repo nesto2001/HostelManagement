@@ -45,13 +45,6 @@ namespace HostelManagement.Pages.Hostels
         [BindProperty]
         public Hostel Hostel { get; set; }
 
-        [Required(ErrorMessage = "Please chose at least one file.")]
-        [DataType(DataType.Upload)]
-        //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
-        [Display(Name = "Choose Hostel images(s)")]
-        [BindProperty]
-        public IFormFile[] FileUploads { get; set; }
-
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
