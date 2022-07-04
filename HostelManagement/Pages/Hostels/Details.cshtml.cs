@@ -9,6 +9,7 @@ using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Http;
+using System.Security.Claims;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -22,12 +23,19 @@ namespace HostelManagement.Pages.Hostels
         }
 
         public Hostel Hostel { get; set; }
+        public string UserRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
                 return NotFound();
+            }
+            if (HttpContext.User.Claims != null)
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+                //int UId = Int32.Parse(userId);
+                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             }
             HttpContext.Session.SetInt32("HostelID", (int)id);
             Hostel = await hostelRepository.GetHostelByID((int)id);

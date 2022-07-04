@@ -47,7 +47,18 @@ namespace DataAccess.DAO
 
             public async Task<Room> GetRoomByID(int id)
             {
-                throw new NotImplementedException();
+                try
+                {
+                    var HostelManagementContext = new HostelManagementContext();
+                    return await HostelManagementContext.Rooms
+                         .Include(r => r.Hostel)
+                        .Include(r => r.RoomPics)
+                        .FirstOrDefaultAsync(m => m.RoomId == id);
+            }
+            catch (Exception ex)
+                {
+                    throw new Exception(ex.Message);
+                }
             }
 
             public async Task<IEnumerable<Room>> GetRoomsList()

@@ -3,6 +3,7 @@
 
 @{
     ViewData["Title"] = "Create";
+    int roomCount = Model.countRoom;
 }
 
 <h1>Create</h1>
@@ -11,47 +12,59 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form method="post">
+        <form method="post"  enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Room.HostelId" class="control-label"></label>
-                <select asp-for="Room.HostelId" class ="form-control" asp-items="ViewBag.HostelId"></select>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.RoomTitle" class="control-label"></label>
-                <input asp-for="Room.RoomTitle" class="form-control" />
-                <span asp-validation-for="Room.RoomTitle" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.RoomDescription" class="control-label"></label>
-                <input asp-for="Room.RoomDescription" class="form-control" />
-                <span asp-validation-for="Room.RoomDescription" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.RomMaxCapacity" class="control-label"></label>
-                <input asp-for="Room.RomMaxCapacity" class="form-control" />
-                <span asp-validation-for="Room.RomMaxCapacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.RoomCurrentCapacity" class="control-label"></label>
-                <input asp-for="Room.RoomCurrentCapacity" class="form-control" />
-                <span asp-validation-for="Room.RoomCurrentCapacity" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.Status" class="control-label"></label>
-                <input asp-for="Room.Status" class="form-control" />
-                <span asp-validation-for="Room.Status" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.Deposit" class="control-label"></label>
-                <input asp-for="Room.Deposit" class="form-control" />
-                <span asp-validation-for="Room.Deposit" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Room.Price" class="control-label"></label>
-                <input asp-for="Room.Price" class="form-control" />
-                <span asp-validation-for="Room.Price" class="text-danger"></span>
-            </div>
+            <span class="group-input-title" id="Room">Room</span>
+            <!--Room-->
+            @for (int i = 0; i < roomCount; i++)
+            {
+                <p>Room @(i+1)</p>
+                <div class="roomform group-input-hostel">
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RoomTitle" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RoomTitle" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RoomTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RoomDescription" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RoomDescription" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RomMaxCapacity" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RomMaxCapacity" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].RomMaxCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].RoomCurrentCapacity" class="form-control" value="0" readonly />
+                        <span asp-validation-for="@Model.Rooms[i].RoomCurrentCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="@Model.Rooms[i].Status" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].Status" class="form-control" value="0" />
+                        <span asp-validation-for="@Model.Rooms[i].Status" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].Price" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].Price" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.Rooms[i].Deposit" class="control-label"></label>
+                        <input asp-for="@Model.Rooms[i].Deposit" class="form-control" />
+                        <span asp-validation-for="@Model.Rooms[i].Deposit" class="text-danger"></span>
+                    </div>
+                    <span class="group-input-title" id="Images">Upload some images of this room</span>
+                    <div class="group-input-hostel">
+                        <div class="form-group">
+                            <label asp-for="@Model.FileUploads[i]"></label>
+                            <input asp-for="@Model.FileUploads[i]" />
+                            <span asp-validation-foraction="@Model.FileUploads"></span>
+                        </div>
+                    </div>
+                </div>
+            }
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />
             </div>

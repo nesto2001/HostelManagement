@@ -1,0 +1,74 @@
+﻿@page
+@model HostelManagement.Pages.Rents.CreateModel
+
+@{
+    var hidden = false;
+    if (Model.message == null) hidden = true;
+}
+
+<h1>Create</h1>
+
+<h4>Rent</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div hidden="@hidden">
+                <span class="text-danger">@Model.message</span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent.RoomId" class="control-label"></label>
+                <input asp-for="Rent.RoomId" class="form-control" value="@ViewBag.RoomId" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent.RentedBy" class="control-label"></label>
+                <input asp-for="Rent.RentedBy" class="form-control" value="@ViewBag.RentedBy" readonly />
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent.IsDeposited" class="control-label"></label>
+                <input asp-for="Rent.IsDeposited" class="form-control" value="0" readonly />
+                <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent.Status" class="control-label"></label>
+                <input asp-for="Rent.Status" class="form-control" value="0" readonly />
+                <span asp-validation-for="Rent.Status" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent.Total" class="control-label"></label>
+                <input asp-for="Rent.Total" class="form-control" value="@Model.room.Price" readonly />
+                <span asp-validation-for="Rent.Total" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Rent.StartRentDate" class="control-label"></label>
+                <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date" />
+                <span asp-validation-for="Rent.StartRentDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthRent" class="control-label">How many months?</label>
+                <input asp-for="MonthRent" class="form-control" />
+            </div>
+            @for (int i = 0; i < Model.room.RomMaxCapacity; i++)
+            {
+                <div class="form-group">
+                    <label class="control-label">Member @(i+1)</label>
+                    <input asp-for="RoomMember[i].UserEmail" class="form-control" />
+                    <span asp-validation-for="RoomMember[i].UserEmail" class="text-danger"></span>
+                </div>
+            }
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

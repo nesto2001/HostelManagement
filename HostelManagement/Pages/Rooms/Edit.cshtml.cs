@@ -8,16 +8,17 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Rooms
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccess.HostelManagementContext _context;
+        private IRoomRepository roomRepository;
 
-        public EditModel(DataAccess.HostelManagementContext context)
+        public EditModel(IRoomRepository _roomRepository)
         {
-            _context = context;
+            roomRepository = _roomRepository;
         }
 
         [BindProperty]
@@ -30,14 +31,12 @@ namespace HostelManagement.Pages.Rooms
                 return NotFound();
             }
 
-            Room = await _context.Rooms
-                .Include(r => r.Hostel).FirstOrDefaultAsync(m => m.RoomId == id);
-
+            Room = await roomRepository.GetRoomByID((int)id);
             if (Room == null)
             {
                 return NotFound();
             }
-           ViewData["HostelId"] = new SelectList(_context.Hostels, "HostelId", "HostelOwnerEmail");
+            ViewData["HostelId"] = Room.HostelId;
             return Page();
         }
 
@@ -47,33 +46,12 @@ namespace HostelManagement.Pages.Rooms
         {
             if (!ModelState.IsValid)
             {
+                ViewData["HostelId"] = Room.HostelId;
                 return Page();
             }
 
-            _context.Attach(Room).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!RoomExists(Room.RoomId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return RedirectToPage("./Index");
-        }
-
-        private bool RoomExists(int id)
-        {
-            return _context.Rooms.Any(e => e.RoomId == id);
+            await roomRepository.UpdateRoom(Room);
+            return RedirectToPage("./Details", new { id = Room.RoomId });
         }
     }
 }

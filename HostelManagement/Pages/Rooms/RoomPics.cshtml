@@ -1,5 +1,5 @@
 ﻿@page
-@model HostelManagement.Pages.Hostels.HostelPicsModel
+@model HostelManagement.Pages.Rooms.RoomPicsModel
 @{
     Layout = "_OwnerLayout";
 }
@@ -7,7 +7,7 @@
     <thead>
         <tr>
             <th>
-                HOSTEL PICTURE
+                ROOM PICTURE
             </th>
             <th>
                 ACTION
@@ -15,14 +15,14 @@
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model.HostelPics)
+        @foreach (var item in Model.RoomPics)
         {
             <tr>
                 <td>
-                    <img src="~/images/hostels/@(item.HostelPicUrl)" width="200" />
+                    <img src="~/images/rooms/@(item.RoomPicUrl)" width="200" />
                 </td>
                 <td>
-                    <a asp-page="HostelPics" asp-page-handler="delete" asp-route-id="@item.HostelPicsId">Delete</a>
+                    <a asp-page="RoomPics" asp-page-handler="delete" asp-route-id="@item.RoomPicsId">Delete</a>
                 </td>
             </tr>
         }
@@ -42,4 +42,4 @@
     </div>
 </form>
 
-<a asp-page="./Details" asp-route-id="@Model.HostelID">Return hostel detail page</a>
+<a asp-page="./Details" asp-route-id="@Model.RoomID">Return room detail page</a>

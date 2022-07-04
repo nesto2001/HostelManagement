@@ -109,7 +109,16 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ID", cus.Result.CustomerId);
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
-                return RedirectToPage("./Index");
+                var RoomView = HttpContext.Session.GetInt32("RoomView");
+                if (RoomView != null)
+                {
+                    int rv = (int)RoomView;
+                    return RedirectToPage("../Rooms/Details", new { id = rv });
+                } else
+                {
+                    return RedirectToPage("../Index");
+                }
+               
             }
 
             else
