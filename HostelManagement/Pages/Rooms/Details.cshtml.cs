@@ -8,6 +8,8 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
+using System.Security.Claims;
+using Microsoft.AspNetCore.Http;
 
 namespace HostelManagement.Pages.Rooms
 {
@@ -21,6 +23,7 @@ namespace HostelManagement.Pages.Rooms
         }
 
         public Room Room { get; set; }
+        public String UserRole { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -28,7 +31,13 @@ namespace HostelManagement.Pages.Rooms
             {
                 return NotFound();
             }
+            if (HttpContext.User.Claims != null) {            
+                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            }
+
+
             Room = await roomRepository.GetRoomByID((int)id);
+            HttpContext.Session.SetInt32("RoomView", (int)id);
             
             if (Room == null)
             {

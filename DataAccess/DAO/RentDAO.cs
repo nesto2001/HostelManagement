@@ -60,5 +60,25 @@ namespace DataAccess.DAO
             }
         }
 
+        public async Task<IEnumerable<Rent>> GetRentList()
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Rents
+                        .Include(r => r.Room)
+                            .ThenInclude(r => r.Hostel)
+                                .ThenInclude(r => r.HostelOwnerEmailNavigation)
+                        .Include(r => r.RentedByNavigation)
+                        .Include(r => r.RoomMembers)
+                        .Include(r => r.Bills)
+                        .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

@@ -11,5 +11,6 @@ namespace DataAccess.Repository
     {
         Task AddRent(Rent Rent);
         Task<IEnumerable<Rent>> GetRentListByRoom(int roomId);
+        Task<IEnumerable<Rent>> GetRentList();
     }
 }

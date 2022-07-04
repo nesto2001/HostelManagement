@@ -26,13 +26,14 @@ namespace HostelManagement.Pages
         {
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             Hostels = await hostelRepository.GetHostelsList();
+            Hostels = Hostels.Where(hos => hos.Status == 1);
             capacityChoosen = capacity;
             IEnumerable<Hostel> HostelsSearchKey = Hostels;
             IEnumerable<Hostel> HostelsDistrictFilter = Hostels;
             IEnumerable<Hostel> HostelsCapaictyFilter = Hostels;
             if (!String.IsNullOrEmpty(searchKey))
             {
-                HostelsSearchKey = HostelsSearchKey.Where(h => h.HostelName.Contains(searchKey)).ToList();
+                HostelsSearchKey = HostelsSearchKey.Where(h => h.HostelName.ToLower().Contains(searchKey.ToLower())).ToList();
             }
             if (sl_dist != 0)
             {
@@ -45,7 +46,7 @@ namespace HostelManagement.Pages
                     int check = 0;
                     foreach (var room in item.Rooms)
                     {
-                        if (room.RomMaxCapacity >= capacity)
+                        if (room.RomMaxCapacity >= capacity && room.Status == 1)
                         {
                             check++;
                         }

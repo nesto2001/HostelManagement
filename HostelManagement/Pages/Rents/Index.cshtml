@@ -14,25 +14,25 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rent[0].IsDeposited)
+                @Html.DisplayNameFor(model => model.Rents.First().IsDeposited)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rent[0].Status)
+                @Html.DisplayNameFor(model => model.Rents.First().Status)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rent[0].Total)
+                @Html.DisplayNameFor(model => model.Rents.First().Total)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rent[0].RentedByNavigation)
+                @Html.DisplayNameFor(model => model.Rents.First().RentedBy)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Rent[0].Room)
+                @Html.DisplayNameFor(model => model.Rents.First().Room)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Rent) {
+@foreach (var item in Model.Rents) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.IsDeposited)
@@ -44,15 +44,13 @@
                 @Html.DisplayFor(modelItem => item.Total)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.RentedByNavigation.PhoneNumber)
+                @Html.DisplayFor(modelItem => item.RentedBy)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Room.RoomId)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+                <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
             </td>
         </tr>
 }

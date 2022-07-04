@@ -21,7 +21,6 @@ namespace BusinessObject.BusinessObject
         public decimal Total { get; set; }
         public DateTime StartRentDate { get; set; }
         public DateTime EndRentDate { get; set; }
-
         public virtual Account RentedByNavigation { get; set; }
         public virtual Room Room { get; set; }
         public virtual ICollection<Bill> Bills { get; set; }

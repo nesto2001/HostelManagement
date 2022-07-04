@@ -67,12 +67,27 @@
             {
                 <img src="~/images/rooms/@(item.RoomPicUrl)" width="200" />
             }
-            |
-            <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId">Edit Pictures</a>
+            @if (Model.UserRole == "Owner")
+            {   <p> | </p>
+                <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId">Edit Pictures</a>
+            }
         </dd>
     </dl>
 </div>
-<div>
-    <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a> |
-    <a asp-page="../Hostels/Details" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
-</div>
+@if (Model.UserRole == "Owner")
+{
+    <div>
+        <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a> <p>|</p>
+        <a asp-page="../Hostels/Details" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
+    </div>
+}
+
+@if (Model.UserRole == "Renter")
+{
+    <a asp-page="../Rents/Create" asp-route-id="@Model.Room.RoomId">Rent this room</a>
+}
+
+@if (String.IsNullOrEmpty(Model.UserRole))
+{
+    <a asp-page="../Accounts/Login">Rent this room</a>
+}

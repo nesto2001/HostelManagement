@@ -29,9 +29,13 @@ namespace HostelManagement.Pages.Rents
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
+            int UId;
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-            int UId = Int32.Parse(userId);
-            account = await accountRepository.GetAccountByID(UId);
+            if (userId != null)
+            {
+               UId = Int32.Parse(userId);
+               account = await accountRepository.GetAccountByID(UId);
+            }
             room = await roomRepository.GetRoomByID(id);
             ViewData["RentedBy"] = account.UserEmail;
             ViewData["RoomId"] = id;
