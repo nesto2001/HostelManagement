@@ -1,0 +1,60 @@
+﻿@page
+@model HostelManagement.Pages.Rents.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Rent[0].IsDeposited)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rent[0].Status)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rent[0].Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rent[0].RentedByNavigation)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rent[0].Room)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Rent) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeposited)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentedByNavigation.PhoneNumber)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Room.RoomId)
+            </td>
+            <td>
+                @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

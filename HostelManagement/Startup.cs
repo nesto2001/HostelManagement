@@ -46,6 +46,9 @@ namespace HostelManagement
             services.AddScoped<IHostelPicRepository, HostelPicRepository>();
             services.AddScoped<IRoomRepository, RoomRepository>();
             services.AddScoped<IRoomPicRepository, RoomPicRepository>();
+            services.AddScoped<IRentRepository, RentRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IRoomMemberRepository, RoomMemberRepository>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
