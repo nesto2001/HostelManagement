@@ -30,11 +30,15 @@
                                     }
                                 </div>
                                 <div class="hostel-imgs d-flex">
-                                    @if (@item.HostelPics.Count>4){
-                                        @for( int i = 1; i < item.HostelPics.Count; i++){
-                                            <div class="hostel-img">
-                                                <img src="~/images/hostels/@item.HostelPics.ElementAt(i).HostelPicUrl" alt="">
-                                            </div>
+                                        @if (@item.HostelPics.Count > 4)
+                                        {
+                                            @for (int i = 1; i < item.HostelPics.Count; i++)
+                                            {
+                                                <div class="hostel-img">
+                                                    <img src="~/images/hostels/@item.HostelPics.ElementAt(i).HostelPicUrl" alt="">
+                                                </div>
+                                            }
+
                                         }
                                         else
                                         {
