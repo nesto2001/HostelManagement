@@ -24,12 +24,15 @@ namespace HostelManagement.Pages
         private readonly IRoomRepository roomRepository;
         private readonly IRoomMemberRepository roomMemberRepository;
         private readonly IRentRepository rentRepository;
+        private readonly IBillRepository billRepository;
+        private readonly IBillDetailRepository billDetailRepository;
 
         public HostelOwnerDashboard(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
             ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, 
-            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IRentRepository _rentRepository)
+            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IRentRepository _rentRepository,
+            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
         {
             hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
@@ -42,6 +45,8 @@ namespace HostelManagement.Pages
             roomRepository = _roomRepository;
             roomMemberRepository = _roomMemberRepository;
             rentRepository = _rentRepository;
+            billRepository = _billRepository;
+            billDetailRepository = _billDetailRepository;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -78,7 +83,12 @@ namespace HostelManagement.Pages
             ViewData["renterCount"] = renters.Count();
             ViewData["roomMemberCount"] = rents.Sum(r => r.RoomMembers.Count());
             //revenues month, revenues year (bill)
-
+            var billDetails = await billDetailRepository.GetBillDetailList();
+            billDetails = billDetails.Where(b => b.Bill.Rent.Room.Hostel.HostelOwnerEmailNavigation.UserId == UId);
+            var billDetailsYear = billDetails.Where(b => b.Bill.CreatedDate.Value.Year == DateTime.Now.Year);
+            var billDetailsMonth = billDetailsYear.Where(b => b.Bill.CreatedDate.Value.Month == DateTime.Now.Month);
+            ViewData["revenuesYear"] = billDetailsYear.Sum(b => b.Fee);
+            ViewData["revenuesMonth"] = billDetailsMonth.Sum(b => b.Fee);
             return Page();
         }
     }

@@ -63,7 +63,7 @@
                                 </div>
                                 <div class="hostel-price col">
                                     <div class="col p-0"></div>
-                                    <div class="price col d-flex align-items-center justify-content-end"><span class="currency">₫</span>@item.Rooms.Where(r => r.RomMaxCapacity >= Model.capacityChoosen).Min(r => r.Price)</div>
+                                    <div class="price col d-flex align-items-center justify-content-end"><span class="currency">₫</span>@item.Rooms.Where(r => r.RomMaxCapacity >= Model.capacityChoosen).Min(r => r.Price)/month</div>
                                     <div class="col d-flex align-items-end justify-content-end">
                                         <button class="btn btn-primary"><a asp-page="Hostels/Details" asp-route-id="@item.HostelId">Select</a></button>
                                     </div>

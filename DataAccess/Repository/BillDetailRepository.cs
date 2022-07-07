@@ -11,5 +11,6 @@ namespace DataAccess.Repository
     public class BillDetailRepository : IBillDetailRepository
     {
         public async Task AddBillDetail(BillDetail billDetail) => await BillDetailDAO.Instance.AddBillDetail(billDetail);
+        public async Task<IEnumerable<BillDetail>> GetBillDetailList() => await BillDetailDAO.Instance.GetBillDetailList();
     }
 }

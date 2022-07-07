@@ -35,3 +35,62 @@
     <a asp-page="./Edit" asp-route-id="@Model.Bill.BillId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.BillDetails.First().BillDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.BillDetails.First().Fee)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.BillDetails.First().DateIssued)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.BillDetails.First().Bill)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.Bill.BillDetails)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.BillDescription)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fee)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DateIssued)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Bill.BillId)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.BillDetailId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.BillDetailId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.BillDetailId">Delete</a>
+                </td>
+            </tr>
+        }
+        <hr>
+        <tr>
+            <td>
+                <h3>Total bill</h3>
+            </td>
+            <td>
+                <h3><b>@ViewData["sum"]</b></h3>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+            <td>
+            </td>
+        </tr>
+    </tbody>
+</table>

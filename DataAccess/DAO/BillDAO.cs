@@ -41,13 +41,32 @@ namespace DataAccess.DAO
             }
         }
 
-        public async Task<Bill> GetBillByRentId(int RentId)
+        public async Task<Bill> GetBillById(int BillId)
         {
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Bills
-                    .FirstOrDefaultAsync(bill => bill.BillId == RentId);
+                    .FirstOrDefaultAsync(bill => bill.BillId == BillId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<IEnumerable<Bill>> GetBillList()
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Bills
+                        .Include(b => b.BillDetails)
+                        .Include(b => b.Rent)
+                            .ThenInclude(b => b.Room)
+                                .ThenInclude(b => b.Hostel)
+                                    .ThenInclude(b => b.HostelOwnerEmailNavigation)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {

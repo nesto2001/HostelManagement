@@ -110,39 +110,74 @@
     <tbody>
         @foreach (var item in Model.Hostel.Rooms)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomTitle)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomDescription)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RomMaxCapacity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Deposit)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Price)
-                </td>
-                <td>
-                    @if (Model.UserRole == "Owner")
-                    {
-                        <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit</a> <p>|</p>
+            @if (Model.UserRole == "Renter" || String.IsNullOrEmpty(Model.UserRole))
+            {
+                @if (item.Status == 1)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoomTitle)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoomDescription)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RomMaxCapacity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Status)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Deposit)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Price)
+                        </td>
+                        <td>
+                            <a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Details</a>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomTitle)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomDescription)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RomMaxCapacity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Status)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Deposit)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Price)
+                    </td>
+                    <td>
+                        @if (Model.UserRole == "Owner")
+                        {
+                            <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit</a> <p>|</p>
 
-                        <a asp-page="../Rooms/Delete" asp-route-id="@item.RoomId">Delete</a> <p>|</p>
-                    }
-                    <a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Details</a>
+                            <a asp-page="../Rooms/Delete" asp-route-id="@item.RoomId">Delete</a> <p>|</p>
+                        }
+                        <a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Details</a>
 
-                </td>
-            </tr>
+                    </td>
+                </tr>
+            }
         }
     </tbody>
 </table>
