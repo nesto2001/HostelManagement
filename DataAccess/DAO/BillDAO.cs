@@ -66,6 +66,8 @@ namespace DataAccess.DAO
                             .ThenInclude(b => b.Room)
                                 .ThenInclude(b => b.Hostel)
                                     .ThenInclude(b => b.HostelOwnerEmailNavigation)
+                        .Include(b => b.Rent)
+                            .ThenInclude(b => b.RentedByNavigation)
                     .ToListAsync();
             }
             catch (Exception ex)

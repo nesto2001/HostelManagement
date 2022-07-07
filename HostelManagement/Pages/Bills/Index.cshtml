@@ -1,4 +1,6 @@
 ﻿@page
+@using System.Security.Claims
+
 @model HostelManagement.Pages.Bills.IndexModel
 
 @{
@@ -14,35 +16,43 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Bill[0].CreatedDate)
+                @Html.DisplayNameFor(model => model.Bill.First().CreatedDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Bill[0].DueDate)
+                @Html.DisplayNameFor(model => model.Bill.First().DueDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Bill[0].Rent)
+                @Html.DisplayNameFor(model => model.Bill.First().Rent)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Bill) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CreatedDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.DueDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Rent.RentedBy)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.BillId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.BillId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.BillId">Delete</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Bill)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.CreatedDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.DueDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Rent.RentedBy)
+                </td>
+                <td>
+                    <a asp-page="./Edit" asp-route-id="@item.BillId">Edit</a> |
+                    <a asp-page="./Details" asp-route-id="@item.BillId">Details</a> |
+                    <a asp-page="./Delete" asp-route-id="@item.BillId">Delete</a>
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
+@if (Model.Bill.Any())
+{
+    @if ((Model.Bill.First().CreatedDate < DateTime.Now.AddMonths(-1)) && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+    {
+        <a asp-page="../Bills/Create" asp-route-id="@Model.Bill.First().RentId">Generate bill</a>
+    }
+}
