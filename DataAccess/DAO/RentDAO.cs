@@ -80,5 +80,25 @@ namespace DataAccess.DAO
             }
         }
 
+        public async Task<Rent> GetRentByID(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Rents
+                    .Include(r => r.Room)
+                            .ThenInclude(r => r.Hostel)
+                                .ThenInclude(r => r.HostelOwnerEmailNavigation)
+                    .Include(r => r.RentedByNavigation)
+                    .Include(r => r.RoomMembers)
+                    .Include(r => r.Bills)
+                    .FirstOrDefaultAsync(r => r.RentId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

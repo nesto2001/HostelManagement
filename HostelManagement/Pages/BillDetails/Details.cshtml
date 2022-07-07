@@ -1,0 +1,43 @@
+﻿@page
+@model HostelManagement.Pages.BillDetails.DetailsModel
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h1>Details</h1>
+
+<div>
+    <h4>BillDetail</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BillDetail.BillDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BillDetail.BillDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BillDetail.Fee)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BillDetail.Fee)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BillDetail.DateIssued)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BillDetail.DateIssued)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.BillDetail.Bill)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.BillDetail.Bill.BillId)
+        </dd>
+    </dl>
+</div>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.BillDetail.BillDetailId">Edit</a> |
+    <a asp-page="./Index">Back to List</a>
+</div>

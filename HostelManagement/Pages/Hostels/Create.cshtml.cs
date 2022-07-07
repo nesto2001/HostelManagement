@@ -20,15 +20,15 @@ namespace HostelManagement.Pages.Hostels
 {
     public class CreateModel : PageModel
     {
-        private IHostelRepository hostelRepository;
-        private IAccountRepository accountRepository;
-        private ICategoryRepository categoryRepository;
-        private IProvinceRepository provinceRepository;
-        private IDistrictRepository districtRepository;
-        private IWardRepository wardRepository;
-        private ILocationRepository locationRepository;
-        private IHostelPicRepository hostelPicRepository;
-        private IRoomRepository roomRepository;
+        private readonly IHostelRepository hostelRepository;
+        private readonly IAccountRepository accountRepository;
+        private readonly ICategoryRepository categoryRepository;
+        private readonly IProvinceRepository provinceRepository;
+        private readonly IDistrictRepository districtRepository;
+        private readonly IWardRepository wardRepository;
+        private readonly ILocationRepository locationRepository;
+        private readonly IHostelPicRepository hostelPicRepository;
+        private readonly IRoomRepository roomRepository;
 
         public CreateModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,

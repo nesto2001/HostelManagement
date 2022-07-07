@@ -1,0 +1,102 @@
+﻿@page
+@model HostelManagement.Pages.Bills.CreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Bill</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="Bill.DueDate" class="control-label"></label>
+                <input asp-for="Bill.DueDate" class="form-control" type="date" max="@DateTime.Now" required/>
+                <span asp-validation-for="Bill.DueDate" class="text-danger"></span>
+            </div>
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BillDetail[0].BillDescription)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BillDetail[0].Fee)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.BillDetail[0].DateIssued)
+                        </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>
+                            Room usage fee
+                        </td>
+                        <td>
+                            @Model.rent.Total
+                            <input asp-for="@Model.BillDetail[0].Fee" value="@Model.rent.Total" hidden/>
+                        </td>
+                        <td>
+                            @Model.dateRentIssued
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Monthly electricity usage fee
+                        </td>
+                        <td>
+                            <input asp-for="@Model.BillDetail[1].Fee"  min="0" value="0" required />
+                            <span asp-validation-for="@Model.BillDetail[1].Fee" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.BillDetail[1].DateIssued" type="date" max="@DateTime.Now" required />
+                            <span asp-validation-for="@Model.BillDetail[1].DateIssued" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Monthly water usage fee
+                        </td>
+                        <td>
+                            <input asp-for="@Model.BillDetail[2].Fee"  min="0" value="0" required />
+                            <span asp-validation-for="@Model.BillDetail[2].Fee" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.BillDetail[2].DateIssued" type="date" max="@DateTime.Now" required />
+                            <span asp-validation-for="@Model.BillDetail[2].DateIssued" class="text-danger"></span>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>
+                            Other Fee
+                        </td>
+                        <td>
+                            <input asp-for="@Model.BillDetail[3].Fee" min="0" value="0" required />
+                            <span asp-validation-for="@Model.BillDetail[3].Fee" class="text-danger"></span>
+                        </td>
+                        <td>
+                            <input asp-for="@Model.BillDetail[3].DateIssued" type="date" max="@DateTime.Now" required />
+                            <span asp-validation-for="@Model.BillDetail[3].DateIssued" class="text-danger"></span>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

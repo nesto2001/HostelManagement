@@ -1,4 +1,7 @@
-﻿@page
+﻿
+@page
+@using System.Security.Claims
+
 @model HostelManagement.Pages.Rents.IndexModel
 
 @{
@@ -32,27 +35,32 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model.Rents) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.IsDeposited)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.RoomId)
-            </td>
-            <td>
-                <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-            </td>
-        </tr>
-}
+        @foreach (var item in Model.Rents)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.IsDeposited)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Status)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RentedBy)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room.RoomId)
+                </td>
+                <td>
+                    <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+                    @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                    {
+                        <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                    }
+                </td>
+            </tr>
+        }
     </tbody>
 </table>

@@ -8,8 +8,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public class BillRepository : IBillRepository
+    public class BillDetailRepository : IBillDetailRepository
     {
-        public async Task AddBill(Bill bill) => await BillDAO.Instance.AddBill(bill);
+        public async Task AddBillDetail(BillDetail billDetail) => await BillDetailDAO.Instance.AddBillDetail(billDetail);
     }
 }

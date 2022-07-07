@@ -8,11 +8,11 @@ using System.Threading.Tasks;
 
 namespace DataAccess.DAO
 {
-    public class BillDAO
+    public class BillDetailDAO
     {
-        private static BillDAO instance = null;
+        private static BillDetailDAO instance = null;
         private static readonly object instanceLock = new object();
-        public static BillDAO Instance
+        public static BillDetailDAO Instance
         {
             get
             {
@@ -20,19 +20,19 @@ namespace DataAccess.DAO
                 {
                     if (instance == null)
                     {
-                        instance = new BillDAO();
+                        instance = new BillDetailDAO();
                     }
                     return instance;
                 }
             }
         }
 
-        public async Task AddBill(Bill bill)
+        public async Task AddBillDetail(BillDetail billDetail)
         {
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                HostelManagementContext.Attach(bill).State = EntityState.Added;
+                HostelManagementContext.Attach(billDetail).State = EntityState.Added;
                 await HostelManagementContext.SaveChangesAsync();
             }
             catch (Exception ex)

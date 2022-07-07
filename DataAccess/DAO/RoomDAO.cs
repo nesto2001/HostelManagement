@@ -51,8 +51,9 @@ namespace DataAccess.DAO
                 {
                     var HostelManagementContext = new HostelManagementContext();
                     return await HostelManagementContext.Rooms
-                         .Include(r => r.Hostel)
+                        .Include(r => r.Hostel)
                         .Include(r => r.RoomPics)
+                        .Include(r => r.Rents)
                         .FirstOrDefaultAsync(m => m.RoomId == id);
             }
             catch (Exception ex)
@@ -66,7 +67,12 @@ namespace DataAccess.DAO
                 try
                 {
                     var HostelManagementContext = new HostelManagementContext();
-                    return await HostelManagementContext.Rooms.ToListAsync();
+                    return await HostelManagementContext.Rooms
+                        .Include(r => r.Hostel)
+                            .ThenInclude(h => h.HostelOwnerEmailNavigation)
+                        .Include(r => r.RoomPics)
+                        .Include(r => r.Rents)
+                        .ToListAsync();
                 }
                 catch (Exception ex)
                 {
@@ -80,8 +86,11 @@ namespace DataAccess.DAO
                 {
                     var HostelManagementContext = new HostelManagementContext();
                     return await HostelManagementContext.Rooms
-                         .Where(r => r.HostelId == hostelId)
-                         .ToListAsync();
+                            .Include(r => r.Hostel)
+                            .Include(r => r.RoomPics)
+                            .Include(r => r.Rents)
+                            .Where(r => r.HostelId == hostelId)
+                            .ToListAsync();
                 }
                 catch (Exception ex)
                 {

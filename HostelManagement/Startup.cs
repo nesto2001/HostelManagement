@@ -48,6 +48,7 @@ namespace HostelManagement
             services.AddScoped<IRoomPicRepository, RoomPicRepository>();
             services.AddScoped<IRentRepository, RentRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
+            services.AddScoped<IBillDetailRepository, BillDetailRepository>();
             services.AddScoped<IRoomMemberRepository, RoomMemberRepository>();
         }
 

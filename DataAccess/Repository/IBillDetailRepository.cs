@@ -7,8 +7,8 @@ using System.Threading.Tasks;
 
 namespace DataAccess.Repository
 {
-    public interface IBillRepository
+    public interface IBillDetailRepository
     {
-        Task AddBill(Bill bill);
+        Task AddBillDetail(BillDetail billDetail);
     }
 }

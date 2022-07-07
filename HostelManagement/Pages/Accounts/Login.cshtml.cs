@@ -83,7 +83,7 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ID", cus.Result.CustomerId);
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
-                return RedirectToPage("./Overview");
+                return RedirectToPage("../HostelOwnerDashboard");
             }
             else if (acc.Result.RoleName.Equals("renter"))
             {
