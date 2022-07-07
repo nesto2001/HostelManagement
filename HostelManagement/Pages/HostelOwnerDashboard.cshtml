@@ -4,6 +4,10 @@
     Layout = "_OwnerLayout";
 }
 <h1>Hello</h1>
+@if (ViewData["HostelOwnerDashboardMessage"] != null)
+ {
+    <p>@ViewData["HostelOwnerDashboardMessage"]</p>
+ }
 @if (ViewData["hostelCount"] != null)
 {
     <p>hostelCount - @ViewData["hostelCount"]</p>

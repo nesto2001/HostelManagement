@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Bill.DueDate" class="control-label"></label>
-                <input asp-for="Bill.DueDate" class="form-control" type="date" max="@DateTime.Now" required/>
+                <input asp-for="Bill.DueDate" class="form-control" type="date" min="@DateTime.Now.AddDays(1).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(11).ToString("yyyy-MM-dd")" required/>
                 <span asp-validation-for="Bill.DueDate" class="text-danger"></span>
             </div>
             <table class="table">
@@ -42,7 +42,7 @@
                             <input asp-for="@Model.BillDetail[0].Fee" value="@Model.rent.Total" hidden/>
                         </td>
                         <td>
-                            @Model.dateRentIssued
+                            @Model.dateRentIssued.ToString("MM-dd-yyyy")
                         </td>
                     </tr>
                     <tr>
@@ -54,7 +54,8 @@
                             <span asp-validation-for="@Model.BillDetail[1].Fee" class="text-danger"></span>
                         </td>
                         <td>
-                            <input asp-for="@Model.BillDetail[1].DateIssued" type="date" max="@DateTime.Now" required />
+                            <input asp-for="@Model.BillDetail[1].DateIssued" type="date" 
+                                   min="@DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd")" max="@DateTime.Now.ToString("yyyy-MM-dd")" required />
                             <span asp-validation-for="@Model.BillDetail[1].DateIssued" class="text-danger"></span>
                         </td>
                     </tr>
@@ -67,7 +68,8 @@
                             <span asp-validation-for="@Model.BillDetail[2].Fee" class="text-danger"></span>
                         </td>
                         <td>
-                            <input asp-for="@Model.BillDetail[2].DateIssued" type="date" max="@DateTime.Now" required />
+                            <input asp-for="@Model.BillDetail[2].DateIssued" type="date" min="@DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd")"
+                                    max="@DateTime.Now.ToString("yyyy-MM-dd")" required />
                             <span asp-validation-for="@Model.BillDetail[2].DateIssued" class="text-danger"></span>
                         </td>
                     </tr>
@@ -80,7 +82,8 @@
                             <span asp-validation-for="@Model.BillDetail[3].Fee" class="text-danger"></span>
                         </td>
                         <td>
-                            <input asp-for="@Model.BillDetail[3].DateIssued" type="date" max="@DateTime.Now" required />
+                            <input asp-for="@Model.BillDetail[3].DateIssued" type="date" min="@DateTime.Now.AddDays(-15).ToString("yyyy-MM-dd")" 
+                                   max="@DateTime.Now.ToString("yyyy-MM-dd")" required />
                             <span asp-validation-for="@Model.BillDetail[3].DateIssued" class="text-danger"></span>
                         </td>
                     </tr>

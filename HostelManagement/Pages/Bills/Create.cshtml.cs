@@ -9,6 +9,7 @@ using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
 using HostelManagement.Helpers;
+using Microsoft.AspNetCore.Http;
 
 namespace HostelManagement.Pages.Bills
 {
@@ -35,6 +36,12 @@ namespace HostelManagement.Pages.Bills
         public async Task<IActionResult> OnGetAsync(int id)
         {
             rent = await rentRepository.GetRentByID(id);
+            var LastBill = rent.Bills.Max(b => b.CreatedDate);
+            if (LastBill > DateTime.Now.AddDays(-15))
+            {
+                HttpContext.Session.SetString("HostelOwnerDashboardMessage", "This contract have already exist bill in recent months.");
+                return RedirectToPage("../HostelOwnerDashboard");
+            }
             rent.RentedByNavigation.Rents = null;
             rent.Room = null;
             rent.RoomMembers = null;

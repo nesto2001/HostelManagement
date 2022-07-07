@@ -40,5 +40,19 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<Bill> GetBillByRentId(int RentId)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.Bills
+                    .FirstOrDefaultAsync(bill => bill.BillId == RentId);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
@@ -45,6 +46,12 @@ namespace HostelManagement.Pages
 
         public async Task<IActionResult> OnGetAsync()
         {
+            string Message = HttpContext.Session.GetString("HostelOwnerDashboardMessage");
+            if (!String.IsNullOrEmpty(Message))
+            {
+                ViewData["HostelOwnerDashboardMessage"] = Message;
+                HttpContext.Session.Remove("HostelOwnerDashboardMessage");
+            }
             //hostel count, room count, rented room count
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             int UId = Int32.Parse(userId);
