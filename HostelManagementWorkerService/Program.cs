@@ -21,8 +21,20 @@ namespace HostelManagementWorkerService
                     IConfiguration configuration = hostContext.Configuration;
                     services.AddDbContext<HostelManagementContext>(options =>
                     options.UseSqlServer(configuration.GetConnectionString("HostelManagementContext")));
-                    services.AddSingleton<IRentRepository, RentRepository>();
+                    services.AddSingleton<IAccountRepository, AccountRepository>();
                     services.AddSingleton<IHostelRepository, HostelRepository>();
+                    services.AddSingleton<ICategoryRepository, CategoryRepository>();
+                    services.AddSingleton<IProvinceRepository, ProvinceRepository>();
+                    services.AddSingleton<IDistrictRepository, DistrictRepository>();
+                    services.AddSingleton<IWardRepository, WardRepository>();
+                    services.AddSingleton<ILocationRepository, LocationRepository>();
+                    services.AddSingleton<IHostelPicRepository, HostelPicRepository>();
+                    services.AddSingleton<IRoomRepository, RoomRepository>();
+                    services.AddSingleton<IRoomPicRepository, RoomPicRepository>();
+                    services.AddSingleton<IRentRepository, RentRepository>();
+                    services.AddSingleton<IBillRepository, BillRepository>();
+                    services.AddSingleton<IBillDetailRepository, BillDetailRepository>();
+                    services.AddSingleton<IRoomMemberRepository, RoomMemberRepository>();
                     services.AddHostedService<Worker>();
                 });
     }

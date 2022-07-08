@@ -1,3 +1,4 @@
+using BusinessObject.BusinessObject;
 using DataAccess.Repository;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
@@ -13,12 +14,17 @@ namespace HostelManagementWorkerService
     {
         private readonly ILogger<Worker> _logger;
         private IRentRepository rentRepository;
+        private IBillRepository billRepository;
+        private IBillDetailRepository billDetailRepository;
         private readonly IServiceProvider _serviceProvider;
-        public Worker(ILogger<Worker> logger, IRentRepository _rentRepository, IServiceProvider serviceProvider)
+        public Worker(ILogger<Worker> logger, IRentRepository _rentRepository, IServiceProvider serviceProvider,
+            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
         {
             _logger = logger;
             rentRepository = _rentRepository;
             _serviceProvider = serviceProvider;
+            billRepository = _billRepository;
+            billDetailRepository = _billDetailRepository;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -45,6 +51,37 @@ namespace HostelManagementWorkerService
                         item.Status = 1;
                         await rentRepository.UpdateRent(item);
                         _logger.LogInformation("The rent {0} of {1} is start at {2}", item.RentId, item.RentedBy, DateTime.Now);
+                    }
+                }
+                var rentWorking = rents.Where(r => r.Status == 1);
+                foreach (var item in rentWorking)
+                {
+                    DateTime lastBill = item.StartRentDate;
+                    if (item.Bills.Count() != 0)
+                    {
+                        lastBill = (DateTime)item.Bills.Max(b => b.CreatedDate);
+                    }
+                    if (lastBill < DateTime.Now.AddDays(-35))
+                    {
+                        Bill bill = new Bill
+                        {
+                            CreatedDate = DateTime.Now,
+                            DueDate = DateTime.Now.AddDays(7),
+                            RentId = item.RentId,
+                            RoomId = item.RoomId,
+                            StartRentDate = item.StartRentDate,
+                            EndRentDate = item.EndRentDate
+                        };
+                        await billRepository.AddBill(bill);
+                        BillDetail billDetail = new BillDetail
+                        {
+                            BillId = bill.BillId,
+                            BillDescription = "Room usage fee",
+                            DateIssued = lastBill.AddMonths(1),
+                            Fee = item.Total
+                        };
+                        await billDetailRepository.AddBillDetail(billDetail);
+                        _logger.LogInformation("The rent {0} of {1} is created a bill at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
                 }
                 await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
