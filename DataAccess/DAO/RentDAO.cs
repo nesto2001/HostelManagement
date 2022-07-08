@@ -101,5 +101,18 @@ namespace DataAccess.DAO
             }
         }
 
+        public async Task UpdateRent(Rent rent)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.Attach(rent).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

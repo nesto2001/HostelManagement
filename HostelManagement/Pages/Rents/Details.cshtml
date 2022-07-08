@@ -4,6 +4,7 @@
 
 @{
     ViewData["Title"] = "Details";
+    var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
 
 <h1>Details</h1>
@@ -17,6 +18,21 @@
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Rent.IsDeposited)
+            @if (Model.Rent.IsDeposited == 0 && role == "Renter")
+            {
+                <div class="btn btn-danger">
+                    <a asp-page-handler="DepositedCheck" asp-route-id="@Model.Rent.RentId">Send Check Deposited</a>
+                </div>
+            }
+            @if (Model.Rent.IsDeposited == 1 && role == "Owner")
+            {
+                <div class="btn btn-danger">
+                    <a asp-page-handler="DepositedConfirm" asp-route-id="@Model.Rent.RentId">Deposited</a>
+                </div>
+                <div class="btn btn-danger">
+                    <a asp-page-handler="DepositedNone" asp-route-id="@Model.Rent.RentId">None</a>
+                </div>
+            }
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Rent.Status)
@@ -60,8 +76,12 @@
         <dd class="col-sm-10">
             @foreach (var item in @Model.Rent.RoomMembers)
             {
-                <p>@item.UserEmail</p>
+                var IsPresent = "Yes";
+                if (item.IsPresentator == false) IsPresent = "No";
+                <p>@item.UserEmail --- Present: </p>
+                <a asp-page-handler="ChangePresent" asp-route-id="@item.RoomMemberId">@IsPresent</a>
             }
+
         </dd>
     </dl>
 </div>

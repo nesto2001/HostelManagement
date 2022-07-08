@@ -40,5 +40,48 @@ namespace DataAccess.DAO
             }
         }
 
+        public async Task<IEnumerable<RoomMember>> GetRoomMemberList()
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.RoomMembers
+                    .Include(r => r.Rent)
+                    .ToListAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task UpdateRoomMember(RoomMember roomMember)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.Attach(roomMember).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+        public async Task<RoomMember> GetRoomMemberByID(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.RoomMembers
+                    .Include(r => r.Rent)
+                    .FirstOrDefaultAsync(m => m.RoomMemberId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
     }
 }

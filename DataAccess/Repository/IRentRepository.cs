@@ -10,6 +10,7 @@ namespace DataAccess.Repository
     public interface IRentRepository
     {
         Task AddRent(Rent Rent);
+        Task UpdateRent(Rent Rent);
         Task<IEnumerable<Rent>> GetRentListByRoom(int roomId);
         Task<IEnumerable<Rent>> GetRentList();
         Task<Rent> GetRentByID(int id);

@@ -98,6 +98,7 @@ namespace HostelManagement.Pages.Rents
             }
             
             await rentRepository.AddRent(Rent);
+            int countCurrent = 0;
             foreach (var RoomMem in RoomMember)
             { 
                 if (!String.IsNullOrEmpty(RoomMem.UserEmail))
@@ -109,8 +110,13 @@ namespace HostelManagement.Pages.Rents
                     RoomMem.IsPresentator = true;
                     RoomMem.Status = 1;
                     await roomMemberRepository.AddRoomMember(RoomMem);
+                    countCurrent++;
                 }
             }
+            room = await roomRepository.GetRoomByID(Rent.RoomId);
+            room.RoomCurrentCapacity = countCurrent;
+            room.Status = 4;
+            await roomRepository.UpdateRoom(room);
             return RedirectToPage("./Index");
         }
     }
