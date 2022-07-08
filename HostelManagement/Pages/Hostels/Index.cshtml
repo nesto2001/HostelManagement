@@ -12,7 +12,7 @@
         <div class="col-4">
             <form method="get" asp-page-handler="">
                 <div class="form-group">
-                    <input placeholder="Search property name" name="searchHostel" type="text" id="searchBox" class="form-control" value="@ViewData["searchHostel"]">
+                    <input placeholder="Search property name" name="searchHostel" type="text" id="searchBox" class="form-control" value="@ViewData['searchHostel']">
                     <i class='bx bx-search'></i>
                 </div>
             </form>
@@ -77,72 +77,45 @@
                         <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
                     </div>
                 </div>
+                <div class="card-action">
+                    <div class="btn-card-action btn-card-edit">
+                        <a asp-page="./Edit" asp-route-id="@item.HostelId">
+                            <i class='bx bx-edit'></i>
+                        </a>
+                    </div>
+                    <div class="btn-card-action btn-card-deactivate">
+                        <a asp-page="./Index" asp-route-id="@item.HostelId">
+                            <i class='bx bx-power-off'></i>
+                        </a>
+                    </div>
+                    <script type="text/javascript">
+                        $('.btn-card-deactivate').click(function(){
+                            $('.popup-deactivate').show();
+                            $('.popup-deactivate .btn-yes a').attr('asp-page','./ChangeStatus');
+                            $('.popup-deactivate .btn-yes a').attr('asp-route-id','@item.HostelId');
+                        })
+                    </script>
+                </div>
             </div>
         </div>
         }
     </div>
 </section>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostels.First().HostelName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostels.First().Description)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostels.First().Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostels.First().Category)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostels.First().Location)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Hostels) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.HostelName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Description)
-            </td>
-            <td>
-                
-                @{
-                    var str = "Change Status";
-                    if (item.Status == 0) str = "Pending";
-                    if (item.Status == 1) str = "Active";
-                    if (item.Status == 2) str = "InActive";
-                    if (item.Status == 3) str = "Denied";
-                    if (item.Status == 4) str = "Occupied";
-                }
-                <span>
-                    <a asp-page="./ChangeStatus" asp-route-id="@item.HostelId">@str</a>
-                </span>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Category.CategoryName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Location.AddressString) - @Html.DisplayFor(modelItem => item.Location.Ward.WardName) -
-                @Html.DisplayFor(modelItem => item.Location.Ward.District.DistrictName) - @Html.DisplayFor(modelItem => item.Location.Ward.District.Province.ProvinceName)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.HostelId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.HostelId">Details</a> |
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+
+<div class="popup-deactivate">
+    <h3 class="mb-4">Deactivate hostel</h3>
+    <p>Do you really want to deactivate this hostel?</p>
+    <div class="popup-action">
+        <button class="btn btn-yes"><a>Yes</a></button>
+        <button class="btn btn-cancel">Cancel</button>
+    </div>
+</div>
+
 @section Scripts {
 <script type="text/javascript">
     $('#@activeNav').addClass('active');
+    $('.btn-cancel').click(function(){
+        this.parent('.popup-deactivate').hide();
+    })
 </script>
 }

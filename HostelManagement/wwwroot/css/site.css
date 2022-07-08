@@ -616,6 +616,14 @@ ol, ul {
   font-size: 12px;
 }
 
+.bullet i{
+  left: -2px;
+  top: -2px;
+  position: relative;
+  font-size: 22px;
+  padding: 0;
+}
+
 .container.main-container{
   min-height: calc(100% - 145px);
   position: relative;
@@ -801,6 +809,30 @@ ol, ul {
 .card-info .card-status{
   margin-right: 4px;
 }
+
+.card-action{
+  height: 100%;
+  align-self: center;
+  justify-content: space-between;
+  position: relative;
+  margin-left: auto;
+  display: flex;
+  padding-right: 48px;
+}
+
+.card-action .btn-card-action{
+  transition: all 0.5s ease-in-out;
+}
+
+.card-action .btn-card-action.btn-card-deactivate:hover i{
+  color: #f03434;
+}
+
+.card-action .btn-card-action.btn-card-edit:hover i{
+  color: #f03434;
+}
+
+
 
 .status-active {
   background-color: #65a131;
@@ -1165,4 +1197,56 @@ a.see-room-info{
 .booking-details-item.details-price .currency{
   color: #ed5c59;
   font-size: 24px;
+}
+
+.popup-deactivate{
+  position: fixed;
+  top: 20%;
+  left: 38%;
+  width: 24%;
+  height: 208px;
+  z-index: 5;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, .1);
+  padding: 16px;
+  padding-top: 24px;
+  text-align: center;
+  display: none;
+}
+
+.popup-deactivate p {
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+
+.popup-deactivate .popup-action{
+  text-align: right;
+  margin-right: 36px;
+}
+
+.popup-deactivate .popup-action .btn{
+  transition: all 0.19s ease-in-out;
+}
+
+.popup-deactivate .popup-action .btn-yes{
+  color: #ed5c59;
+}
+
+.popup-deactivate .popup-action .btn-yes:hover{
+  color: #fff;
+  background: #ed5c59;
+  border-radius: 4px;
+  margin-left: 15px;
+}
+
+.popup-deactivate .popup-action .btn-cancel{
+  background: #e5e5e5;
+  color: black;
+  border-radius: 4px;
+  margin-left: 10px;
+}
+
+.popup-deactivate .popup-action .btn-cancel:hover{
+  background: #b6b6b6;
 }
