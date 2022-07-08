@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Rents
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccess.HostelManagementContext _context;
-
-        public DeleteModel(DataAccess.HostelManagementContext context)
+        private IAccountRepository accountRepository { get; }
+        private IRentRepository rentRepository { get; }
+        private IRoomRepository roomRepository { get; }
+        private IRoomMemberRepository roomMemberRepository { get; }
+        public DeleteModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
+                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository)
         {
-            _context = context;
+            accountRepository = _accountRepository;
+            rentRepository = _rentRepository;
+            roomRepository = _roomRepository;
+            roomMemberRepository = _roomMemberRepository;
         }
 
         [BindProperty]
@@ -29,10 +36,11 @@ namespace HostelManagement.Pages.Rents
                 return NotFound();
             }
 
-            Rent = await _context.Rents
-                .Include(r => r.RentedByNavigation)
-                .Include(r => r.Room).FirstOrDefaultAsync(m => m.RentId == id);
-
+            Rent = await rentRepository.GetRentByID((int)id);
+            if (Rent.StartRentDate < DateTime.Now || Rent.Status != 0)
+            {
+                return RedirectToPage("../AccessDenied");
+            }
             if (Rent == null)
             {
                 return NotFound();
@@ -47,12 +55,12 @@ namespace HostelManagement.Pages.Rents
                 return NotFound();
             }
 
-            Rent = await _context.Rents.FindAsync(id);
+            Rent = await rentRepository.GetRentByID((int)id);
 
             if (Rent != null)
             {
-                _context.Rents.Remove(Rent);
-                await _context.SaveChangesAsync();
+                Rent.Status = 4;
+                await rentRepository.UpdateRent(Rent);
             }
 
             return RedirectToPage("./Index");
