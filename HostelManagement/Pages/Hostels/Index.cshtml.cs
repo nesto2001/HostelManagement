@@ -24,7 +24,7 @@ namespace HostelManagement.Pages.Hostels
 
         public IEnumerable<Hostel> Hostels { get; set; }
 
-        public async Task OnGetAsync()
+        public async Task OnGetAsync(string searchHostel)
         {
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             int UId = Int32.Parse(userId);
@@ -32,6 +32,11 @@ namespace HostelManagement.Pages.Hostels
             var role = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             if (role == "Owner") Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
             else if (role == "Admin") Hostels = await hostelRepository.GetHostelsList();
+            if (!String.IsNullOrEmpty(searchHostel))
+            {
+                Hostels = Hostels.Where(h => h.HostelName.ToLower().Contains(searchHostel.ToLower()));
+            }
+            ViewData["searchHostel"] = searchHostel;
         }
     }
 }
