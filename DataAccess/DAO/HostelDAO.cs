@@ -125,5 +125,21 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task DeactivateHostel(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                var hostel = HostelManagementContext.Hostels.SingleOrDefault(h => h.HostelId.Equals(id));
+                HostelManagementContext.Hostels.Attach(hostel);
+                hostel.Status = 2;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

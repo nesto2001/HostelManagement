@@ -1,6 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
-using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System;
 using System.Collections.Generic;
@@ -38,5 +38,12 @@ namespace HostelManagement.Pages.Hostels
             }
             ViewData["searchHostel"] = searchHostel;
         }
+
+        public async Task<IActionResult> OnPostDeactivate(int id)
+        {
+            await hostelRepository.DeactivateHostel(id);
+            return RedirectToPage("./Index");
+        }
     }
+
 }

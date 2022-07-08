@@ -1,4 +1,4 @@
-﻿@page
+﻿@page "{handler?}"
 @model HostelManagement.Pages.Hostels.IndexModel
 
 @{
@@ -6,13 +6,13 @@
     Layout = "_OwnerLayout";
     var activeNav = "listings-nav";
 }
-
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <section class="action-section searchbox-owner">
     <div class="row">
         <div class="col-4">
             <form method="get" asp-page-handler="">
                 <div class="form-group">
-                    <input placeholder="Search property name" name="searchHostel" type="text" id="searchBox" class="form-control" value="@ViewData['searchHostel']">
+                    <input placeholder="Search property name" name="searchHostel" type="text" id="searchBox" class="form-control" value="@ViewData["searchHostel"]">
                     <i class='bx bx-search'></i>
                 </div>
             </form>
@@ -84,15 +84,14 @@
                         </a>
                     </div>
                     <div class="btn-card-action btn-card-deactivate">
-                        <a asp-page="./Index" asp-route-id="@item.HostelId">
+                        <a>
                             <i class='bx bx-power-off'></i>
                         </a>
                     </div>
                     <script type="text/javascript">
                         $('.btn-card-deactivate').click(function(){
+                            $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId'/>")
                             $('.popup-deactivate').show();
-                            $('.popup-deactivate .btn-yes a').attr('asp-page','./ChangeStatus');
-                            $('.popup-deactivate .btn-yes a').attr('asp-route-id','@item.HostelId');
                         })
                     </script>
                 </div>
@@ -105,10 +104,12 @@
 <div class="popup-deactivate">
     <h3 class="mb-4">Deactivate hostel</h3>
     <p>Do you really want to deactivate this hostel?</p>
+    <form method="post" class="deactivate-form" asp-page-handler="deactivate">
     <div class="popup-action">
-        <button class="btn btn-yes"><a>Yes</a></button>
+        <button type="submit" class="btn btn-yes"><a>Yes</a></button>
         <button class="btn btn-cancel">Cancel</button>
     </div>
+    </form>
 </div>
 
 @section Scripts {

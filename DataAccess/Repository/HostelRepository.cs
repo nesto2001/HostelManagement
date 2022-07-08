@@ -1,10 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.DAO;
-using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository
@@ -20,5 +16,7 @@ namespace DataAccess.Repository
         public async Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id) => await HostelDAO.Instance.GetHostelsOfAnOwner(id);
 
         public async Task UpdateHostel(Hostel hostel) => await HostelDAO.Instance.UpdateHostel(hostel);
+
+        public async Task DeactivateHostel(int id) => await HostelDAO.Instance.DeactivateHostel(id);
     }
 }
