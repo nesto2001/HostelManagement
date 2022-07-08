@@ -7,16 +7,23 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Rents
 {
     public class DetailsModel : PageModel
     {
-        private readonly DataAccess.HostelManagementContext _context;
-
-        public DetailsModel(DataAccess.HostelManagementContext context)
+        private IAccountRepository accountRepository { get; }
+        private IRentRepository rentRepository { get; }
+        private IRoomRepository roomRepository { get; }
+        private IRoomMemberRepository roomMemberRepository { get; }
+        public DetailsModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
+                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository)
         {
-            _context = context;
+            accountRepository = _accountRepository;
+            rentRepository = _rentRepository;
+            roomRepository = _roomRepository;
+            roomMemberRepository = _roomMemberRepository;
         }
 
         public Rent Rent { get; set; }
@@ -28,9 +35,7 @@ namespace HostelManagement.Pages.Rents
                 return NotFound();
             }
 
-            Rent = await _context.Rents
-                .Include(r => r.RentedByNavigation)
-                .Include(r => r.Room).FirstOrDefaultAsync(m => m.RentId == id);
+            Rent = await rentRepository.GetRentByID((int)id);
 
             if (Rent == null)
             {

@@ -8,11 +8,8 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Rent List</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -31,37 +28,49 @@
             <th>
                 @Html.DisplayNameFor(model => model.Rents.First().Room)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rents.First().StartRentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rents.First().EndRentDate)
+            </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Rents)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.IsDeposited)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Status)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Total)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.RentedBy)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Room.RoomId)
-                </td>
-                <td>
-                    <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-                    @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
-                    {
-                        <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
-                    }
-                    <a asp-page="../Bills/Index" asp-route-id="@item.RentId">Bills</a>
-                </td>
-            </tr>
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.IsDeposited)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.RentedBy)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Room.RoomId)
+            </td>
+            <td>
+                @item.StartRentDate.ToString("dd-MM-yyyy")
+            </td>
+            <td>
+                @item.StartRentDate.ToString("dd-MM-yyyy")
+            </td>
+            <td>
+                <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+                @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                {
+                    <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                }
+                <a asp-page="../Bills/Index" asp-route-id="@item.RentId">Bills</a>
+            </td>
+        </tr>
         }
     </tbody>
 </table>

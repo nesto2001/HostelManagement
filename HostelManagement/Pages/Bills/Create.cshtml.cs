@@ -33,10 +33,22 @@ namespace HostelManagement.Pages.Bills
             billDetailRepository = _billDetailRepository;
         }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
-            rent = await rentRepository.GetRentByID(id);
-            var LastBill = rent.Bills.Max(b => b.CreatedDate);
+            if (id == null)
+            {
+                return RedirectToPage("../AccessDenied");
+            }
+            rent = await rentRepository.GetRentByID((int)id);
+            if (rent.StartRentDate < DateTime.Now.AddDays(15))
+            {
+                return RedirectToPage("../AccessDenied");
+            }
+            var LastBill = DateTime.Now.AddDays(-20);
+            if (rent.Bills != null)
+            {
+                LastBill = (DateTime)rent.Bills.Max(b => b.CreatedDate);
+            }
             if (LastBill > DateTime.Now.AddDays(-15))
             {
                 HttpContext.Session.SetString("HostelOwnerDashboardMessage", "This contract have already exist bill in recent months.");

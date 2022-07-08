@@ -29,9 +29,13 @@ namespace HostelManagement.Pages.Rents
 
         public IEnumerable<Rent> Rents { get;set; }
 
-        public async Task<ActionResult> OnGetAsync()
+        public async Task<ActionResult> OnGetAsync(int? id)
         {
             Rents = await rentRepository.GetRentList();
+            if (id != null)
+            {
+                Rents = Rents.Where(r => r.RoomId == (int)id);
+            }
             int UId = 0;
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
@@ -48,16 +52,15 @@ namespace HostelManagement.Pages.Rents
             }
             else if (userRole.Equals("Admin"))
             {
-                Rents = await rentRepository.GetRentList();
-                Rents.OrderBy(r => r.Status);
+                Rents = Rents.OrderByDescending(r => r.StartRentDate);
             } else if (userRole.Equals("Owner"))
             {
                 Rents = Rents.Where(r => r.Room.Hostel.HostelOwnerEmailNavigation.UserId == UId);
-                Rents.OrderBy(r => r.Status);
+                Rents = Rents.OrderByDescending(r => r.StartRentDate);
             } else if (userRole.Equals("Renter"))
             {
                 Rents = Rents.Where(r => r.RentedByNavigation.UserId == UId);
-                Rents.OrderBy(r => r.Status);
+                Rents = Rents.OrderByDescending(r => r.StartRentDate);
             } else
             {
                 return RedirectToPage("/AccessDenied");

@@ -27,8 +27,12 @@ namespace HostelManagement.Pages.Rents
             roomMemberRepository = _roomMemberRepository;
         }
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
+            if (id == null)
+            {
+                return RedirectToPage("../AccessDenied");
+            }
             int UId;
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
@@ -36,7 +40,7 @@ namespace HostelManagement.Pages.Rents
                UId = Int32.Parse(userId);
                account = await accountRepository.GetAccountByID(UId);
             }
-            room = await roomRepository.GetRoomByID(id);
+            room = await roomRepository.GetRoomByID((int)id);
             ViewData["RentedBy"] = account.UserEmail;
             ViewData["RoomId"] = id;
             return Page();

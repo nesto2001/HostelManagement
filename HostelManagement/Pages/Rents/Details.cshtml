@@ -30,16 +30,37 @@
             @Html.DisplayFor(model => model.Rent.Total)
         </dd>
         <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Rent.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Rent.Total)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Rent.Total)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Rent.Total)
+        </dd>
+        <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Rent.RentedByNavigation)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.RentedByNavigation.PhoneNumber)
+            @Html.DisplayFor(model => model.Rent.RentedByNavigation.UserEmail)
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Rent.Room)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Rent.Room.RoomId)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Rent.RoomMembers)
+        </dt>
+        <dd class="col-sm-10">
+            @foreach (var item in @Model.Rent.RoomMembers)
+            {
+                <p>@item.UserEmail</p>
+            }
         </dd>
     </dl>
 </div>

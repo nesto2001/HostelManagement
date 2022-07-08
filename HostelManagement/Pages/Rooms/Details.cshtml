@@ -77,7 +77,8 @@
 @if (Model.UserRole == "Owner")
 {
     <div>
-        <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a> <p>|</p>
+        <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a> |
+        <a asp-page="../Rents/Index" asp-route-id="@Model.Room.RoomId">View Rent History</a> |
         <a asp-page="../Hostels/Details" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
     </div>
 }
