@@ -29,6 +29,8 @@
 </section>
 
 <section class="listings-hostel">
+
+
     <div class="listings-hostel-wrapper">
         @foreach (var item in Model.Hostels) {
         <div class="hostel-listings-card mb-3">
@@ -83,14 +85,18 @@
                             <i class='bx bx-edit'></i>
                         </a>
                     </div>
-                    <div class="btn-card-action btn-card-deactivate">
+                    <div class="btn-card-action btn-card-deactivate" id="@item.HostelId">
                         <a>
                             <i class='bx bx-power-off'></i>
                         </a>
                     </div>
+                        @{
+                            var name = item.HostelName;
+                        }
                     <script type="text/javascript">
-                        $('.btn-card-deactivate').click(function(){
-                            $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId'/>")
+                        $('.btn-card-deactivate#@item.HostelId').click(function(){
+                            $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId'/>");
+                            $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
                             $('.popup-deactivate').show();
                         })
                     </script>
@@ -107,7 +113,7 @@
     <form method="post" class="deactivate-form" asp-page-handler="deactivate">
     <div class="popup-action">
         <button type="submit" class="btn btn-yes"><a>Yes</a></button>
-        <button class="btn btn-cancel">Cancel</button>
+        <div class="btn btn-cancel">Cancel</div>
     </div>
     </form>
 </div>
@@ -116,7 +122,7 @@
 <script type="text/javascript">
     $('#@activeNav').addClass('active');
     $('.btn-cancel').click(function(){
-        this.parent('.popup-deactivate').hide();
+        $(event.target).parent().closest('.popup-deactivate').hide();
     })
 </script>
 }

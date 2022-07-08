@@ -822,6 +822,7 @@ ol, ul {
 
 .card-action .btn-card-action{
   transition: all 0.5s ease-in-out;
+  cursor: pointer;
 }
 
 .card-action .btn-card-action.btn-card-deactivate:hover i{
@@ -1245,6 +1246,7 @@ a.see-room-info{
   color: black;
   border-radius: 4px;
   margin-left: 10px;
+  cursor: pointer;
 }
 
 .popup-deactivate .popup-action .btn-cancel:hover{
