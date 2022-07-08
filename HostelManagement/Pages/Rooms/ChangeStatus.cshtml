@@ -1,0 +1,108 @@
+﻿@page
+
+@using System.Security.Claims
+@model HostelManagement.Pages.Rooms.ChangeStatusModel
+
+@{
+    Layout = "_OwnerLayout";
+    ViewData["Title"] = "Change Status";
+    var userRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+}
+
+<h1>Delete</h1>
+
+<h3>Are you sure you want to Change Status this?</h3>
+<div>
+    <h4>Hostel</h4>
+    <hr />
+    <dl class="row">
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.RoomTitle)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.RoomTitle)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.RoomDescription)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.RoomDescription)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.RomMaxCapacity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.RomMaxCapacity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.RoomCurrentCapacity)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.RoomCurrentCapacity)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Status)
+        </dt>
+        <dd class="col-sm-10">
+            @{
+                var str = "Pending";
+                if (Model.Room.Status == 0) str = "Pending";
+                if (Model.Room.Status == 1) str = "Active";
+                if (Model.Room.Status == 2) str = "InActive";
+                if (Model.Room.Status == 3) str = "Denied";
+                if (Model.Room.Status == 4) str = "Occupied";
+            }
+            <span>
+                @str
+            </span>
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Deposit)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.Deposit)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Price)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.Price)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Room.Hostel)
+        </dt>
+        <dd class="col-sm-10">
+            @Html.DisplayFor(model => model.Room.Hostel.HostelOwnerEmail)
+        </dd>
+    </dl>
+    @if (Model.Room.Status != 0 && userRole == "Owner")
+    {
+        <form method="post" asp-page-handler="Pending" asp-route-id="@Model.Room.RoomId">
+            <input type="hidden" asp-for="Room.RoomId" />
+            <input type="submit" value="Pending" class="btn btn-danger" />
+        </form>
+    }
+    @if (Model.Room.Status == 0 && userRole == "Admin")
+    {
+        <form method="post" asp-page-handler="Active" asp-route-id="@Model.Room.RoomId">
+            <input type="hidden" asp-for="Room.RoomId" />
+            <input type="submit" value="Active" class="btn btn-danger" />
+        </form>
+    }
+    @if (Model.Room.Status != 2 && userRole == "Owner")
+    {
+        <form method="post" asp-page-handler="Inactive" asp-route-id="@Model.Room.RoomId">
+            <input type="hidden" asp-for="Room.RoomId" />
+            <input type="submit" value="Inactive" class="btn btn-danger" />
+        </form>
+    }
+    @if ((Model.Room.Status == 0 || Model.Room.Status == 2) && userRole == "Admin")
+    {
+        <form method="post" asp-page-handler="Denied" asp-route-id="@Model.Room.RoomId">
+            <input type="hidden" asp-for="Room.RoomId" />
+            <input type="submit" value="Denied" class="btn btn-danger" />
+        </form>
+    }
+
+    <a asp-page="./Index">Back to List</a>
+</div>

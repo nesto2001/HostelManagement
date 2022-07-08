@@ -1,17 +1,17 @@
 ﻿@page
+@using System.Security.Claims
+
 @model HostelManagement.Pages.Hostels.ChangeStatusModel
 
 @{
     Layout = "_OwnerLayout";
     ViewData["Title"] = "Change Status";
-    var st = "Change Status";
-    if (Model.Hostel.Status == 0) st = "Active";
-    else st = "Pending";
+    var userRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
 
 <h1>Delete</h1>
 
-<h3>Are you sure you want to @st this?</h3>
+<h3>Are you sure you want to Change Status this?</h3>
 <div>
     <h4>Hostel</h4>
     <hr />
@@ -63,10 +63,33 @@
             @Html.DisplayFor(model => model.Hostel.Location.AddressString)
         </dd>
     </dl>
-    
-    <form method="post">
-        <input type="hidden" asp-for="Hostel.HostelId" />
-        <input type="submit" value="@st" class="btn btn-danger" /> |
-        <a asp-page="./Index">Back to List</a>
-    </form>
+
+    @if (Model.Hostel.Status != 0 && userRole == "Owner")
+    {
+        <form method="post" asp-page-handler="Pending" asp-route-id="@Model.Hostel.HostelId">
+            <input type="hidden" asp-for="Hostel.HostelId" />
+            <input type="submit" value="Pending" class="btn btn-danger" />
+        </form>
+    }
+    @if (Model.Hostel.Status == 0 && userRole == "Admin")
+    {
+        <form method="post" asp-page-handler="Active" asp-route-id="@Model.Hostel.HostelId">
+            <input type="hidden" asp-for="Hostel.HostelId" />
+            <input type="submit" value="Active" class="btn btn-danger" />
+        </form>
+    }
+    @if (Model.Hostel.Status != 2 && userRole == "Owner")
+    {
+        <form method="post" asp-page-handler="Inactive" asp-route-id="@Model.Hostel.HostelId">
+            <input type="hidden" asp-for="Hostel.HostelId" />
+            <input type="submit" value="Inactive" class="btn btn-danger" />
+        </form>
+    }
+    @if ((Model.Hostel.Status == 0 || Model.Hostel.Status == 2) && userRole == "Admin")
+    {
+        <form method="post" asp-page-handler="Denied" asp-route-id="@Model.Hostel.HostelId">
+            <input type="hidden" asp-for="Hostel.HostelId" />
+            <input type="submit" value="Denied" class="btn btn-danger" />
+        </form>
+    }
 </div>

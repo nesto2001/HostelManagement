@@ -98,9 +98,19 @@ namespace DataAccess.DAO
                 }
             }
 
-            public async Task UpdateRoom(Room Room)
+        public async Task UpdateRoom(Room room)
+        {
+            try
             {
-                throw new NotImplementedException();
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.Attach(room).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
             }
         }
+
+    }
 }

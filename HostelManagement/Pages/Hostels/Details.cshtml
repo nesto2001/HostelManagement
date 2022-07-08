@@ -158,7 +158,17 @@
                         @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Status)
+                        @{
+                            var str = "Change Status";
+                            if (item.Status == 0) str = "Pending";
+                            if (item.Status == 1) str = "Active";
+                            if (item.Status == 2) str = "InActive";
+                            if (item.Status == 3) str = "Denied";
+                            if (item.Status == 4) str = "Occupied";
+                        }
+                        <span>
+                            <a asp-page="../Rooms/ChangeStatus" asp-route-id="@item.RoomId">@str</a>
+                        </span>
                     </td>
                     <td>
                         @Html.DisplayFor(modelItem => item.Deposit)
@@ -169,9 +179,7 @@
                     <td>
                         @if (Model.UserRole == "Owner")
                         {
-                            <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit</a> <p>|</p>
-
-                            <a asp-page="../Rooms/Delete" asp-route-id="@item.RoomId">Delete</a> <p>|</p>
+                        <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit |</a>
                         }
                         <a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Details</a>
 

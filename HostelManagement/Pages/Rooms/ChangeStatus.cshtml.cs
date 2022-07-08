@@ -9,7 +9,7 @@ using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
 
-namespace HostelManagement.Pages.Hostels
+namespace HostelManagement.Pages.Rooms
 {
     public class ChangeStatusModel : PageModel
     {
@@ -40,7 +40,7 @@ namespace HostelManagement.Pages.Hostels
         }
 
         [BindProperty]
-        public Hostel Hostel { get; set; }
+        public Room Room { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -49,8 +49,8 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
 
-            Hostel = await hostelRepository.GetHostelByID((int)id);
-            if (Hostel == null)
+            Room = await roomRepository.GetRoomByID((int)id);
+            if (Room == null)
             {
                 return NotFound();
             }
@@ -64,17 +64,16 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
 
-            Hostel = await hostelRepository.GetHostelByID((int)id);
+            Room = await roomRepository.GetRoomByID((int)id);
 
-            if (Hostel != null)
+            if (Room != null)
             {
-                Hostel.Status = 0;
-                await hostelRepository.UpdateHostel(Hostel);
+                Room.Status = 0;
+                await roomRepository.UpdateRoom(Room);
                 
             }
-            return RedirectToPage("./Details", new { id = Hostel.HostelId });
+            return RedirectToPage("./Details", new { id = Room.RoomId });
         }
-
         public async Task<IActionResult> OnPostActiveAsync(int? id)
         {
             if (id == null)
@@ -82,15 +81,15 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
 
-            Hostel = await hostelRepository.GetHostelByID((int)id);
+            Room = await roomRepository.GetRoomByID((int)id);
 
-            if (Hostel != null)
+            if (Room != null)
             {
-                Hostel.Status = 1;
-                await hostelRepository.UpdateHostel(Hostel);
+                Room.Status = 1;
+                await roomRepository.UpdateRoom(Room);
 
             }
-            return RedirectToPage("./Details", new { id = Hostel.HostelId });
+            return RedirectToPage("./Details", new { id = Room.RoomId });
         }
 
         public async Task<IActionResult> OnPostInactiveAsync(int? id)
@@ -100,15 +99,15 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
 
-            Hostel = await hostelRepository.GetHostelByID((int)id);
+            Room = await roomRepository.GetRoomByID((int)id);
 
-            if (Hostel != null)
+            if (Room != null)
             {
-                Hostel.Status = 2;
-                await hostelRepository.UpdateHostel(Hostel);
+                Room.Status = 2;
+                await roomRepository.UpdateRoom(Room);
 
             }
-            return RedirectToPage("./Details", new { id = Hostel.HostelId });
+            return RedirectToPage("./Details", new { id = Room.RoomId });
         }
 
         public async Task<IActionResult> OnPostDeniedAsync(int? id)
@@ -118,15 +117,15 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
 
-            Hostel = await hostelRepository.GetHostelByID((int)id);
+            Room = await roomRepository.GetRoomByID((int)id);
 
-            if (Hostel != null)
+            if (Room != null)
             {
-                Hostel.Status = 3;
-                await hostelRepository.UpdateHostel(Hostel);
+                Room.Status = 3;
+                await roomRepository.UpdateRoom(Room);
 
             }
-            return RedirectToPage("./Details", new { id = Hostel.HostelId });
+            return RedirectToPage("./Details", new { id = Room.RoomId });
         }
     }
 }
