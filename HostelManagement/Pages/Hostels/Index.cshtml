@@ -33,76 +33,82 @@
 
     <div class="listings-hostel-wrapper">
         @foreach (var item in Model.Hostels) {
-        <div class="hostel-listings-card mb-3">
-            <div class="card-inner">
-                @if (@item.HostelPics.Count>0){
-                <div class="card-img-thumb" style="background: url('../images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl');"></div>
-                }
-                else{
-                    <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
-                }
-                <div class="card-details">
-                    <div class="card-info">
-                        <div class="card-title">[@item.Category.CategoryName] @item.HostelName</div>
-                        @{
-                            switch(item.Status){
-                                case 1:
-                                    <text>
-                                        <span class="card-status status-active">
-                                            Active
-                                        </span>
-                                    </text>
-                                    break;
-                                case 2:
-                                    <text>
-                                        <span class="card-status status-inactive">
-                                            Inactive
-                                        </span>
-                                    </text>
-                                    break;
-                                case 3:
-                                    <text>
-                                        <span class="card-status status-denied">
-                                            Denied
-                                        </span>
-                                    </text>
-                                    break;
-                                default:
-                                    <text>
-                                        <span class="card-status status-pending">
-                                            Pending
-                                        </span>
-                                    </text>
-                                    break;
+        <a asp-page="./Details" asp-route-id="@item.HostelId">
+
+            <div class="hostel-listings-card mb-3">
+                <div class="card-inner">
+                    @if (@item.HostelPics.Count > 0)
+                    {
+                        <div class="card-img-thumb" style="background: url('../images/hostels/@item.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                    }
+                    else
+                    {
+                        <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                    }
+                    <div class="card-details">
+                        <div class="card-info">
+                            <div class="card-title">[@item.Category.CategoryName] @item.HostelName</div>
+                            @{
+                                switch (item.Status)
+                                {
+                                    case 1:
+                                        <text>
+                                            <span class="card-status status-active">
+                                                Active
+                                            </span>
+                                        </text>
+                                        break;
+                                    case 2:
+                                        <text>
+                                            <span class="card-status status-inactive">
+                                                Inactive
+                                            </span>
+                                        </text>
+                                        break;
+                                    case 3:
+                                        <text>
+                                            <span class="card-status status-denied">
+                                                Denied
+                                            </span>
+                                        </text>
+                                        break;
+                                    default:
+                                        <text>
+                                            <span class="card-status status-pending">
+                                                Pending
+                                            </span>
+                                        </text>
+                                        break;
+                                }
                             }
-                        }
-                        <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
+                            <span class="card-location">@item.Location.Ward.District.Province.ProvinceName, @item.Location.Ward.District.DistrictName</span>
+                        </div>
                     </div>
-                </div>
-                <div class="card-action">
-                    <div class="btn-card-action btn-card-edit">
-                        <a asp-page="./Edit" asp-route-id="@item.HostelId">
-                            <i class='bx bx-edit'></i>
-                        </a>
-                    </div>
-                    <div class="btn-card-action btn-card-deactivate" id="@item.HostelId">
-                        <a>
-                            <i class='bx bx-power-off'></i>
-                        </a>
-                    </div>
+                    <div class="card-action">
+                        <div class="btn-card-action btn-card-edit">
+                            <a asp-page="./Edit" asp-route-id="@item.HostelId">
+                                <i class='bx bx-edit'></i>
+                            </a>
+                        </div>
+                        <div class="btn-card-action btn-card-deactivate" id="@item.HostelId">
+                            <a>
+                                <i class='bx bx-power-off'></i>
+                            </a>
+                        </div>
                         @{
                             var name = item.HostelName;
                         }
-                    <script type="text/javascript">
+                        <script type="text/javascript">
                         $('.btn-card-deactivate#@item.HostelId').click(function(){
                             $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId'/>");
                             $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
                             $('.popup-deactivate').show();
                         })
-                    </script>
+                        </script>
+                    </div>
                 </div>
             </div>
-        </div>
+        </a>
         }
     </div>
 </section>
