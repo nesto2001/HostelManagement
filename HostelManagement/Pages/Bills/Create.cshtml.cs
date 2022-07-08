@@ -21,9 +21,10 @@ namespace HostelManagement.Pages.Bills
         private IRoomMemberRepository roomMemberRepository { get; }
         private IBillRepository billRepository { get; }
         private IBillDetailRepository billDetailRepository { get; }
+        private ISendMailService sendMailService { get; }
         public CreateModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
                             IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository,
-                            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
+                            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository, ISendMailService _sendMailService)
         {
             accountRepository = _accountRepository;
             rentRepository = _rentRepository;
@@ -31,6 +32,7 @@ namespace HostelManagement.Pages.Bills
             roomMemberRepository = _roomMemberRepository;
             billRepository = _billRepository;
             billDetailRepository = _billDetailRepository;
+            sendMailService = _sendMailService;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id)
@@ -114,6 +116,13 @@ namespace HostelManagement.Pages.Bills
             await billDetailRepository.AddBillDetail(BillDetail[2]);
             BillDetail[3].BillDescription = "Other fee";
             await billDetailRepository.AddBillDetail(BillDetail[3]);
+            string body = "Thank you for your service hostel renting. \n" +
+                    "Your bill is created at " + DateTime.Now + "\n" +
+                    "Please pay bill before: " + Bill.DueDate + "\n" +
+                    "Thank you. \n" +
+                    "Please send your feedback by reply mail.\n" +
+                    "Best Regard,";
+            await sendMailService.SendEmailAsync(rentGenerate.RentedBy, "Bill for contract of room", body);
             return RedirectToPage("../BillDetails/Index");
         }
     }

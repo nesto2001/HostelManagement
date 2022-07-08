@@ -1,5 +1,6 @@
 using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using HostelManagement.Helpers;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using System;
@@ -16,15 +17,17 @@ namespace HostelManagementWorkerService
         private IRentRepository rentRepository;
         private IBillRepository billRepository;
         private IBillDetailRepository billDetailRepository;
+        private ISendMailService sendMailService;
         private readonly IServiceProvider _serviceProvider;
         public Worker(ILogger<Worker> logger, IRentRepository _rentRepository, IServiceProvider serviceProvider,
-            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
+            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository, ISendMailService _sendMailService)
         {
             _logger = logger;
             rentRepository = _rentRepository;
             _serviceProvider = serviceProvider;
             billRepository = _billRepository;
             billDetailRepository = _billDetailRepository;
+            sendMailService = _sendMailService;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -81,10 +84,24 @@ namespace HostelManagementWorkerService
                             Fee = item.Total
                         };
                         await billDetailRepository.AddBillDetail(billDetail);
+                        string body = "Thank you for your service hostel renting. \n" +
+                            "Your bill is created at " + DateTime.Now + "\n" +
+                            "Please pay bill before: " + bill.DueDate + "\n" +
+                            "Thank you. \n" +
+                            "Please send your feedback by reply mail.\n" +
+                            "Best Regard,";
+                        _logger.LogInformation("{0} - {1} - {2}", item.RentId, item.RentedBy, body);
+                        try {
+                            await sendMailService.SendEmailAsync(item.RentedBy, "Bill for contract of room", body);
+                        } catch (Exception ex)
+                        {
+                            _logger.LogInformation(ex.Message + "---" + ex);
+                        }
+                        
                         _logger.LogInformation("The rent {0} of {1} is created a bill at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
                 }
-                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
             }
         }
     }
