@@ -92,6 +92,7 @@ namespace DataAccess.DAO
                     .Include(r => r.RentedByNavigation)
                     .Include(r => r.RoomMembers)
                     .Include(r => r.Bills)
+                        .ThenInclude(r => r.BillDetails)
                     .FirstOrDefaultAsync(r => r.RentId == id);
             }
             catch (Exception ex)

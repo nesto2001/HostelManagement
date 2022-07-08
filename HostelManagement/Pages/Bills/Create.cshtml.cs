@@ -40,12 +40,8 @@ namespace HostelManagement.Pages.Bills
                 return RedirectToPage("../AccessDenied");
             }
             rent = await rentRepository.GetRentByID((int)id);
-            if (rent.StartRentDate < DateTime.Now.AddDays(15))
-            {
-                return RedirectToPage("../AccessDenied");
-            }
-            var LastBill = DateTime.Now.AddDays(-20);
-            if (rent.Bills != null)
+            var LastBill = rent.StartRentDate;
+            if (rent.Bills.Count() != 0)
             {
                 LastBill = (DateTime)rent.Bills.Max(b => b.CreatedDate);
             }

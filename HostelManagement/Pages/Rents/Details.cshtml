@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Security.Claims
 @model HostelManagement.Pages.Rents.DetailsModel
 
 @{
@@ -64,7 +65,54 @@
         </dd>
     </dl>
 </div>
+@if (Model.Rent.Bills.Count() != 0)
+{
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Rent.Bills.First().CreatedDate)
+                </th>
+                <th>
+                    Total
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model.Rent.Bills)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.CreatedDate)
+                    </td>
+                    <td>
+                        @item.BillDetails.Sum(b => b.Fee)
+                    </td>
+                    <td>
+                        <a asp-page="../Bills/Details" asp-route-id="@item.BillId">Details</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-page="./Index">Back to List</a>
 </div>
+@{
+    if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+    {
+        var lastBill = Model.Rent.StartRentDate;
+        if (Model.Rent.Bills.Count() != 0)
+        {
+            lastBill = (DateTime)Model.Rent.Bills.Max(b => b.CreatedDate);
+        }
+        if (lastBill < DateTime.Now.AddDays(-15))
+        {
+            <a asp-page="../Bills/Create" asp-route-id="@Model.Rent.RentId">Generate bill</a>
+        }
+    }
+
+}
