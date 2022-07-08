@@ -26,15 +26,26 @@ namespace HostelManagementWorkerService
             while (!stoppingToken.IsCancellationRequested)
             {
                 var rents = await rentRepository.GetRentList();
-                rents = rents.Where(r => r.IsDeposited == 0);
-                foreach (var item in rents)
+                var rentDeposits = rents.Where(r => r.IsDeposited == 0 && r.Status == 0);
+                foreach (var item in rentDeposits)
                 {
                     if (item.StartRentDate < DateTime.Now.AddHours(-24))
                     {
                         item.Status = 4;
                         await rentRepository.UpdateRent(item);
+                        _logger.LogInformation("The rent {0} of {1} is cancel at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
-                    _logger.LogInformation("The rent {0} of {1} is cancel at {2}", item.RentId, item.RentedBy, DateTime.Now);
+                    
+                }
+                var rentWaitingStart = rents.Where(r => r.IsDeposited == 2 && r.Status == 0);
+                foreach (var item in rentWaitingStart)
+                {
+                    if (item.StartRentDate.Date == DateTime.Now.Date)
+                    {
+                        item.Status = 1;
+                        await rentRepository.UpdateRent(item);
+                        _logger.LogInformation("The rent {0} of {1} is start at {2}", item.RentId, item.RentedBy, DateTime.Now);
+                    }
                 }
                 await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
             }

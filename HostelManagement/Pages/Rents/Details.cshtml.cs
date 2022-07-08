@@ -98,7 +98,6 @@ namespace HostelManagement.Pages.Rents
             }
 
             if (Rent.IsDeposited == 1) Rent.IsDeposited = 2;
-            if (Rent.IsDeposited == 1) Rent.Status = 1;
 
             await rentRepository.UpdateRent(Rent);
 
