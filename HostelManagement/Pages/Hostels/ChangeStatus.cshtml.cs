@@ -4,17 +4,14 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
-using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
 
 namespace HostelManagement.Pages.Hostels
 {
-    public class EditModel : PageModel
+    public class ChangeStatusModel : PageModel
     {
         private IHostelRepository hostelRepository;
         private IAccountRepository accountRepository;
@@ -26,7 +23,7 @@ namespace HostelManagement.Pages.Hostels
         private IHostelPicRepository hostelPicRepository;
         private IRoomRepository roomRepository;
 
-        public EditModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
+        public ChangeStatusModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
             ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
@@ -57,28 +54,26 @@ namespace HostelManagement.Pages.Hostels
             {
                 return NotFound();
             }
-
-            ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
-            ViewData["LocationId"] = Hostel.LocationId;
-            ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
             return Page();
         }
 
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see https://aka.ms/RazorPagesCRUD.
-        public async Task<IActionResult> OnPostAsync()
+        public async Task<IActionResult> OnPostAsync(int? id)
         {
-            if (!ModelState.IsValid)
+            if (id == null)
             {
-                ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
-                ViewData["LocationId"] = Hostel.LocationId;
-                ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
-                return Page();
+                return NotFound();
             }
-            Hostel.Status = 0;
-            await hostelRepository.UpdateHostel(Hostel);
-            return RedirectToPage("./Details", new {id = Hostel.HostelId});
-        }
 
+            Hostel = await hostelRepository.GetHostelByID((int)id);
+
+            if (Hostel != null)
+            {
+                if (Hostel.Status == 0) Hostel.Status = 1;
+                else Hostel.Status = 0;
+                await hostelRepository.UpdateHostel(Hostel);
+                
+            }
+            return RedirectToPage("./Details", new { id = Hostel.HostelId });
+        }
     }
 }

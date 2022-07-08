@@ -15,9 +15,13 @@ namespace BusinessObject.BusinessObject
         }
 
         public int HostelId { get; set; }
+        [Required]
+        [StringLength(30, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 6)]
         public string HostelName { get; set; }
+        [Required]
+        [StringLength(1000, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 10)]
         public string Description { get; set; }
-        [Range(0, 1, ErrorMessage = "Only 0 or 1")]
+        [Range(0, 4, ErrorMessage = "Only 0-4")]
         public int? Status { get; set; }
         public int? CategoryId { get; set; }
         public string HostelOwnerEmail { get; set; }

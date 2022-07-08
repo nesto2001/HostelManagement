@@ -113,7 +113,18 @@
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                
+                @{
+                    var str = "Change Status";
+                    if (item.Status == 0) str = "Pending";
+                    if (item.Status == 1) str = "Active";
+                    if (item.Status == 2) str = "InActive";
+                    if (item.Status == 3) str = "Denied";
+                    if (item.Status == 4) str = "Occupied";
+                }
+                <span>
+                    <a asp-page="./ChangeStatus" asp-route-id="@item.HostelId">@str</a>
+                </span>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Category.CategoryName)
@@ -125,7 +136,6 @@
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.HostelId">Edit</a> |
                 <a asp-page="./Details" asp-route-id="@item.HostelId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.HostelId">Delete</a>
             </td>
         </tr>
 }
