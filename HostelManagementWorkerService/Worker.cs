@@ -90,7 +90,6 @@ namespace HostelManagementWorkerService
                             "Thank you. \n" +
                             "Please send your feedback by reply mail.\n" +
                             "Best Regard,";
-                        _logger.LogInformation("{0} - {1} - {2}", item.RentId, item.RentedBy, body);
                         try {
                             await sendMailService.SendEmailAsync(item.RentedBy, "Bill for contract of room", body);
                         } catch (Exception ex)
@@ -101,7 +100,7 @@ namespace HostelManagementWorkerService
                         _logger.LogInformation("The rent {0} of {1} is created a bill at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
                 }
-                await Task.Delay(TimeSpan.FromSeconds(5), stoppingToken);
+                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
             }
         }
     }

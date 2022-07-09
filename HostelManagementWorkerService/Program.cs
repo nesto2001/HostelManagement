@@ -5,6 +5,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.EntityFrameworkCore;
 using HostelManagement.Helpers;
+using BusinessObject.BusinessObject;
+using System.Configuration;
 
 namespace HostelManagementWorkerService
 {
@@ -36,6 +38,9 @@ namespace HostelManagementWorkerService
                     services.AddSingleton<IBillRepository, BillRepository>();
                     services.AddSingleton<IBillDetailRepository, BillDetailRepository>();
                     services.AddSingleton<IRoomMemberRepository, RoomMemberRepository>();
+                    services.AddOptions();
+                    var mailsettings = configuration.GetSection("MailSettings");
+                    services.Configure<MailSettings>(mailsettings);
                     services.AddSingleton<ISendMailService, SendMailService>();
                     services.AddHostedService<Worker>();
                 });
