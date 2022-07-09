@@ -16,11 +16,13 @@ namespace HostelManagementWorkerService
         private readonly ILogger<Worker> _logger;
         private IRentRepository rentRepository;
         private IBillRepository billRepository;
+        private IRoomRepository roomRepository;
         private IBillDetailRepository billDetailRepository;
         private ISendMailService sendMailService;
         private readonly IServiceProvider _serviceProvider;
         public Worker(ILogger<Worker> logger, IRentRepository _rentRepository, IServiceProvider serviceProvider,
-            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository, ISendMailService _sendMailService)
+            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository, ISendMailService _sendMailService,
+            IRoomRepository _roomRepository)
         {
             _logger = logger;
             rentRepository = _rentRepository;
@@ -28,6 +30,7 @@ namespace HostelManagementWorkerService
             billRepository = _billRepository;
             billDetailRepository = _billDetailRepository;
             sendMailService = _sendMailService;
+            roomRepository = _roomRepository;
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
@@ -99,8 +102,57 @@ namespace HostelManagementWorkerService
                         
                         _logger.LogInformation("The rent {0} of {1} is created a bill at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
+                    if (item.EndRentDate.Date == DateTime.Now.AddDays(7).Date)
+                    {
+                        string body = "Thank you for your service hostel renting. \n" +
+                            "Your contract will end at " + item.EndRentDate.ToString("dd-MM-yyyy") + "\n" +
+                            "The contract number is " + item.RentId + "\n" +
+                            "Please extend your bill before: " + item.EndRentDate.AddDays(-3).ToString("dd-MM-yyyy") + "\n" +
+                            "Thank you. \n" +
+                            "If you don't extend ontime, the same as you won't rent this room after end date of contract. \n " +
+                            "Please send your feedback by reply mail.\n" +
+                            "Best Regard,";
+                        try
+                        {
+                            await sendMailService.SendEmailAsync(item.RentedBy, "Remind extend your contract ", body);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogInformation(ex.Message + "---" + ex);
+                        }
+
+                        _logger.LogInformation("Remind extend contract {0} of {1} is created at {2}", item.RentId, item.RentedBy, DateTime.Now);
+                    }
+                    if (item.EndRentDate.Date == DateTime.Now.AddDays(2).Date)
+                    {
+                        item.Status = 2;
+                        var room = await roomRepository.GetRoomByID(item.RoomId);
+                        if (room != null)
+                        {
+                            room.Status = 1;
+                            await roomRepository.UpdateRoom(room);
+                        }
+                        await rentRepository.UpdateRent(item);
+                        string body = "Thank you for your service hostel renting. \n" +
+                            "Your contract will end at " + item.EndRentDate.ToString("dd-MM-yyyy") + "\n" +
+                            "The contract number is " + item.RentId + "\n" +
+                            "Thank you. \n" +
+                            "You didn't extend your contract, the same as you won't rent this room after end date of contract. \n " +
+                            "Please send your feedback by reply mail.\n" +
+                            "Best Regard,";
+                        try
+                        {
+                            await sendMailService.SendEmailAsync(item.RentedBy, "Confirm did not extend your contract ", body);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogInformation(ex.Message + "---" + ex);
+                        }
+
+                        _logger.LogInformation("Confirm did not extend contract {0} of {1} is created at {2}", item.RentId, item.RentedBy, DateTime.Now);
+                    }
                 }
-                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+                await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
             }
         }
     }
