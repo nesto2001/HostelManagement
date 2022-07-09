@@ -1,4 +1,10 @@
-﻿<!DOCTYPE html>
+﻿@using System.Security.Claims
+@{ 
+    var Role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+    string role = null;
+    if (Role == "Owner") role = "owner";
+}
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -8,38 +14,79 @@
     <link rel="stylesheet" href="~/css/site.css" />
     <link href='https://unpkg.com/boxicons@2.1.2/css/boxicons.min.css' rel='stylesheet'>
 </head>
-<body>
+<body class="@role-page">
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">
-                    <img class="site-logo" src="~/images/rentel-logo_v3.png"/>    
-                </a>
-                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
-                        </li>
-                    </ul>
-                </div>
+                @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                {
+                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/Overview">
+                        <img class="site-logo" src="~/images/rentel-logo_v2.png" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Accounts/Overview">Overview</a>
+                            </li>
+                            <li class="nav-item" id="listings-nav">
+                                <a class="nav-link" asp-area="" asp-page="/Hostels/Index">Listings</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+                else
+                {
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">
+                        <img class="site-logo" src="~/images/rentel-logo_v3.png" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-page="/Privacy">Privacy</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
+
                 <div class="user-nav d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <button class="btn-renter"><a class="a-link" asp-area="" asp-page="">List your place</a></button>
-                        </li>
-                        <li class="nav-item link-only">
-                            <a class="btn-login a-link" asp-area="" asp-page="/Accounts/Login">Sign in</a>
-                        </li>
-                        <li class="nav-item">
-                            <button class="btn-login"><a class="a-link" asp-area="" asp-page="/Accounts/Register">Create account</a></button>
-                        </li>
+                        @if (User.Identity == null || !User.Identity.IsAuthenticated)
+                        {
+
+                            <li class="nav-item">
+                                <button class="btn-renter"><a class="a-link" asp-area="" asp-page="">List your place</a></button>
+                            </li>
+                            <li class="nav-item link-only">
+                                <a class="btn-login a-link" asp-area="" asp-page="/Accounts/Login">Sign in</a>
+                            </li>
+                            <li class="nav-item">
+                                <button class="btn-login"><a class="a-link" asp-area="" asp-page="/Accounts/Register">Create account</a></button>
+                            </li>
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link">
+                                    Welcome, @User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value
+                                </a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Accounts/Logout">
+                                    Log Out
+                                </a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

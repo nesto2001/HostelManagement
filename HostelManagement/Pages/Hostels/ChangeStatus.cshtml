@@ -4,7 +4,6 @@
 @model HostelManagement.Pages.Hostels.ChangeStatusModel
 
 @{
-    Layout = "_OwnerLayout";
     ViewData["Title"] = "Change Status";
     var userRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
