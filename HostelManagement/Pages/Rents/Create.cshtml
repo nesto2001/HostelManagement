@@ -4,6 +4,7 @@
 @{
     var hidden = false;
     if (Model.message == null) hidden = true;
+    bool extend = (bool)ViewData["extend"];
 }
 
 <h1>Create</h1>
@@ -25,25 +26,47 @@
                 <label asp-for="Rent.RentedBy" class="control-label"></label>
                 <input asp-for="Rent.RentedBy" class="form-control" value="@ViewBag.RentedBy" readonly />
             </div>
-            <div class="form-group">
-                <label asp-for="Rent.IsDeposited" class="control-label"></label>
-                <input asp-for="Rent.IsDeposited" class="form-control" value="0" readonly />
-                <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rent.Status" class="control-label"></label>
-                <input asp-for="Rent.Status" class="form-control" value="0" readonly />
-                <span asp-validation-for="Rent.Status" class="text-danger"></span>
-            </div>
+            @if (extend)
+            {
+                <div class="form-group">
+                    <label asp-for="Rent.IsDeposited" class="control-label"></label>
+                    <input asp-for="Rent.IsDeposited" class="form-control" value="2" readonly />
+                    <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rent.Status" class="control-label"></label>
+                    <input asp-for="Rent.Status" class="form-control" value="1" readonly />
+                    <span asp-validation-for="Rent.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rent.StartRentDate" class="control-label"></label> 
+                    <p class="form-control">@Model.StartRentDate</p>
+                </div>
+            }
+            else
+            {
+                <div class="form-group">
+                    <label asp-for="Rent.IsDeposited" class="control-label"></label>
+                    <input asp-for="Rent.IsDeposited" class="form-control" value="0" readonly />
+                    <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rent.Status" class="control-label"></label>
+                    <input asp-for="Rent.Status" class="form-control" value="0" readonly />
+                    <span asp-validation-for="Rent.Status" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Rent.StartRentDate" class="control-label"></label>
+                    <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date" />
+                    <span asp-validation-for="Rent.StartRentDate" class="text-danger"></span>
+                </div>
+            }
+
+
             <div class="form-group">
                 <label asp-for="Rent.Total" class="control-label"></label>
                 <input asp-for="Rent.Total" class="form-control" value="@Model.room.Price" readonly />
                 <span asp-validation-for="Rent.Total" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rent.StartRentDate" class="control-label"></label>
-                <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date" />
-                <span asp-validation-for="Rent.StartRentDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="MonthRent" class="control-label">How many months?</label>

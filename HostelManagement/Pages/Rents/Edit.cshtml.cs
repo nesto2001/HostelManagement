@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Rents
 {
@@ -20,8 +21,11 @@ namespace HostelManagement.Pages.Rents
             _context = context;
         }
 
+
         [BindProperty]
         public Rent Rent { get; set; }
+        [BindProperty]
+        public int MonthRent { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -29,17 +33,17 @@ namespace HostelManagement.Pages.Rents
             {
                 return NotFound();
             }
-
             Rent = await _context.Rents
-                .Include(r => r.RentedByNavigation)
-                .Include(r => r.Room).FirstOrDefaultAsync(m => m.RentId == id);
-
+                .Include(h => h.RoomMembers)
+                .Include(h => h.Bills)
+                .FirstOrDefaultAsync(m => m.RentId == id);
+            var room = await _context.Rooms
+                .FirstOrDefaultAsync(m => m.RoomId == Rent.RoomId);
+            ViewData["RoomPrice"] = room.Price;
             if (Rent == null)
             {
                 return NotFound();
             }
-           ViewData["RentedBy"] = new SelectList(_context.Accounts, "UserEmail", "PhoneNumber");
-           ViewData["RoomId"] = new SelectList(_context.Rooms, "RoomId", "RoomId");
             return Page();
         }
 
@@ -51,31 +55,29 @@ namespace HostelManagement.Pages.Rents
             {
                 return Page();
             }
-
+            Rent.EndRentDate = Rent.EndRentDate.AddMonths(MonthRent);
             _context.Attach(Rent).State = EntityState.Modified;
-
+            foreach (var item in Rent.RoomMembers)
+            {
+                item.EndRentDate = item.EndRentDate.AddMonths(MonthRent);
+                _context.Attach(item).State = EntityState.Modified;
+            }
+            foreach (var item in Rent.Bills)
+            {
+                item.EndRentDate = item.EndRentDate.AddMonths(MonthRent);
+                _context.Attach(item).State = EntityState.Modified;
+            }
             try
             {
                 await _context.SaveChangesAsync();
             }
             catch (DbUpdateConcurrencyException)
             {
-                if (!RentExists(Rent.RentId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
+                throw;
             }
 
             return RedirectToPage("./Index");
         }
 
-        private bool RentExists(int id)
-        {
-            return _context.Rents.Any(e => e.RentId == id);
-        }
     }
 }

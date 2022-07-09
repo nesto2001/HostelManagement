@@ -56,11 +56,19 @@ namespace HostelManagement.Pages.Rents
             {
                 return NotFound();
             }
-
-            if (roomMember.IsPresentator == true) roomMember.IsPresentator = false;
-            else roomMember.IsPresentator = true;
+            var room = await roomRepository.GetRoomByID(roomMember.RoomId);
+            if (roomMember.IsPresentator == true)
+            {
+                roomMember.IsPresentator = false;
+                room.RoomCurrentCapacity = room.RoomCurrentCapacity - 1;
+            }
+            if (roomMember.IsPresentator == false)
+            {
+                roomMember.IsPresentator = true;
+                room.RoomCurrentCapacity = room.RoomCurrentCapacity + 1;
+            }
             await roomMemberRepository.UpdateRoomMember(roomMember);
-
+            await roomRepository.UpdateRoom(room);
             return RedirectToPage("./Details", new {id= roomMember.RentId});
         }
 
