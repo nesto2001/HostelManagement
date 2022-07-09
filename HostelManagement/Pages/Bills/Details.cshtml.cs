@@ -49,5 +49,65 @@ namespace HostelManagement.Pages.Bills
             ViewData["sum"] = Bill.BillDetails.Sum(bd => bd.Fee);
             return Page();
         }
+
+        public async Task<IActionResult> OnGetConfirmAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Bill = await billRepository.GetBillById((int)id);
+            if (Bill == null)
+            {
+                return NotFound();
+            }
+
+            if (Bill.DueDate < Bill.CreatedDate) Bill.DueDate = Bill.CreatedDate;
+
+            await billRepository.UpdateBill(Bill);
+
+            return RedirectToPage("./Details", new { id = Bill.BillId });
+        }
+
+        public async Task<IActionResult> OnGetNotConfirmAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Bill = await billRepository.GetBillById((int)id);
+            if (Bill == null)
+            {
+                return NotFound();
+            }
+
+            if (Bill.DueDate < Bill.CreatedDate) Bill.DueDate = DateTime.Parse(Bill.CreatedDate.ToString()).AddDays(1);
+
+            await billRepository.UpdateBill(Bill);
+
+            return RedirectToPage("./Details", new { id = Bill.BillId });
+        }
+
+        public async Task<IActionResult> OnGetCheckAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Bill = await billRepository.GetBillById((int)id);
+            if (Bill == null)
+            {
+                return NotFound();
+            }
+
+            if (Bill.DueDate > Bill.CreatedDate) Bill.DueDate = DateTime.Parse(Bill.CreatedDate.ToString()).AddDays(-1);
+
+            await billRepository.UpdateBill(Bill);
+
+            return RedirectToPage("./Details", new { id = Bill.BillId });
+        }
     }
 }

@@ -10,6 +10,7 @@ namespace DataAccess.Repository
     public interface IBillRepository
     {
         Task AddBill(Bill bill); 
+        Task UpdateBill(Bill bill); 
         Task<Bill> GetBillById(int BillId);
         Task<IEnumerable<Bill>> GetBillList();
     }

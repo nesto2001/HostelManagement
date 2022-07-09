@@ -1,8 +1,10 @@
 ﻿@page
+@using System.Security.Claims
 @model HostelManagement.Pages.Bills.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
+    var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
 
 <h1>Details</h1>
@@ -86,6 +88,28 @@
                 <h3><b>@ViewData["sum"]</b></h3>
             </td>
             <td>
+                @if (Model.Bill.DueDate > Model.Bill.CreatedDate)
+                {
+                    <button class="btn btn-danger">NOT PAID</button>
+                    @if (role == "Renter")
+                    {
+                        <a asp-page-handler="Check" asp-route-id="@Model.Bill.BillId">Already paid?</a>
+                    }
+
+                }
+                @if (Model.Bill.DueDate < Model.Bill.CreatedDate)
+                {
+                    <button class="btn btn-danger">CHECKING</button>
+                    @if (role == "Owner")
+                    {
+                        <a asp-page-handler="Confirm" asp-route-id="@Model.Bill.BillId">Comfirm paid</a>
+                        <a asp-page-handler="NotConfirm" asp-route-id="@Model.Bill.BillId">Not paid</a>
+                    }
+                }
+                @if (Model.Bill.DueDate == Model.Bill.CreatedDate)
+                {
+                    <button class="btn btn-danger">PAID</button>
+                }
             </td>
             <td>
             </td>

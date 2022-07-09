@@ -75,5 +75,19 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task UpdateBill(Bill Bill)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                HostelManagementContext.Attach(Bill).State = EntityState.Modified;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }
