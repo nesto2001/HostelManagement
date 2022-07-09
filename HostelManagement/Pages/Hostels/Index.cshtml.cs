@@ -44,6 +44,12 @@ namespace HostelManagement.Pages.Hostels
             await hostelRepository.DeactivateHostel(id);
             return RedirectToPage("./Index");
         }
+
+        public async Task<IActionResult> OnPostReactivate(int id)
+        {
+            await hostelRepository.ActivateHostel(id);
+            return RedirectToPage("./Index");
+        }
     }
 
 }

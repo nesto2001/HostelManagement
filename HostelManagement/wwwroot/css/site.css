@@ -829,6 +829,10 @@ ol, ul {
   color: #f03434;
 }
 
+.card-action .btn-card-action.btn-card-activate:hover i{
+  color: #65a131;
+}
+
 .card-action .btn-card-action.btn-card-edit:hover i{
   color: #f03434;
 }
@@ -1250,5 +1254,96 @@ a.see-room-info{
 }
 
 .popup-deactivate .popup-action .btn-cancel:hover{
+  background: #b6b6b6;
+}
+
+.listings-filter{
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: 28px;
+}
+
+.listings-filter .listings-filter-items {
+  border-bottom: 1px solid #d3d5d7;
+  width: fit-content;
+}
+
+.listings-filter .listing-link-action {
+  text-decoration: none;
+  color: #2a2a2e;
+  margin-right: 32px;
+  font-weight: 1000;
+  height: 34px;
+}
+
+.listings-filter-items a {
+  display: inline-block;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.listings-filter .listing-link-action:last-child {
+  margin-right: 0;
+}
+
+.listings-filter .listing-link-action.listing-link-action-active {
+  color: #0083CC;
+  border-bottom: 3px solid #0083CC;
+}
+
+.listings-hostel-tab{
+  margin-bottom: 20px;
+}
+
+.popup-activate{
+  position: fixed;
+  top: 20%;
+  left: 38%;
+  width: 24%;
+  height: 208px;
+  z-index: 5;
+  background: #fff;
+  border-radius: 16px;
+  box-shadow: 0 1px 20px 0 rgba(0, 0, 0, .1);
+  padding: 16px;
+  padding-top: 24px;
+  text-align: center;
+  display: none;
+}
+
+.popup-activate p {
+  font-size: 18px;
+  margin-bottom: 32px;
+}
+
+.popup-activate .popup-action{
+  text-align: right;
+  margin-right: 36px;
+}
+
+.popup-activate .popup-action .btn{
+  transition: all 0.19s ease-in-out;
+}
+
+.popup-activate .popup-action .btn-yes{
+  color: #ed5c59;
+}
+
+.popup-activate .popup-action .btn-yes:hover{
+  color: #fff;
+  background: #ed5c59;
+  border-radius: 4px;
+  margin-left: 15px;
+}
+
+.popup-activate .popup-action .btn-cancel{
+  background: #e5e5e5;
+  color: black;
+  border-radius: 4px;
+  margin-left: 10px;
+  cursor: pointer;
+}
+
+.popup-activate .popup-action .btn-cancel:hover{
   background: #b6b6b6;
 }
