@@ -32,7 +32,8 @@ namespace HostelManagement.Pages.Accounts
             {
                 message = "Your account or password is incorrect. Try again!";
                 return Page();
-            } else if (acc.Result.Status != 1)
+            }
+            else if (acc.Result.Status != 1)
             {
                 message = "Your account is locked!";
                 return Page();
@@ -60,7 +61,7 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ContactName", "Admin");
                 //HttpContext.Session.SetString("ID", "admin");
-                return RedirectToPage("index"); //return AdminDashboard
+                return RedirectToPage("../AdminDashboard"); //return AdminDashboard
 
             }
             else if (acc.Result.RoleName.Equals("owner"))
@@ -118,11 +119,12 @@ namespace HostelManagement.Pages.Accounts
                 {
                     int rv = (int)HostelView;
                     return RedirectToPage("../Hostels/View", new { id = rv });
-                } else
+                }
+                else
                 {
                     return RedirectToPage("../Index");
                 }
-               
+
             }
 
             else
