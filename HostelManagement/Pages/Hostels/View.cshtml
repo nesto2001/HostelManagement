@@ -15,63 +15,46 @@
                 <div class="hostel-location"><a>@Model.Hostel.Location.Ward.WardName, @Model.Hostel.Location.Ward.District.DistrictName, @Model.Hostel.Location.Ward.District.Province.ProvinceName</a></div>
                 <div class="hostel-images">
                     <div class="hostel-images-wrapper">
-
-                        <div class="hostel-imgs hostel-thumb">
+                         @{
+                                string imgClass="";
+                                var imgs = Model.Hostel.HostelPics.Count-1;
+                                if (imgs < 3 ) {
+                                    imgClass = "few-img"; 
+                                }
+                                else if (imgs < 1){
+                                    imgClass = "single-img";
+                                }
+                                else imgClass = "multiple-img";
+                            }
+                        <div class="hostel-imgs hostel-thumb @imgClass">
+                            @{
+                                var hostelThumb = "placeholder.png";
+                                if (Model.Hostel.HostelPics.Count>0){
+                                    hostelThumb = "hostels/"+Model.Hostel.HostelPics.ElementAt(0).HostelPicUrl;
+                                }
+                            }
                             <div class="img-wrapper"> <!-- pointer-->
                                 <div class="img"> <!-- main img-->
-                                    <img src="~/images/placeholder.png" alt="">
+                                    <img src="~/images/@hostelThumb" alt="">
                                 </div>
                                 <!-- mosaic-->
                             </div>
                         </div>
-
+                        @if (Model.Hostel.HostelPics.Count>2){
                         <div class="hostel-imgs">
                             <div class="imgs-wrapper">
-                                <div class="img-item">
+                                @for (int i = 1; i < 5;i++){
+                                <div class="img-item @imgClass">
                                     <div class="img-wrapper"> <!-- pointer-->
                                         <div class="img">
-                                            <img src="~/images/placeholder.png" alt="">
+                                            <img src="~/images/hostels/@Model.Hostel.HostelPics.ElementAt(i).HostelPicUrl" alt="">
                                         </div>
                                     </div>
                                 </div>
-                                <div class="img-item">
-                                    <div class="img-wrapper"> <!-- pointer-->
-                                        <div class="img">
-                                            <img src="~/images/placeholder.png" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="img-item">
-                                    <div class="img-wrapper"> <!-- pointer-->
-                                        <div class="img">
-                                            <img src="~/images/placeholder.png" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="img-item">
-                                    <div class="img-wrapper"> <!-- pointer-->
-                                        <div class="img">
-                                            <img src="~/images/placeholder.png" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="img-item">
-                                    <div class="img-wrapper"> <!-- pointer-->
-                                        <div class="img">
-                                            <img src="~/images/placeholder.png" alt="">
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="img-item">
-                                    <div class="img-wrapper"> <!-- pointer-->
-                                        <div class="img">
-                                            <img src="~/images/placeholder.png" alt="">
-                                        </div>
-                                    </div>
-                                </div>
+                                }
                             </div>
                         </div>
-
+                        }
                     </div>
                 </div>
 
@@ -154,7 +137,7 @@
                                                             <span class="currency">
                                                                 ₫
                                                             </span>
-                                                            <span>@item.Price</span>
+                                                            <span>@item.Price/month</span>
                                                         </div>
                                                     </div>
                                                     <div class="booking-details-item details-book">

@@ -934,7 +934,7 @@ ol, ul {
   cursor: pointer;
   position: relative;
   width: 100%;
-  height: 160px;
+  height: 152px;
 }
 
 .hostel-content{
@@ -1346,4 +1346,25 @@ a.see-room-info{
 
 .popup-activate .popup-action .btn-cancel:hover{
   background: #b6b6b6;
+}
+
+.hostel-imgs .imgs-wrapper .img-item.multiple-img{
+  max-width: 50%;
+  flex-basis: 50%;
+}
+
+.hostel-imgs .imgs-wrapper .img-item.few-img{
+  max-width: 100%;
+  flex-basis: 100%;
+}
+
+.hostel-imgs.hostel-thumb.few-img{
+  max-width: 75%;
+  flex-basis: 75%;
+}
+
+.hostel-imgs.hostel-thumb.single-img{
+  max-width: 100%;
+  flex-basis: 100%;
+  padding: 0;
 }
