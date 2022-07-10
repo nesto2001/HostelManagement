@@ -56,6 +56,20 @@ namespace HostelManagementWorkerService
                     {
                         item.Status = 1;
                         await rentRepository.UpdateRent(item);
+                        string body = "Thank you for your service hostel renting. \n" +
+                            "Your contract number " + item.RentId + "\n" +
+                            " is started at " + DateTime.Now.ToString("dd-MM-yyyy") + " \n" +
+                            "Thank you. \n" +
+                            "Please send your feedback by reply mail.\n" +
+                            "Best Regard,";
+                        try
+                        {
+                            await sendMailService.SendEmailAsync(item.RentedBy, "Start of room", body);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogInformation(ex.Message + "---" + ex);
+                        }
                         _logger.LogInformation("The rent {0} of {1} is start at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
                 }
@@ -150,6 +164,30 @@ namespace HostelManagementWorkerService
                         }
 
                         _logger.LogInformation("Confirm did not extend contract {0} of {1} is created at {2}", item.RentId, item.RentedBy, DateTime.Now);
+                    }
+                }
+                var rentMustStop = rents.Where(r => r.Status == 2 || r.Status == 5);
+                foreach (var item in rentMustStop)
+                {
+                    if (item.EndRentDate.Date == DateTime.Now.Date)
+                    {
+                        item.Status = 3;
+                        await rentRepository.UpdateRent(item);
+                        string body = "Thank you for your service hostel renting. \n" +
+                            "Your contract number " + item.RentId + "\n" +
+                            " is ended at " + DateTime.Now.ToString("dd-MM-yyyy") + " \n" +
+                            "Thank you. \n" +
+                            "Please send your feedback by reply mail.\n" +
+                            "Best Regard,";
+                        try
+                        {
+                            await sendMailService.SendEmailAsync(item.RentedBy, "End contract of room", body);
+                        }
+                        catch (Exception ex)
+                        {
+                            _logger.LogInformation(ex.Message + "---" + ex);
+                        }
+                        _logger.LogInformation("The rent {0} of {1} is end at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
                 }
                 await Task.Delay(TimeSpan.FromDays(1), stoppingToken);
