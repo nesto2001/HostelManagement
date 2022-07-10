@@ -1372,3 +1372,67 @@ a.see-room-info{
 .room-selection{
   margin-top: 30px;
 }
+
+.listings-hostel.edit-listings{
+  width: 75%;
+  margin-top: 0 !important;
+}
+
+
+.edit-listings .hostel-listings-card .card-inner{
+  border-left: none;
+  border-top: none;
+  border-right: none;
+}
+
+.hostel-edit-nav{
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+  width: 100%;
+}
+
+.hostel-edit-nav .edit-nav-wrapper{
+  padding-left: 15px;
+  padding-right: 15px;
+
+  margin-right: auto;
+  margin-left: auto;
+  width: 75%;
+}
+
+.edit-nav-item{
+  display: inline-block;
+  padding: 10px 10px;
+  border-right: 1px solid #ccc;
+  width: 150px;
+  text-align: center;
+}
+
+.edit-nav-item a{
+  padding-bottom: 8px;
+  font-weight: 600;
+}
+
+.edit-nav-item.edit-nav-item-active a{
+  color: #0083CC;
+  border-bottom: 4px solid #0083CC;
+}
+
+.hostel-edit-nav{
+  border-bottom: 1px solid #ccc;
+}
+
+.edit-maincontent .edit-wrapper{
+  width: 75%;
+  margin: 0 auto;
+}
+
+.edit-maincontent{
+  height: 100%;
+}
+
+.form-group textarea{
+  min-height: 154px;
+}

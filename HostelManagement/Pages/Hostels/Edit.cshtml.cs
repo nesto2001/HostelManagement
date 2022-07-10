@@ -44,6 +44,8 @@ namespace HostelManagement.Pages.Hostels
 
         [BindProperty]
         public Hostel Hostel { get; set; }
+        public Location Location {get; set;}
+        public IEnumerable<Room> Rooms {get; set;}
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -57,7 +59,9 @@ namespace HostelManagement.Pages.Hostels
             {
                 return NotFound();
             }
-
+            Location = await locationRepository.GetLocationByID((int)id);
+            Rooms = await roomRepository.GetRoomsOfAHostel((int)id);
+            ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
             ViewData["LocationId"] = Hostel.LocationId;
             ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
