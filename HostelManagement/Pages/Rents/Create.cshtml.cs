@@ -10,6 +10,7 @@ using DataAccess;
 using DataAccess.Repository;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
+using HostelManagement.Helpers;
 
 namespace HostelManagement.Pages.Rents
 {
@@ -19,13 +20,16 @@ namespace HostelManagement.Pages.Rents
         private IRentRepository rentRepository { get; }
         private IRoomRepository roomRepository { get; }
         private IRoomMemberRepository roomMemberRepository { get; }
+        private ISendMailService sendMailService { get; }
         public CreateModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository)
+                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository,
+                            ISendMailService _sendMailService)
         {
             accountRepository = _accountRepository;
             rentRepository = _rentRepository;
             roomRepository = _roomRepository;
             roomMemberRepository = _roomMemberRepository;
+            sendMailService = _sendMailService;
         }
 
         public async Task<IActionResult> OnGetAsync(int? id, int? extend)
@@ -118,8 +122,11 @@ namespace HostelManagement.Pages.Rents
                 }
             }
             Rent rentCur = rents.FirstOrDefault(r => r.Status == 1);
-            rentCur.Status = 5;
-            await rentRepository.UpdateRent(rentCur);
+            if (rentCur != null)
+            {
+                rentCur.Status = 5;
+                await rentRepository.UpdateRent(rentCur);
+            }
             await rentRepository.AddRent(Rent);
 
             int countCurrent = 0;
@@ -138,6 +145,24 @@ namespace HostelManagement.Pages.Rents
                 }
             }
             room = await roomRepository.GetRoomByID(Rent.RoomId);
+            string body = "New contract is created";
+            if (rentCur != null)
+            {
+                body = "Dear, \n" +
+                    "Your rent number is " + Rent.RentId + "\n" +
+                    "Thank you. \n" +
+                    "Please send your feedback by reply mail.\n" +
+                    "Best Regard,";
+            } else
+            {
+                body = "Dear, \n" +
+                    "Your rent number is " + Rent.RentId + "\n" +
+                    "Please pay deposit before 24h of start rent time. (" + Rent.StartRentDate +
+                    "). Thank you. \n" +
+                    "Please send your feedback by reply mail.\n" +
+                    "Best Regard,";
+            }
+            await sendMailService.SendEmailAsync(Rent.RentedBy, "New contract", body);
             room.RoomCurrentCapacity = countCurrent;
             room.Status = 4;
             await roomRepository.UpdateRoom(room);

@@ -32,6 +32,10 @@ namespace HostelManagement.Pages.Accounts
             {
                 message = "Your account or password is incorrect. Try again!";
                 return Page();
+            } else if (acc.Result.Status != 1)
+            {
+                message = "Your account is locked!";
+                return Page();
             }
             else if (acc.Result.RoleName.Equals("admin"))
             {

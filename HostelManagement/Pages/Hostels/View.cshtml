@@ -90,7 +90,7 @@
                                                         }
                                                 }
                                                 <div>
-                                                    <img src="~/images/@roomThumb" alt="">
+                                                    <img src="~/images/rooms/@roomThumb" alt="">
                                                 </div>
                                             </div>
                                             @if (item.RoomPics.Count>2){
@@ -101,7 +101,7 @@
                                                             <div class="photo-item">
                                                                 <div class="photo">
                                                                     <div>
-                                                                        <img src="~/images/@pic" alt="">
+                                                                        <img src="~/images/rooms/@pic" alt="">
                                                                     </div>
                                                                 </div>
                                                             </div>
@@ -143,7 +143,9 @@
                                                     <div class="booking-details-item details-book">
                                                         <div class="bookButton">
                                                             <div>
-                                                                <button class="btn btn-primary">Rent now</button>
+                                                                <button class="btn btn-primary">
+                                                                    <a asp-page="../Rents/Create" asp-route-id="@item.RoomId">Rent Now</a>
+                                                                </button>
                                                             </div>
                                                         </div>
                                                     </div>
