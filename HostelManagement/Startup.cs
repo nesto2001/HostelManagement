@@ -52,6 +52,7 @@ namespace HostelManagement
             services.AddScoped<IBillRepository, BillRepository>();
             services.AddScoped<IBillDetailRepository, BillDetailRepository>();
             services.AddScoped<IRoomMemberRepository, RoomMemberRepository>();
+            services.AddScoped<IIdentityCardRepository, IdentityCardRepository>();
             services.AddOptions();                                         
             var mailsettings = Configuration.GetSection("MailSettings");  
             services.Configure<MailSettings>(mailsettings);
