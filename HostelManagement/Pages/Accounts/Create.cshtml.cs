@@ -7,6 +7,8 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using Microsoft.AspNetCore.Http;
+using HostelManagement.Helpers;
 
 namespace HostelManagement.Pages.Accounts
 {
@@ -27,6 +29,8 @@ namespace HostelManagement.Pages.Accounts
 
         [BindProperty]
         public Account Account { get; set; }
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
 
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
@@ -35,7 +39,20 @@ namespace HostelManagement.Pages.Accounts
             {
                 return Page();
             }
+            Account.RoleName = Request.Form["role"];
+            int countPic = 0;
+            if (FileUploads != null)
+            {
 
+                int i = 1;
+                countPic = FileUploads.Count();
+                foreach (var FileUpload in FileUploads)
+                {
+                    Account.ProfilePicUrl = await Utilities.UploadFile(FileUpload, @"images\accounts\", FileUpload.FileName);
+
+                    i++;
+                }
+            }
             _context.Accounts.Add(Account);
             await _context.SaveChangesAsync();
 

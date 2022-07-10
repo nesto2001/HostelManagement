@@ -1,5 +1,6 @@
 using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
@@ -50,7 +51,7 @@ namespace HostelManagement.Pages.Accounts
 
         public async Task OnPost()
         {
-            /*if (!ModelState.IsValid)
+            if (!ModelState.IsValid)
             {
             }
             else if (CheckExist(Input.UserEmail))
@@ -62,20 +63,24 @@ namespace HostelManagement.Pages.Accounts
                 Account acc = null;
                 var account = new Account()
                 {
-                    CustomerId = b,
-                    Email = Input.Email,
-                    ContactName = Input.ContactName,
-                    Password = Input.Password,
-                    Phone = Input.Phone,
-                    Address = Input.Address
+                    
+                    UserEmail = Input.UserEmail,
+                    FullName = Input.FullName,
+                    UserPassword = Input.UserPassword,
+                    PhoneNumber = Input.PhoneNumber,
+                    RoleName = "renter",
+                    Status = 0,
+                    Dob = Input.Dob
+               
+
                 };
-                await customerRepository.AddCustomer(customer);
-                cus = customerRepository.GetCustomerByEmail(customer.Email).Result;
+                await accountRepository.AddAccount(account);
+                acc = accountRepository.GetAccountByEmail(account.UserEmail).Result;
                 HttpContext.Session.SetInt32("isLoggedIn", 1);
-                HttpContext.Session.SetString("ID", cus.CustomerId);
-                HttpContext.Session.SetString("ContactName", cus.ContactName);
+                HttpContext.Session.SetInt32("ID", acc.UserId);
+                HttpContext.Session.SetString("ContactName", acc.FullName);
                 Response.Redirect("/Index");
-            }*/
+            }
         }
 
     }

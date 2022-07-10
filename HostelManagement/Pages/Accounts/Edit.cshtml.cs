@@ -8,20 +8,28 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
+using Microsoft.AspNetCore.Http;
+using HostelManagement.Helpers;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class EditModel : PageModel
     {
         private readonly DataAccess.HostelManagementContext _context;
+       
 
         public EditModel(DataAccess.HostelManagementContext context)
         {
             _context = context;
+           
         }
 
         [BindProperty]
         public Account Account { get; set; }
+        public String RoleName { get; set; }
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -37,7 +45,9 @@ namespace HostelManagement.Pages.Accounts
             {
                 return NotFound();
             }
-           ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");
+            
+
+            /*ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");*/
             return Page();
         }
 
@@ -49,8 +59,35 @@ namespace HostelManagement.Pages.Accounts
             {
                 return Page();
             }
-
+            if(Request.Form["role"] == "")
+            {
+                
+                Account.RoleName =  Account.RoleName;
+            }
+            else
+            {
+                Account.RoleName = Request.Form["role"];
+            }
+           
+            int countPic = 0;
+            if (FileUploads != null)
+            {
+                
+                int i = 1;
+                countPic = FileUploads.Count();
+                foreach (var FileUpload in FileUploads)
+                {
+                    Account.ProfilePicUrl = await Utilities.UploadFile(FileUpload, @"images\accounts\", FileUpload.FileName);
+                    
+                    i++;
+                }
+            }
+            else
+            {
+                Account.ProfilePicUrl = Account.ProfilePicUrl;
+            }
             _context.Attach(Account).State = EntityState.Modified;
+            
 
             try
             {
