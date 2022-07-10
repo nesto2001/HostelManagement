@@ -84,5 +84,16 @@ namespace HostelManagement.Pages.Hostels
             return RedirectToPage("./Details", new {id = Hostel.HostelId});
         }
 
+        public async Task<JsonResult> OnGetLoadDistrict(int ProvinceId)
+        {
+            IEnumerable<District> districts = await districtRepository.GetDistrictListByProvinceId(ProvinceId);
+            return new JsonResult(districts);
+        }
+
+        public async Task<JsonResult> OnGetLoadWard(int DistrictId)
+        {
+            IEnumerable<Ward> wards = await wardRepository.GetWardListByDistrictId(DistrictId);
+            return new JsonResult(wards);
+        }
     }
 }
