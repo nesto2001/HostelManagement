@@ -18,13 +18,16 @@
                          @{
                                 string imgClass="";
                                 var imgs = Model.Hostel.HostelPics.Count-1;
-                                if (imgs < 3 ) {
-                                    imgClass = "few-img"; 
+                                if (imgs <= 1) {
+                                    imgClass = "single-img"; 
                                 }
-                                else if (imgs < 1){
-                                    imgClass = "single-img";
+                                else if (imgs < 3){
+                                    imgClass = "few-img";
                                 }
                                 else imgClass = "multiple-img";
+                                <script>
+                                    console.log('@imgs');
+                                </script>
                             }
                         <div class="hostel-imgs hostel-thumb @imgClass">
                             @{
@@ -86,11 +89,11 @@
                                                     string roomThumb ="placeholder.png";
                                                     if (item.RoomPics.Count >0)
                                                         {
-                                                            roomThumb = item.RoomPics.ElementAt(0).RoomPicUrl;
+                                                            roomThumb = "rooms/"+item.RoomPics.ElementAt(0).RoomPicUrl;
                                                         }
                                                 }
                                                 <div>
-                                                    <img src="~/images/rooms/@roomThumb" alt="">
+                                                    <img src="~/images/@roomThumb" alt="">
                                                 </div>
                                             </div>
                                             @if (item.RoomPics.Count>2){

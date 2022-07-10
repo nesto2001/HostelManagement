@@ -1368,3 +1368,7 @@ a.see-room-info{
   flex-basis: 100%;
   padding: 0;
 }
+
+.room-selection{
+  margin-top: 30px;
+}
