@@ -70,24 +70,25 @@
 </section>
 <section class="hostel-edit-nav">
     <div class="edit-nav-wrapper">
-        <div class="edit-nav-item">
-            <a href="" class="edit-nav">Edit Listing</a>
+        <div class="edit-nav-item edit-nav-item-active" data-target="#/edit-listing">
+            <a data-target="#/edit-listing" class="edit-nav">Edit Listing</a>
         </div>
-        <div class="edit-nav-item">
-            <a href="" class="edit-nav">Listing Location</a>
+        <div class="edit-nav-item" data-target="#/edit-location">
+            <a data-target="#/edit-location" class="edit-nav">Listing Location</a>
         </div>
-        <div class="edit-nav-item">
-            <a href="" class="edit-nav">Listing Images</a>
+        <div class="edit-nav-item" data-target="#/edit-images">
+            <a data-target="#/edit-images" class="edit-nav">Listing Images</a>
         </div>
-        <div class="edit-nav-item">
-            <a href="" class="edit-nav">Rooms</a>
+        <div class="edit-nav-item" data-target="#/edit-rooms">
+            <a data-target="#/edit-rooms" class="edit-nav">Rooms</a>
         </div>
     </div>
 </section>
-<section class="edit-maincontent d-none" id="edit-listing">
+
+<section class="edit-maincontent content-active" id="/edit-listing">
     <div class="edit-wrapper">
         <div class="col-md-6 pt-4 mt-2">
-            <form method="post">
+            <form method="post" asp-page-handler="UpdateHostel">
                 <span class="group-input-title" id="Hostel">Hostel</span>
                 <div class="group-input-hostel">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -131,10 +132,10 @@
     </div>
 </section>
 
-<section class="edit-maincontent" id="edit-location">
+<section class="edit-maincontent" id="/edit-location">
     <div class="edit-wrapper">
         <div class="col-md-6 pt-4 mt-2">
-            <form method="post">
+            <form method="post" asp-page-handler="UpdateLocation">
                 <span class="group-input-title">Location</span>
                 <div class="group-input-hostel">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -171,37 +172,34 @@
     </div>
 </section>
 
-<section class="edit-maincontent d-none" id="edit-photo">
+<section class="edit-maincontent" id="/edit-images">
     <div class="edit-wrapper">
-        <div class="col-md-6 pt-4 mt-2">
-            <form method="post">
+        <div class="col-md-7 pt-4 mt-2">
+            <form method="post" asp-page-handler="Uploadhostel">
                 <span class="group-input-title">Photo</span>
                 <div class="group-input-hostel">
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Location.LocationId" />
+                    <input type="hidden" asp-for="Location.LocationId"/>
                     <div class="form-group">
-                        <label class="control-label">Province</label>
-                        <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
-                            <option>Select Province</option>
-                        </select>
+                        <label asp-for="@Model.FileUploads"></label>
+                        <input asp-for="@Model.FileUploads" />
+                        <span asp-validation-foraction="@Model.FileUploads"></span>
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">District</label>
-                        <select id="DistrictList" class="form-control">
-                            <option>Select District</option>
-                        </select>
+                    @if(Model.HostelPics.Count()>0){
+                    <div class="group-input-hostel hostel-edit-imgs d-flex p-4">
+                        @foreach (var item in Model.HostelPics)
+                        {
+                        <div class="hostel-pre-imgs">
+                            <div class="img">
+                                <img src="~/images/hostels/@item.HostelPicUrl" alt="">
+                            </div>
+                            <div class="img-remove text-center">
+                                <a asp-page-handler="Removeimage" asp-route-id="@item.HostelPicsId" asp-route-hostelId="@Model.Hostel.HostelId">Remove</a>
+                                </div>
+                        </div>
+                        }
                     </div>
-                    <div class="form-group">
-                        <label class="control-label">Ward</label>
-                        <select id="WardList" class="form-control" asp-for="Location.WardId">
-                            <option>Select Ward</option>
-                        </select>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Location.AddressString" class="control-label"></label>
-                        <input asp-for="Location.AddressString" class="form-control" />
-                        <span asp-validation-for="Location.AddressString" class="text-danger"></span>
-                    </div>
+                    }
                 </div>
                 <div class="form-group">
                     <input type="submit" value="Save" class="btn btn-primary" />
@@ -211,7 +209,7 @@
     </div>
 </section>
 
-<section class="edit-maincontent" id="edit-room">
+<section class="edit-maincontent" id="/edit-rooms">
     <div class="edit-wrapper">
         <div class="col-md-6 pt-4 mt-2">
             <form method="post">
@@ -279,10 +277,20 @@
     </div>
 </section>
 
+
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
-
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('.edit-nav-item').click(function(){
+            $('.edit-nav-item').removeClass('edit-nav-item-active');
+            $(event.target).closest('.edit-nav-item').addClass('edit-nav-item-active');
+            var content = $(event.target).data("target");
+            let selector = content.substring(1);
+            $('.edit-maincontent').removeClass('content-active');
+            $('#'+ $.escapeSelector(selector)).addClass('content-active');
+        })
+    </script>
 }

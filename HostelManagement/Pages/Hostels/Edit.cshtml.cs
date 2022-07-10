@@ -1,16 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using HostelManagement.Helpers;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Http;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -44,8 +42,19 @@ namespace HostelManagement.Pages.Hostels
 
         [BindProperty]
         public Hostel Hostel { get; set; }
-        public Location Location {get; set;}
-        public IEnumerable<Room> Rooms {get; set;}
+        public Location Location { get; set; }
+        public IEnumerable<Room> Rooms { get; set; }
+
+        public HostelPic HostelPic { get; set; }
+
+        public IEnumerable<HostelPic> HostelPics { get; set; }
+
+        [Required(ErrorMessage = "Please chose at least one file.")]
+        [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Choose Hostel images(s)")]
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -61,6 +70,7 @@ namespace HostelManagement.Pages.Hostels
             }
             Location = await locationRepository.GetLocationByID((int)id);
             Rooms = await roomRepository.GetRoomsOfAHostel((int)id);
+            HostelPics = await hostelPicRepository.GetHostelPicsOfAHostel((int)id);
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
             ViewData["LocationId"] = Hostel.LocationId;
@@ -81,7 +91,7 @@ namespace HostelManagement.Pages.Hostels
             }
             Hostel.Status = 0;
             await hostelRepository.UpdateHostel(Hostel);
-            return RedirectToPage("./Details", new {id = Hostel.HostelId});
+            return RedirectToPage("./Details", new { id = Hostel.HostelId });
         }
 
         public async Task<JsonResult> OnGetLoadDistrict(int ProvinceId)
@@ -95,5 +105,36 @@ namespace HostelManagement.Pages.Hostels
             IEnumerable<Ward> wards = await wardRepository.GetWardListByDistrictId(DistrictId);
             return new JsonResult(wards);
         }
+
+        public async Task<IActionResult> OnPostUploadhostel()
+        {
+            int countPic = 0;
+            if (FileUploads != null)
+            {
+                HostelPic.HostelId = Hostel.HostelId;
+                HostelPic.Hostel = Hostel;
+                int i = 1;
+                countPic = FileUploads.Count();
+                foreach (var FileUpload in FileUploads)
+                {
+                    HostelPic.HostelPicUrl = await Utilities.UploadFile(FileUpload, @"images\hostels\", FileUpload.FileName);
+                }
+            }
+            return Page();
+        }
+
+        public async Task<IActionResult> OnPostUpdateLocation()
+        {
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetRemoveimage(int id, int hostelId)
+        {
+            var pic = await hostelPicRepository.GetHostelPic(id);
+            await hostelPicRepository.DeleteHostelPic(pic);
+            return RedirectToPage("./Edit", new { id = hostelId });
+        }
+
+
     }
 }
