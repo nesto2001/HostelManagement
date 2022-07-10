@@ -35,6 +35,10 @@ namespace HostelManagement.Pages
             {
                 HostelsSearchKey = HostelsSearchKey.Where(h => h.HostelName.ToLower().Contains(searchKey.ToLower())).ToList();
             }
+            if (sl_city != 0)
+            {
+                HostelsDistrictFilter = HostelsDistrictFilter.Where(h => h.Location.Ward.District.Province.ProvinceId == sl_city).ToList();
+            }
             if (sl_dist != 0)
             {
                 HostelsDistrictFilter = HostelsDistrictFilter.Where(h => h.Location.Ward.District.DistrictId == sl_dist).ToList();
