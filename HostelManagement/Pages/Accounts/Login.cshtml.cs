@@ -113,11 +113,11 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ID", cus.Result.CustomerId);
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
-                var RoomView = HttpContext.Session.GetInt32("RoomView");
-                if (RoomView != null)
+                var HostelView = HttpContext.Session.GetInt32("HostelID");
+                if (HostelView != null)
                 {
-                    int rv = (int)RoomView;
-                    return RedirectToPage("../Rooms/Details", new { id = rv });
+                    int rv = (int)HostelView;
+                    return RedirectToPage("../Hostels/View", new { id = rv });
                 } else
                 {
                     return RedirectToPage("../Index");

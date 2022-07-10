@@ -147,7 +147,16 @@
                                                         <div class="bookButton">
                                                             <div>
                                                                 <button class="btn btn-primary">
-                                                                    <a asp-page="../Rents/Create" asp-route-id="@item.RoomId">Rent Now</a>
+                                                                    @if (Model.UserRole == "Renter")
+                                                                    {
+                                                                        <a asp-page="../Rents/Create" asp-route-id="@item.RoomId">Rent Now</a>
+                                                                    }
+
+                                                                    @if (String.IsNullOrEmpty(Model.UserRole))
+                                                                    {
+                                                                        <a asp-page="../Accounts/Login">Rent Now</a>
+                                                                    }
+                                                                    
                                                                 </button>
                                                             </div>
                                                         </div>
