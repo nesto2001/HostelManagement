@@ -128,11 +128,16 @@ namespace HostelManagement.Pages.Hostels
             return Page();
         }
 
+        public async Task<IActionResult> OnPostUpdateHostel()
+        {
+            return Page();
+        }
+
         public async Task<IActionResult> OnGetRemoveimage(int id, int hostelId)
         {
             var pic = await hostelPicRepository.GetHostelPic(id);
             await hostelPicRepository.DeleteHostelPic(pic);
-            return RedirectToPage("./Edit", new { id = hostelId });
+            return RedirectToPage("./Edit", new {id = hostelId});
         }
 
 
