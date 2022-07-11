@@ -15,13 +15,16 @@ namespace HostelManagement.Pages.Hostels
     public class HostelPicsModel : PageModel
     {
         private IHostelPicRepository hostelPicRepository;
+        private IHostelRepository hostelRepository;
 
-        public HostelPicsModel(IHostelPicRepository _hostelPicRepository)
+        public HostelPicsModel(IHostelPicRepository _hostelPicRepository, IHostelRepository _hostelRepository)
         {
             hostelPicRepository = _hostelPicRepository;
+            hostelRepository = _hostelRepository;
         }
         public IEnumerable<HostelPic> HostelPics { get; set; }
         public int HostelID { get; set; }
+        public Hostel Hostel { get; set; }
         [Required(ErrorMessage = "Please chose at least one file.")]
         [DataType(DataType.Upload)]
         //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
@@ -32,12 +35,14 @@ namespace HostelManagement.Pages.Hostels
         {
             HttpContext.Session.SetInt32("HostelID", id);
             HostelID = (int)HttpContext.Session.GetInt32("HostelID");
+            Hostel = await hostelRepository.GetHostelByID(HostelID);
             HostelPics = await hostelPicRepository.GetHostelPicsOfAHostel(id);
         }
 
         public async Task<IActionResult> OnGetDelete(int id)
         {
             HostelID = (int)HttpContext.Session.GetInt32("HostelID");
+            Hostel = await hostelRepository.GetHostelByID(HostelID);
             HostelPics = await hostelPicRepository.GetHostelPicsOfAHostel(HostelID);
             HostelPic hostelPic = HostelPics.Where(h => h.HostelPicsId == id).FirstOrDefault();
             await hostelPicRepository.DeleteHostelPic(hostelPic);

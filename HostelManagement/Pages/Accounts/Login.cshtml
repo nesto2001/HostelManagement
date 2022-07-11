@@ -4,43 +4,44 @@
     var hidden = false;
     if (Model.message == null) hidden = true;
 }
-        <div class="container border" style="padding:20px">
-            <form method="post">
-                <div class="text-danger" asp-validation-summary="ModelOnly"></div>
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Account.UserEmail"></label>
-                    </div>
-                    <div class="col-5">
-                        <input type="email" asp-for="Account.UserEmail" class="form-control" />
-                    </div>
-                    <span class="text-danger" asp-validation-for="Account.UserEmail"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-3">
-                        <label asp-for="Account.UserPassword"></label>
-                    </div>
-                    <div class="col-5">
-                        <input type="password" asp-for="Account.UserPassword" class="form-control" />
-                    </div>
-                    <span class="text-danger" asp-validation-for="Account.UserPassword"></span>
-                </div>
-                <div class="form-group row">
-                    <div class="col-5">
-                        <input type="submit" class="btn btn-primary" value="Login" />
-                    </div>
-                </div>
-
-                <div hidden="@hidden">
-                    <span class="text-danger">@Model.message</span>
-                </div>
-            </form>
-
+<h1 class="text-center" style="margin-bottom:50px; margin-top: 50px">LOGIN</h1>
+<div class="container border h-100 d-flex align-items-center justify-content-center" style="padding: 20px; width: 500px">
+    <form method="post">
+        <div class="text-danger" asp-validation-summary="ModelOnly"></div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Account.UserEmail"></label>
+            </div>
+            <div class="col-9 ">
+                <input type="email" asp-for="Account.UserEmail" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="Account.UserEmail"></span>
         </div>
+        <div class="form-group row">
+            <div class="col-3">
+                <label asp-for="Account.UserPassword"></label>
+            </div>
+            <div class="col-9 ">
+                <input type="password" asp-for="Account.UserPassword" class="form-control" />
+            </div>
+            <span class="text-danger" asp-validation-for="Account.UserPassword"></span>
+        </div>
+        <div class="form-group row">
+            <div class="col-12 text-center">
+                <input type="submit" class="btn btn-primary" value="Login" />
+            </div>
+        </div>
+
+        <div hidden="@hidden">
+            <span class="text-danger">@Model.message</span>
+        </div>
+    </form>
+
+</div>
         <p id="emailHelp" class="form-text text-center">
             Dont have an ancount?
-            <a href="/Accounts/Register" class="text-decoration-none">Register here</a>
+            <b><a href="/Accounts/Register" class="text-decoration-none">Register here</a></b>
         </p>
         <p class="text-center">
-            <a class="text-decoration-none" href="/Accounts/ForgotPassword">Forgot password?</a>
-        </p>
+            <b class="text-danger"><a class="text-decoration-none" href="/Accounts/ForgotPassword">Forgot password?</a></b>
+</p>
