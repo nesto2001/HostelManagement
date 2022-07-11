@@ -103,7 +103,7 @@
                     <div class="grouped-form flex-wrap">
                     @for (int i = 0; i < @Model.Rent.Room.RomMaxCapacity; i++)
                     {   
-                        @if(Model.Rent.RoomMembers.ElementAt(i).Status==1){
+                        @if(Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==1){
                             <div class="form-group">
                                 <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-active">Active</span>
                                 @if (i==0){
@@ -119,11 +119,10 @@
                             </div>
                         }
                         else if (role.Equals("Owner")){
-                            @{
-                                var memStatus="Active";
-                                if (Model.Rent.RoomMembers.ElementAt(i).Status==0){
-                                    memStatus="Inactive";
-                                }
+                            
+                            var memStatus="Active";
+                            if (Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==0){
+                                memStatus="Inactive";
                             }
                             <div class="form-group">
                                 <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-@memStatus.ToLower()">@memStatus</span>
