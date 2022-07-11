@@ -3,7 +3,7 @@
 @{var hidden = false;
     if (Model.MessageExistEmail == null) hidden = true;
 }
-<form method="post">
+<form method="post" enctype="multipart/form-data">
     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
     <div class="form-group">
         <label asp-for="Input.UserEmail" class="control-label"></label>
@@ -24,8 +24,6 @@
         <input asp-for="Input.ConfirmPassword" class="form-control" />
         <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
     </div>
-
-
     <div class="form-group">
         <label asp-for="Input.FullName" class="control-label"></label>
         <input asp-for="Input.FullName" class="form-control" />
@@ -43,10 +41,43 @@
     </div>
     <div class="form-group">
         <label asp-for="Input.IdCardNumber" class="control-label"></label>
-        <input asp-for="Input.IdCardNumber" class="form-control"  />
+        <input asp-for="Input.IdCardNumber" class="form-control" />
         <span asp-validation-for="Input.IdCardNumber" class="text-danger"></span>
     </div>
+    <div class="form-group">
+        <label asp-for="@Model.FrontPicUrl" class="control-label"></label>
+        <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" />
+        <span asp-validation-for="@Model.FrontPicUrl" class="text-danger"></span>
+        <img id="previewF" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+        <script>
 
+            frontImage.onchange = evt => {
+                const [file] = frontImage.files
+                if (file) {
+                    previewF.src = URL.createObjectURL(file);
+                    $("#previewF").removeClass("hidden");
+                }
+            }
+
+        </script>
+    </div>
+    <div class="form-group">
+        <label asp-for="@Model.BackPicUrl" class="control-label"></label>
+        <input id="backImage" asp-for="@Model.BackPicUrl" type="file" />
+        <span asp-validation-for="@Model.BackPicUrl" class="text-danger"></span>
+        <img id="previewB" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+        <script>
+
+            backImage.onchange = evt => {
+                const [file] = backImage.files
+                if (file) {
+                    previewB.src = URL.createObjectURL(file);
+                    $("#previewB").removeClass("hidden");
+                }
+            }
+
+        </script>
+    </div>
     <div class="form-group">
         <input type="submit" value="Register" class="btn btn-primary" />
     </div>

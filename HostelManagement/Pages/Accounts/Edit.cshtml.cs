@@ -17,20 +17,28 @@ namespace HostelManagement.Pages.Accounts
     public class EditModel : PageModel
     {
         private readonly DataAccess.HostelManagementContext _context;
-       
+        private IAccountRepository _accountRepository { get; }
+        private IIdentityCardRepository _identityCardRepository { get; }
 
-        public EditModel(DataAccess.HostelManagementContext context)
+        public EditModel(DataAccess.HostelManagementContext context, IAccountRepository accountRepository, IIdentityCardRepository identityCardRepository)
         {
             _context = context;
-           
+            _accountRepository = accountRepository;
+            _identityCardRepository = identityCardRepository;
         }
 
         [BindProperty]
         public Account Account { get; set; }
+        [BindProperty]
+        public IdentityCard IdCard { get; set; }
         public String RoleName { get; set; }
         [BindProperty]
-        public IFormFile[] FileUploads { get; set; }
-
+        public IFormFile FileUploads { get; set; }
+        [BindProperty]
+        public IFormFile FrontPicUrl { get; set; }
+        [BindProperty]
+        public IFormFile BackPicUrl { get; set; }
+        public string MessageExistEmail { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -38,16 +46,16 @@ namespace HostelManagement.Pages.Accounts
                 return NotFound();
             }
 
-            Account = await _context.Accounts
-                .Include(a => a.IdCardNumberNavigation).FirstOrDefaultAsync(m => m.UserId == id);
+            Account = await _accountRepository.GetAccountByID(id.Value);
 
             if (Account == null)
             {
                 return NotFound();
             }
-            
 
-            /*ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");*/
+            ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");
+            ViewData["FrontPic"] = new SelectList(_context.IdentityCards, "FrontIdPicUrl", "FrontPicUrl");
+            ViewData["BackPic"] = new SelectList(_context.IdentityCards, "BackIdPicUrl", "BackPicUrl");
             return Page();
         }
 
@@ -68,49 +76,43 @@ namespace HostelManagement.Pages.Accounts
             {
                 Account.RoleName = Request.Form["role"];
             }
-           
-            int countPic = 0;
+
+            IdCard.IdCardNumber = Account.IdCardNumber;
+            if (FrontPicUrl != null && BackPicUrl != null)
+            {
+                IdCard.FrontIdPicUrl = await Utilities.UploadFile(FrontPicUrl, @"images\accounts\idCard", FrontPicUrl.FileName);
+                IdCard.BackIdPicUrl = await Utilities.UploadFile(BackPicUrl, @"images\accounts\idCard", BackPicUrl.FileName);
+            }
+            else
+            {
+                IdCard.FrontIdPicUrl = IdCard.FrontIdPicUrl;
+                IdCard.BackIdPicUrl = IdCard.BackIdPicUrl;
+            }
+            await _identityCardRepository.UpdateIdCard(IdCard);
+
             if (FileUploads != null)
             {
-                
-                int i = 1;
-                countPic = FileUploads.Count();
-                foreach (var FileUpload in FileUploads)
-                {
-                    Account.ProfilePicUrl = await Utilities.UploadFile(FileUpload, @"images\accounts\", FileUpload.FileName);
-                    
-                    i++;
-                }
+                 Account.ProfilePicUrl = await Utilities.UploadFile(FileUploads, @"images\accounts\", FileUploads.FileName);
             }
             else
             {
                 Account.ProfilePicUrl = Account.ProfilePicUrl;
             }
-            _context.Attach(Account).State = EntityState.Modified;
-            
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!AccountExists(Account.UserId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
+            await _accountRepository.UpdateAccount(Account);
 
             return RedirectToPage("./Index");
         }
-
-        private bool AccountExists(int id)
+        public bool CheckExist(string email)
         {
-            return _context.Accounts.Any(e => e.UserId == id);
+            Task<Account> acc = _accountRepository.GetAccountByEmail(email);
+            if (acc.Result != null) return true;
+            else return false;
+        }
+        private bool IdExists(string id)
+        {
+            Task<IdentityCard> idCard = _identityCardRepository.GetIdentityCardByID(id);
+            if (idCard.Result != null) return true;
+            else return false;
         }
     }
 }

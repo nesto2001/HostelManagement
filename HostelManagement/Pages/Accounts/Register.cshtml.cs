@@ -6,23 +6,35 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Threading.Tasks;
+using HostelManagement.Helpers;
+using System.Linq;
+using Microsoft.EntityFrameworkCore;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class RegisterModel : PageModel
     {
+        private readonly DataAccess.HostelManagementContext context;
         private IAccountRepository accountRepository { get; }
-        public RegisterModel(IAccountRepository _accountRepository)
+        private IIdentityCardRepository identityCardRepository { get; }
+        public RegisterModel(DataAccess.HostelManagementContext _context, IAccountRepository _accountRepository, IIdentityCardRepository _identityCardRepository)
         {
+            context = _context;
             accountRepository = _accountRepository;
+            identityCardRepository = _identityCardRepository;
         }
 
         [BindProperty]
         public InputModel Input { get; set; }
         public string MessageExistEmail { get; set; }
-
+        [BindProperty]
         public IList<Account> Accounts { get; set; }
-
+        [BindProperty]
+        public IdentityCard IdCard { get; set; }
+        [BindProperty]
+        public IFormFile FrontPicUrl { get; set; }
+        [BindProperty]
+        public IFormFile BackPicUrl { get; set; }
         public class InputModel : Account
         {
             [Required]
@@ -58,30 +70,46 @@ namespace HostelManagement.Pages.Accounts
             {
                 MessageExistEmail = "Email is existing. Please choose other email.";
             }
+            else if (IdExists(Input.IdCardNumber))
+            {
+                MessageExistEmail = "ID is existing. Please choose other ID.";
+            }
             else
             {
                 Account acc = null;
                 var account = new Account()
                 {
-                    
+
                     UserEmail = Input.UserEmail,
                     FullName = Input.FullName,
                     UserPassword = Input.UserPassword,
                     PhoneNumber = Input.PhoneNumber,
-                    RoleName = "renter",
-                    Status = 0,
-                    Dob = Input.Dob
-               
-
+                    RoleName = "Renter",
+                    Status = 1,
+                    Dob = Input.Dob,
+                    IdCardNumber = Input.IdCardNumber
                 };
+                IdCard.IdCardNumber = Input.IdCardNumber;
+                if (FrontPicUrl != null && BackPicUrl != null)
+                {
+                    IdCard.FrontIdPicUrl = await Utilities.UploadFile(FrontPicUrl, @"images\accounts\idCard", FrontPicUrl.FileName);
+                    IdCard.BackIdPicUrl = await Utilities.UploadFile(BackPicUrl, @"images\accounts\idCard", BackPicUrl.FileName);
+                }
+                await identityCardRepository.AddIdCard(IdCard);
                 await accountRepository.AddAccount(account);
                 acc = accountRepository.GetAccountByEmail(account.UserEmail).Result;
                 HttpContext.Session.SetInt32("isLoggedIn", 1);
                 HttpContext.Session.SetInt32("ID", acc.UserId);
                 HttpContext.Session.SetString("ContactName", acc.FullName);
+
                 Response.Redirect("/Index");
             }
         }
-
+        private bool IdExists(string id)
+        {
+            Task<IdentityCard> idCard = identityCardRepository.GetIdentityCardByID(id);
+            if (idCard.Result != null) return true;
+            else return false;
+        }
     }
 }

@@ -33,7 +33,12 @@
             @Html.DisplayNameFor(model => model.Account.Status)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.Status)
+            @{ 
+                string status;
+                if (Model.Account.Status == 1) status = "Active";
+                else status = "Inactive";
+            }
+            <div> @status </div>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.FullName)
@@ -56,14 +61,41 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.ProfilePicUrl)
         </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.ProfilePicUrl)
+        <dd>
+            @{
+                string profilePic = "anno-ava.jpg";
+                if (Model.Account.ProfilePicUrl != null)
+                    profilePic = Model.Account.ProfilePicUrl;
+            }
+            <img id="profilePic" src="~/Images/accounts/@profilePic" height="200" class="card-img" />
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.IdCardNumberNavigation)
+            @Html.DisplayNameFor(model => model.Account.IdCardNumber)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Account.IdCardNumberNavigation.IdCardNumber)
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.ProfilePicUrl)
+        </dt>
+        <dd>
+            @{
+                string frontPic = "anno-ava.jpg";
+                if (Model.Account.IdCardNumberNavigation.FrontIdPicUrl != null)
+                    frontPic = Model.Account.IdCardNumberNavigation.FrontIdPicUrl;
+            }
+            <img id="profilePic" src="~/Images/accounts/@frontPic" height="200" class="card-img" />
+        </dd>
+        <dt class="col-sm-2">
+            @Html.DisplayNameFor(model => model.Account.ProfilePicUrl)
+        </dt>
+        <dd>
+            @{
+                string backPic = "anno-ava.jpg";
+                if (Model.Account.IdCardNumberNavigation.BackIdPicUrl != null)
+                    backPic = Model.Account.IdCardNumberNavigation.BackIdPicUrl;
+            }
+            <img id="profilePic" src="~/Images/accounts/@backPic" height="200" class="card-img" />
         </dd>
     </dl>
 </div>

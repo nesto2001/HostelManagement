@@ -9,29 +9,31 @@ using BusinessObject.BusinessObject;
 using DataAccess;
 using Microsoft.AspNetCore.Http;
 using HostelManagement.Helpers;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class CreateModel : PageModel
     {
         private readonly DataAccess.HostelManagementContext _context;
+        private IAccountRepository _accountRepository;
 
-        public CreateModel(DataAccess.HostelManagementContext context)
+        public CreateModel(DataAccess.HostelManagementContext context, IAccountRepository accountRepository)
         {
             _context = context;
+            _accountRepository = accountRepository;
         }
 
         public IActionResult OnGet()
         {
-        ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");
             return Page();
         }
 
         [BindProperty]
         public Account Account { get; set; }
         [BindProperty]
-        public IFormFile[] FileUploads { get; set; }
-
+        public IFormFile FileUploads { get; set; }
+        public string MessageExistEmail { get; set; }
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -39,24 +41,27 @@ namespace HostelManagement.Pages.Accounts
             {
                 return Page();
             }
-            Account.RoleName = Request.Form["role"];
-            int countPic = 0;
-            if (FileUploads != null)
+            else if (CheckExist(Account.UserEmail))
             {
-
-                int i = 1;
-                countPic = FileUploads.Count();
-                foreach (var FileUpload in FileUploads)
-                {
-                    Account.ProfilePicUrl = await Utilities.UploadFile(FileUpload, @"images\accounts\", FileUpload.FileName);
-
-                    i++;
-                }
+                MessageExistEmail = "Email is existing. Please choose other email.";
             }
-            _context.Accounts.Add(Account);
-            await _context.SaveChangesAsync();
-
+            else
+            {
+                Account.RoleName = "Renter";
+                Account.Status = 1;
+                if (FileUploads != null)
+                {
+                    Account.ProfilePicUrl = await Utilities.UploadFile(FileUploads, @"images\accounts", FileUploads.FileName);
+                }
+                await _accountRepository.AddAccount(Account);
+            }
             return RedirectToPage("./Index");
+        }
+        public bool CheckExist(string email)
+        {
+            Task<Account> acc = _accountRepository.GetAccountByEmail(email);
+            if (acc.Result != null) return true;
+            else return false;
         }
     }
 }

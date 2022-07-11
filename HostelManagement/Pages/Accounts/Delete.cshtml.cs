@@ -6,17 +6,18 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
-using DataAccess;
+using DataAccess.Repository;
 
 namespace HostelManagement.Pages.Accounts
 {
     public class DeleteModel : PageModel
     {
         private readonly DataAccess.HostelManagementContext _context;
-
-        public DeleteModel(DataAccess.HostelManagementContext context)
+        private IAccountRepository _accountRepository;
+        public DeleteModel(DataAccess.HostelManagementContext context, IAccountRepository accountRepository)
         {
             _context = context;
+            _accountRepository = accountRepository;
         }
 
         [BindProperty]
@@ -29,8 +30,7 @@ namespace HostelManagement.Pages.Accounts
                 return NotFound();
             }
 
-            Account = await _context.Accounts
-                .Include(a => a.IdCardNumberNavigation).FirstOrDefaultAsync(m => m.UserId == id);
+            Account = await _accountRepository.GetAccountByID(id.Value);
 
             if (Account == null)
             {
@@ -46,12 +46,14 @@ namespace HostelManagement.Pages.Accounts
                 return NotFound();
             }
 
-            Account = await _context.Accounts.FindAsync(id);
+            Account = await _accountRepository.GetAccountByID(id.Value);
 
             if (Account != null)
             {
-                _context.Accounts.Remove(Account);
-                await _context.SaveChangesAsync();
+                //_context.Accounts.Remove(Account);
+                //await _context.SaveChangesAsync();
+                Account.Status = 0;
+                await _accountRepository.UpdateAccount(Account);
             }
 
             return RedirectToPage("./Index");

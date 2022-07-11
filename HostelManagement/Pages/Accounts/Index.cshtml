@@ -56,7 +56,12 @@
                 @Html.DisplayFor(modelItem => item.RoleName)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @{
+                    string status;
+                    if (item.Status == 1) status = "Active";
+                    else status = "Inactive";
+                }
+                <div> @status </div>
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.FullName)
@@ -68,7 +73,12 @@
                 @Html.DisplayFor(modelItem => item.Dob)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ProfilePicUrl)
+                @{
+                    string profilePic = "anno-ava.jpg";
+                    if (item.ProfilePicUrl != null)
+                        profilePic = item.ProfilePicUrl;
+                }
+                <img src="~/Images/accounts/@profilePic" height="100" class="card-img" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.IdCardNumberNavigation.IdCardNumber)

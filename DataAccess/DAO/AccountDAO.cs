@@ -60,7 +60,9 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Accounts.SingleOrDefaultAsync(account => account.UserEmail == email);
+                return await HostelManagementContext.Accounts
+                    .Include(id => id.IdCardNumber)
+                    .SingleOrDefaultAsync(account => account.UserEmail == email);
             }
             catch (Exception ex)
             {
@@ -73,7 +75,9 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Accounts.SingleOrDefaultAsync(account => account.UserId == id);
+                return await HostelManagementContext.Accounts
+                    .Include(id => id.IdCardNumber)
+                    .SingleOrDefaultAsync(account => account.UserId == id);
             }
             catch (Exception ex)
             {
@@ -86,7 +90,9 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Accounts.ToListAsync();
+                return await HostelManagementContext.Accounts
+                    .Include(id => id.IdCardNumber)
+                    .ToListAsync();
             }
             catch (Exception ex)
             {
@@ -99,7 +105,9 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Accounts.SingleOrDefaultAsync(account => account.UserEmail == email && account.UserPassword == password);
+                return await HostelManagementContext.Accounts
+                    .Include(id => id.IdCardNumber)
+                    .SingleOrDefaultAsync(account => account.UserEmail == email && account.UserPassword == password);
             }
             catch (Exception ex)
             {
