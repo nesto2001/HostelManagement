@@ -11,10 +11,10 @@ using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Accounts
 {
-    public class LoginModel : PageModel
+    public class LoginOwnerModel : PageModel
     {
         private IAccountRepository accountRepository { get; }
-        public LoginModel(IAccountRepository _accountRepository)
+        public LoginOwnerModel(IAccountRepository _accountRepository)
         {
             accountRepository = _accountRepository;
         }
@@ -68,7 +68,7 @@ namespace HostelManagement.Pages.Accounts
                 var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
-                            new Claim(ClaimTypes.Role, "Renter"),
+                            new Claim(ClaimTypes.Role, "Owner"),
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -87,23 +87,14 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ID", cus.Result.CustomerId);
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
-                var HostelView = HttpContext.Session.GetInt32("HostelID");
-                if (HostelView != null)
-                {
-                    int rv = (int)HostelView;
-                    return RedirectToPage("../Hostels/View", new { id = rv });
-                }
-                else
-                {
-                    return RedirectToPage("../Index");
-                }
+                return RedirectToPage("../HostelOwnerDashboard");
             }
             else if (acc.Result.RoleName.Equals("renter"))
             {
                 var claims = new List<Claim>
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
-                            new Claim(ClaimTypes.Role, "Renter"),
+                            new Claim(ClaimTypes.Role, "Owner"),
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -122,16 +113,8 @@ namespace HostelManagement.Pages.Accounts
                 //HttpContext.Session.SetInt32("isLoggedIn", 1);
                 //HttpContext.Session.SetString("ID", cus.Result.CustomerId);
                 //HttpContext.Session.SetString("ContactName", cus.Result.ContactName);
-                var HostelView = HttpContext.Session.GetInt32("HostelID");
-                if (HostelView != null)
-                {
-                    int rv = (int)HostelView;
-                    return RedirectToPage("../Hostels/View", new { id = rv });
-                } else
-                {
-                    return RedirectToPage("../Index");
-                }
-               
+                return RedirectToPage("../HostelOwnerDashboard");
+
             }
 
             else

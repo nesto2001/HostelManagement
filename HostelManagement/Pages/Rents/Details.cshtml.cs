@@ -62,7 +62,7 @@ namespace HostelManagement.Pages.Rents
                 roomMember.IsPresentator = false;
                 room.RoomCurrentCapacity = room.RoomCurrentCapacity - 1;
             }
-            if (roomMember.IsPresentator == false)
+            else
             {
                 roomMember.IsPresentator = true;
                 room.RoomCurrentCapacity = room.RoomCurrentCapacity + 1;
