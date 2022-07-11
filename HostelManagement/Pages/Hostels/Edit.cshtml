@@ -7,7 +7,7 @@
 
 <section class="listings-hostel edit-listings">
     <div class="listings-hostel-wrapper">
-        
+
         <div class="hostel-listings-card">
             <div class="card-inner">
                 @if (@Model.Hostel.HostelPics.Count > 0)
@@ -105,7 +105,7 @@
                     </div>
                     <div class="form-group" hidden="hidden">
                         <label asp-for="Hostel.Status" class="control-label"></label>
-                        <input asp-for="Hostel.Status" class="form-control" value="0"/>
+                        <input asp-for="Hostel.Status" class="form-control" value="0" />
                         <span asp-validation-for="Hostel.Status" class="text-danger"></span>
                     </div>
                     <div class="form-group">
@@ -115,12 +115,12 @@
                     </div>
                     <div class="form-group" hidden="hidden">
                         <label asp-for="Hostel.HostelOwnerEmail" class="control-label"></label>
-                        <input asp-for="Hostel.HostelOwnerEmail" class="form-control" value="@ViewBag.HostelOwnerEmail"/>
+                        <input asp-for="Hostel.HostelOwnerEmail" class="form-control" value="@ViewBag.HostelOwnerEmail" />
                         <span asp-validation-for="Hostel.HostelOwnerEmail" class="text-danger"></span>
                     </div>
                     <div class="form-group" hidden="hidden">
                         <label asp-for="Hostel.LocationId" class="control-label"></label>
-                        <input asp-for="Hostel.LocationId" class="form-control" value="@ViewBag.LocationId"/>
+                        <input asp-for="Hostel.LocationId" class="form-control" value="@ViewBag.LocationId" />
                         <span asp-validation-for="Hostel.LocationId" class="text-danger"></span>
                     </div>
                 </div>
@@ -143,19 +143,19 @@
                     <div class="form-group">
                         <label class="control-label">Province</label>
                         <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
-                            <option>Select Province</option>
+                            <option>@Model.Location.Ward.District.Province.ProvinceName</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">District</label>
                         <select id="DistrictList" class="form-control">
-                            <option>Select District</option>
+                            <option>@Model.Location.Ward.District.DistrictName</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Ward</label>
                         <select id="WardList" class="form-control" asp-for="Location.WardId">
-                            <option>Select Ward</option>
+                            <option>@Model.Location.Ward.WardName</option>
                         </select>
                     </div>
                     <div class="form-group">
@@ -172,39 +172,49 @@
     </div>
 </section>
 
+
+
 <section class="edit-maincontent" id="/edit-images">
     <div class="edit-wrapper">
         <div class="col-md-7 pt-4 mt-2">
-            <form method="post" asp-page-handler="Uploadhostel">
-                <span class="group-input-title">Photo</span>
-                <div class="group-input-hostel">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    <input type="hidden" asp-for="Location.LocationId"/>
-                    <div class="form-group">
-                        <label asp-for="@Model.FileUploads"></label>
-                        <input asp-for="@Model.FileUploads" />
-                        <span asp-validation-foraction="@Model.FileUploads"></span>
-                    </div>
-                    @if(Model.HostelPics.Count()>0){
-                    <div class="group-input-hostel hostel-edit-imgs d-flex p-4">
-                        @foreach (var item in Model.HostelPics)
-                        {
+            @foreach (var item in Model.Hostel.HostelPics)
+            {
+                <img src="~/images/hostels/@(item.HostelPicUrl)" width="200" />
+            }
+            <a asp-page="./HostelPics" asp-route-id="@Model.Hostel.HostelId"> Edit </a>
+            <!--
+    <form method="post" asp-page-handler="Uploadhostel">
+        <span class="group-input-title">Photo</span>
+        <div class="group-input-hostel">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Location.LocationId" />
+            <div class="form-group">
+                <label asp-for="@Model.FileUploads"></label>
+                <input asp-for="@Model.FileUploads" />
+                <span asp-validation-foraction="@Model.FileUploads"></span>
+            </div>
+            @if (Model.HostelPics.Count() > 0)
+            {
+                <div class="group-input-hostel hostel-edit-imgs d-flex p-4">
+                    @foreach (var item in Model.HostelPics)
+                    {
                         <div class="hostel-pre-imgs">
                             <div class="img">
                                 <img src="~/images/hostels/@item.HostelPicUrl" alt="">
                             </div>
                             <div class="img-remove text-center">
                                 <a asp-page-handler="Removeimage" asp-route-id="@item.HostelPicsId" asp-route-hostelId="@Model.Hostel.HostelId">Remove</a>
-                                </div>
+                            </div>
                         </div>
-                        }
-                    </div>
                     }
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </form>
+            }
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>
+        -->
         </div>
     </div>
 </section>
@@ -212,69 +222,139 @@
 <section class="edit-maincontent" id="/edit-rooms">
     <div class="edit-wrapper">
         <div class="col-md-6 pt-4 mt-2">
-            <form method="post">
-                <span class="group-input-title">Room</span>
-                <div class="group-input-hostel">
-                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                    @{
-                        var roomCount = 1;
-                    }
-                    @foreach (var item in Model.Rooms)
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomTitle)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomDescription)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RomMaxCapacity)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomCurrentCapacity)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Status)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Deposit)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Price)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model.Hostel.Rooms)
                     {
-                        <span class="group-input-title" id="Room">Room @roomCount</span>
-                        <div class="roomform group-input-hostel">
-                            <div class="form-group">
-                                <label asp-for="@item.RoomTitle" class="control-label"></label>
-                                <input asp-for="@item.RoomTitle" class="form-control" />
-                                <span asp-validation-for="@item.RoomTitle" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@item.RoomDescription" class="control-label"></label>
-                                <input asp-for="@item.RoomDescription" class="form-control" />
-                                <span asp-validation-for="@item.RoomDescription" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@item.RomMaxCapacity" class="control-label"></label>
-                                <input asp-for="@item.RomMaxCapacity" class="form-control" />
-                                <span asp-validation-for="@item.RomMaxCapacity" class="text-danger"></span>
-                            </div>
-                            <div class="form-group d-none">
-                                <label asp-for="@item.RoomCurrentCapacity" class="control-label"></label>
-                                <input asp-for="@item.RoomCurrentCapacity" class="form-control" value="0" readonly />
-                                <span asp-validation-for="@item.RoomCurrentCapacity" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@Model.RoomStatus" class="control-label"></label>
-                                <select class="form-control" asp-for="@Model.RoomStatus" asp-items="@ViewBag.StatusId">
-                                    <option>Change status</option>
-                                </select>
-                                <span asp-validation-for="@Model.RoomStatus" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@item.Price" class="control-label"></label>
-                                <input asp-for="@item.Price" class="form-control" />
-                                <span asp-validation-for="@item.Price" class="text-danger"></span>
-                            </div>
-                            <div class="form-group">
-                                <label asp-for="@item.Deposit" class="control-label"></label>
-                                <input asp-for="@item.Deposit" class="form-control" />
-                                <span asp-validation-for="@item.Deposit" class="text-danger"></span>
-                            </div>
-                            <span class="group-input-title" id="Images">Upload some images of this room</span>
-                            <div class="group-input-hostel">
-                                <div class="form-group">
-                                    @* <label asp-for="@Model.FileUploads[i]"></label>
-                                    <input asp-for="@Model.FileUploads[i]" />
-                                    <span asp-validation-foraction="@Model.FileUploads"></span> *@
-                                </div>
-                            </div>
-                        </div>
+                        <tr>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RoomTitle)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RoomDescription)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RomMaxCapacity)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
+                                </td>
+                                <td>
+                                    @{
+                                        var str = "Change Status";
+                                        if (item.Status == 0) str = "Pending";
+                                        if (item.Status == 1) str = "Active";
+                                        if (item.Status == 2) str = "InActive";
+                                        if (item.Status == 3) str = "Denied";
+                                        if (item.Status == 4) str = "Occupied";
+                                    }
+                                    <span>
+                                        <a asp-page="../Rooms/ChangeStatus" asp-route-id="@item.RoomId">@str</a>
+                                    </span>
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Deposit)
+                                </td>
+                                <td>
+                                    @Html.DisplayFor(modelItem => item.Price)
+                                </td>
+                                <td>
+                                        <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit</a>
+
+                                </td>
+                         </tr>
                     }
+                </tbody>
+            </table>
+            <!--<form method="post">
+        <span class="group-input-title">Room</span>
+        <div class="group-input-hostel">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @{
+                var roomCount = 1;
+            }
+            @foreach (var item in Model.Rooms)
+            {
+                <span class="group-input-title" id="Room">Room @roomCount</span>
+                <div class="roomform group-input-hostel">
+                    <div class="form-group">
+                        <label asp-for="@item.RoomTitle" class="control-label"></label>
+                        <input asp-for="@item.RoomTitle" class="form-control" />
+                        <span asp-validation-for="@item.RoomTitle" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@item.RoomDescription" class="control-label"></label>
+                        <input asp-for="@item.RoomDescription" class="form-control" />
+                        <span asp-validation-for="@item.RoomDescription" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@item.RomMaxCapacity" class="control-label"></label>
+                        <input asp-for="@item.RomMaxCapacity" class="form-control" />
+                        <span asp-validation-for="@item.RomMaxCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group d-none">
+                        <label asp-for="@item.RoomCurrentCapacity" class="control-label"></label>
+                        <input asp-for="@item.RoomCurrentCapacity" class="form-control" value="0" readonly />
+                        <span asp-validation-for="@item.RoomCurrentCapacity" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@Model.RoomStatus" class="control-label"></label>
+                        <select class="form-control" asp-for="@Model.RoomStatus" asp-items="@ViewBag.StatusId">
+                            <option>Change status</option>
+                        </select>
+                        <span asp-validation-for="@Model.RoomStatus" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@item.Price" class="control-label"></label>
+                        <input asp-for="@item.Price" class="form-control" />
+                        <span asp-validation-for="@item.Price" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="@item.Deposit" class="control-label"></label>
+                        <input asp-for="@item.Deposit" class="form-control" />
+                        <span asp-validation-for="@item.Deposit" class="text-danger"></span>
+                    </div>
+                    <span class="group-input-title" id="Images">Upload some images of this room</span>
+                    <div class="group-input-hostel">
+                        <div class="form-group">
+                            @* <label asp-for="@Model.FileUploads[i]"></label>
+                                <input asp-for="@Model.FileUploads[i]" />
+                                <span asp-validation-foraction="@Model.FileUploads"></span> *@
+                        </div>
+                    </div>
                 </div>
-                <div class="form-group">
-                    <input type="submit" value="Save" class="btn btn-primary" />
-                </div>
-            </form>
+            }
+        </div>
+        <div class="form-group">
+            <input type="submit" value="Save" class="btn btn-primary" />
+        </div>
+    </form>-->
         </div>
     </div>
 </section>
@@ -286,13 +366,13 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
-        $('.edit-nav-item').click(function(){
+        $('.edit-nav-item').click(function () {
             $('.edit-nav-item').removeClass('edit-nav-item-active');
             $(event.target).closest('.edit-nav-item').addClass('edit-nav-item-active');
             var content = $(event.target).data("target");
             let selector = content.substring(1);
             $('.edit-maincontent').removeClass('content-active');
-            $('#'+ $.escapeSelector(selector)).addClass('content-active');
+            $('#' + $.escapeSelector(selector)).addClass('content-active');
         })
     </script>
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -13,6 +14,7 @@ namespace BusinessObject.BusinessObject
         }
 
         public int LocationId { get; set; }
+        [Required]
         public string AddressString { get; set; }
         public int WardId { get; set; }
 

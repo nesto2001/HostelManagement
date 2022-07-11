@@ -42,6 +42,7 @@ namespace HostelManagement.Pages.Hostels
 
         [BindProperty]
         public Hostel Hostel { get; set; }
+        [BindProperty]
         public Location Location { get; set; }
         public IEnumerable<Room> Rooms { get; set; }
 
@@ -74,11 +75,12 @@ namespace HostelManagement.Pages.Hostels
             }
 
             Hostel = await hostelRepository.GetHostelByID((int)id);
+            HttpContext.Session.SetInt32("HostelID", (int)id);
             if (Hostel == null)
             {
                 return NotFound();
             }
-            Location = await locationRepository.GetLocationByID((int)id);
+            Location = await locationRepository.GetLocationByID(Hostel.Location.LocationId);
             Rooms = await roomRepository.GetRoomsOfAHostel((int)id);
             HostelPics = await hostelPicRepository.GetHostelPicsOfAHostel((int)id);
             IEnumerable<Status> StatusList = new List<Status>
@@ -142,12 +144,35 @@ namespace HostelManagement.Pages.Hostels
 
         public async Task<IActionResult> OnPostUpdateLocation()
         {
-            return Page();
+            ModelState.ClearValidationState("Description");
+            ModelState.ClearValidationState("HostelName");
+            foreach (var item in ModelState)
+            {
+                if (item.Value.ValidationState.Equals("Invalid"))
+                {
+                    return Page();
+                }
+            }
+            int HosID = (int)HttpContext.Session.GetInt32("HostelID");
+            Hostel = await hostelRepository.GetHostelByID(HosID);
+            Hostel.Status = 0;
+            await locationRepository.UpdateLocation(Location);
+            return RedirectToPage("./Edit", new { id = Hostel.HostelId });
         }
 
         public async Task<IActionResult> OnPostUpdateHostel()
         {
-            return Page();
+            ModelState.ClearValidationState("AddressString");
+            foreach (var item in ModelState)
+            {
+                if (item.Value.ValidationState.Equals("Invalid"))
+                {
+                    return Page();
+                }
+            }
+            Hostel.Status = 0;
+            await hostelRepository.UpdateHostel(Hostel);
+            return RedirectToPage("./Edit", new { id = Hostel.HostelId });
         }
 
         public async Task<IActionResult> OnGetRemoveimage(int id, int hostelId)

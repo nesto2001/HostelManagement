@@ -45,7 +45,11 @@ namespace DataAccess.DAO
             try
             {
                 var HostelManagementContext = new HostelManagementContext();
-                return await HostelManagementContext.Locations.SingleOrDefaultAsync(location => location.LocationId == id);
+                return await HostelManagementContext.Locations
+                    .Include(l => l.Ward)
+                        .ThenInclude(l => l.District)
+                            .ThenInclude(l => l.Province)
+                    .SingleOrDefaultAsync(location => location.LocationId == id);
             }
             catch (Exception ex)
             {
