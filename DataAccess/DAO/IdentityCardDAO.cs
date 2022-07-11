@@ -65,5 +65,20 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task<IdentityCard> GetIdentityCardByID(string id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.IdentityCards
+                    .Include(h => h.Accounts)
+                    .FirstOrDefaultAsync(idC => idC.IdCardNumber == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

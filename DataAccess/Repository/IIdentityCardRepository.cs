@@ -12,5 +12,6 @@ namespace DataAccess.Repository
         Task AddIdCard(IdentityCard idCard);
         Task DeleteIdCard(IdentityCard idCard);
         Task UpdateIdCard(IdentityCard idCard);
+        Task<IdentityCard> GetIdentityCardByID(string id);
     }
 }
