@@ -34,7 +34,12 @@
             @Html.DisplayNameFor(model => model.Account.Status)
         </dt>
         <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Account.Status)
+            @{
+                string status;
+                if (Model.Account.Status == 1) status = "Active";
+                else status = "Inactive";
+            }
+            <div> @status </div>
         </dd>
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.FullName)
