@@ -104,7 +104,13 @@
                 <div class="hostel-summary-wrapper summary-wrapper">
                     <div class="summary-content">
                         <div class="summary-thumb">
-                            <div class="summary-thumb-img" style="background-image: url(/images/placeholder.png);"></div>
+                            @{
+                                string hostelThumb ="placeholder.png";
+                                if (Model.hostel.HostelPics.Count>0){
+                                    hostelThumb = "hostels/"+ Model.hostel.HostelPics.ElementAt(0).HostelPicUrl;
+                                }
+                            }
+                            <div class="summary-thumb-img" style="background-image: url(/images/@hostelThumb);"></div>
                         </div>
                         <div class="summary-info">
                             <div class="summary-hostel-info">
@@ -125,7 +131,13 @@
                 <hr>
                 <div class="summary-content">
                     <div class="summary-thumb">
-                        <div class="summary-thumb-img" style="background-image: url(/images/placeholder.png);"></div>
+                        @{
+                            string roomThumb ="placeholder.png";
+                            if (Model.room.RoomPics.Count>0){
+                                roomThumb = "rooms/"+ Model.room.RoomPics.ElementAt(0).RoomPicUrl;
+                            }
+                        }
+                        <div class="summary-thumb-img" style="background-image: url(/images/@roomThumb);"></div>
                     </div>
                     <div class="summary-info">
                         <div class="summary-room-numpeople">
