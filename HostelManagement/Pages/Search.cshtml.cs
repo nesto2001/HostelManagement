@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using System.Security.Claims;
 
 namespace HostelManagement.Pages
 {
@@ -26,6 +27,14 @@ namespace HostelManagement.Pages
         public int capacityChoosen { get; set; }
         public async Task OnGetAsync(string searchKey, int sl_city, int sl_dist, int capacity)
         {
+            string userId, role;
+            int UId = 0;
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+                UId = Int32.Parse(userId);
+                role = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            }
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             Hostels = await hostelRepository.GetHostelsList();
             Hostels = Hostels.Where(hos => hos.Status == 1);
@@ -61,6 +70,10 @@ namespace HostelManagement.Pages
                 }
             }
             Hostels = HostelsSearchKey.Where(h => HostelsDistrictFilter.Contains(h)).Where(k => HostelsCapaictyFilter.Contains(k)).ToList();
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                Hostels = Hostels.Where(h => h.HostelOwnerEmailNavigation.UserId != UId);
+            }
         }
     }
 }
