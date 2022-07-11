@@ -12,9 +12,11 @@ using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using HostelManagement.Helpers;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Rents
 {
+    [Authorize(Roles = "Renter")]
     public class CreateModel : PageModel
     {
         private IAccountRepository accountRepository { get; }

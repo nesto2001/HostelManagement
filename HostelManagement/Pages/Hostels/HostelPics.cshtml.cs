@@ -9,9 +9,11 @@ using HostelManagement.Helpers;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
+    [Authorize(Roles ="Owner")]
     public class HostelPicsModel : PageModel
     {
         private IHostelPicRepository hostelPicRepository;

@@ -10,9 +10,11 @@ using DataAccess;
 using DataAccess.Repository;
 using HostelManagement.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Bills
 {
+    [Authorize(Roles ="Owner")]
     public class CreateModel : PageModel
     {
         private IAccountRepository accountRepository { get; }

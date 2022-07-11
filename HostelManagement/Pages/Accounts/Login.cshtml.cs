@@ -148,5 +148,14 @@ namespace HostelManagement.Pages.Accounts
             await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
             return RedirectToPage("/Index");
         }
+
+        public IActionResult OnGet()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
     }
 }

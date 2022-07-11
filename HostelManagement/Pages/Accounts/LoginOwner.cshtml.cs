@@ -24,6 +24,14 @@ namespace HostelManagement.Pages.Accounts
         public string message { get; set; }
 
         public IList<Account> Accounts { get; set; }
+        public IActionResult OnGet()
+        {
+            if (User.Identity != null && User.Identity.IsAuthenticated)
+            {
+                return RedirectToPage("/Index");
+            }
+            return Page();
+        }
         public async Task<IActionResult> OnPost()
         {
 
