@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAO
@@ -68,6 +67,20 @@ namespace DataAccess.DAO
                 var HostelManagementContext = new HostelManagementContext();
                 HostelManagementContext.HostelPics.Remove(hostelPic);
                 await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<HostelPic> GetHostelPic(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                var pic = await HostelManagementContext.HostelPics.SingleOrDefaultAsync(hp => hp.HostelPicsId.Equals(id));
+                return pic;
             }
             catch (Exception ex)
             {
