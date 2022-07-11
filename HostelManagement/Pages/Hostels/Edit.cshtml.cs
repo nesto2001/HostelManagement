@@ -49,6 +49,16 @@ namespace HostelManagement.Pages.Hostels
 
         public IEnumerable<HostelPic> HostelPics { get; set; }
 
+        public Status RoomStatus { get; set; }
+
+        public class Status
+        {
+            public int StatusInt { get; set; }
+            public string StatusType { get; set; }
+        }
+
+
+
         [Required(ErrorMessage = "Please chose at least one file.")]
         [DataType(DataType.Upload)]
         //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
@@ -71,8 +81,15 @@ namespace HostelManagement.Pages.Hostels
             Location = await locationRepository.GetLocationByID((int)id);
             Rooms = await roomRepository.GetRoomsOfAHostel((int)id);
             HostelPics = await hostelPicRepository.GetHostelPicsOfAHostel((int)id);
+            IEnumerable<Status> StatusList = new List<Status>
+            {
+                new Status{StatusInt=1, StatusType="Active"},
+                new Status{StatusInt=2, StatusType="Inactive"},
+                new Status{StatusInt=4, StatusType="Occupied"}
+            };
             ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
             ViewData["CategoryId"] = new SelectList(await categoryRepository.GetCategoriesList(), "CategoryId", "CategoryName");
+            ViewData["StatusId"] = new SelectList(StatusList, "StatusInt", "StatusType");
             ViewData["LocationId"] = Hostel.LocationId;
             ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
             return Page();
@@ -137,7 +154,7 @@ namespace HostelManagement.Pages.Hostels
         {
             var pic = await hostelPicRepository.GetHostelPic(id);
             await hostelPicRepository.DeleteHostelPic(pic);
-            return RedirectToPage("./Edit", new {id = hostelId});
+            return RedirectToPage("./Edit", new { id = hostelId });
         }
 
 
