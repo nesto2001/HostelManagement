@@ -19,18 +19,20 @@ namespace HostelManagement.Pages.Rents
         private IAccountRepository accountRepository { get; }
         private IRentRepository rentRepository { get; }
         private IRoomRepository roomRepository { get; }
+        private IHostelRepository hostelRepository { get; }
         private IRoomMemberRepository roomMemberRepository { get; }
         private ISendMailService sendMailService { get; }
         public CreateModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
                             IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository,
-                            ISendMailService _sendMailService)
+                            ISendMailService _sendMailService, IHostelRepository _hostelRepository)
         {
             accountRepository = _accountRepository;
             rentRepository = _rentRepository;
             roomRepository = _roomRepository;
             roomMemberRepository = _roomMemberRepository;
             sendMailService = _sendMailService;
-        }
+            hostelRepository = _hostelRepository;
+        } 
 
         public async Task<IActionResult> OnGetAsync(int? id, int? extend)
         {
@@ -54,6 +56,7 @@ namespace HostelManagement.Pages.Rents
                account = await accountRepository.GetAccountByID(UId);
             }
             room = await roomRepository.GetRoomByID((int)id);
+            hostel = await hostelRepository.GetHostelByID(room.HostelId);
             ViewData["RentedBy"] = account.UserEmail;
             ViewData["RoomId"] = id;
             return Page();
@@ -68,6 +71,7 @@ namespace HostelManagement.Pages.Rents
         public Account account { get; set; }
         [BindProperty]
         public Room room { get; set; }
+        public Hostel hostel { get; set; }
         public string message { get; set; }
         [BindProperty]
         public DateTime StartRentDate { get; set; }
@@ -138,7 +142,9 @@ namespace HostelManagement.Pages.Rents
                     RoomMem.RoomId = Rent.RoomId;
                     RoomMem.StartRentDate = Rent.StartRentDate;
                     RoomMem.EndRentDate = Rent.EndRentDate;
+                    if(!(countCurrent>0)){
                     RoomMem.IsPresentator = true;
+                    }
                     RoomMem.Status = 1;
                     await roomMemberRepository.AddRoomMember(RoomMem);
                     countCurrent++;

@@ -7,181 +7,158 @@
     bool extend = (bool)ViewData["extend"];
 }
 
-<h1>Create</h1>
-
-<h4>Rent</h4>
-<hr />
-<div class="hostel-room">
-    <div class="room-wrapper">
-        <div class="room-title">
-            <div class="room-title-left">@Model.room.RoomTitle</div>
-            <div class="room-title-right"></div>
-        </div>
-        <div class="room-content">
-            <div class="room-content-wrapper">
-                <div class="room-info">
-                    <p></p>
-                    <div class="room-photos-container">
-                        <div class="room-photo room-photo-thumb">
-                            @{
-                                string roomThumb = "placeholder.png";
-                                if (Model.room.RoomPics.Count > 0)
-                                {
-                                    roomThumb = "rooms/" + Model.room.RoomPics.ElementAt(0).RoomPicUrl;
-                                }
-                            }
-                            <div>
-                                <img src="~/images/@roomThumb" alt="">
-                            </div>
+<div class="container main-container mt-5">
+    <div class="row">
+        <div class="col-md-8 p-0">
+            <div>
+                <div class="rent-form-wrapper">
+                    <h4 class="mb-3"><i class='bx bx-receipt' ></i>Renting Details</h4>
+                    <form method="post" name="rent-form">
+                        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                        <div hidden="@hidden">
+                            <span class="text-danger">@Model.message</span>
                         </div>
-                        @if (Model.room.RoomPics.Count > 2)
+                        <div class="form-group" hidden="hidden">
+                            <label asp-for="Rent.RoomId" class="control-label"></label>
+                            <input asp-for="Rent.RoomId" class="form-control" value="@ViewBag.RoomId" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Rent.RentedBy" class="control-label"></label>
+                            <input asp-for="Rent.RentedBy" class="form-control" value="@ViewBag.RentedBy" readonly />
+                        </div>
+                        @if (extend)
                         {
-                            <div class="room-photo room-photo-others">
-                                <div class="photo-small-wrapper">
-                                    @for (int i = 1; i < Model.room.RoomPics.Count; i++)
-                                    {
-                                        var pic = Model.room.RoomPics.ElementAt(i).RoomPicUrl;
-                                        <div class="photo-item">
-                                            <div class="photo">
-                                                <div>
-                                                    <img src="~/images/rooms/@pic" alt="">
-                                                </div>
-                                            </div>
-                                        </div>
-                                    }
+                            <div class="form-group">
+                                <label asp-for="Rent.IsDeposited" class="control-label"></label>
+                                <input asp-for="Rent.IsDeposited" class="form-control" value="2" readonly />
+                                <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
+                            </div>
+                            <div class="form-group">
+                                <label asp-for="Rent.Status" class="control-label"></label>
+                                <input asp-for="Rent.Status" class="form-control" value="1" readonly />
+                                <span asp-validation-for="Rent.Status" class="text-danger"></span>
+                            </div>
+                            <div class="grouped-form">
+                                <div class="form-group">
+                                    <label asp-for="Rent.StartRentDate" class="control-label"></label> 
+                                    <p class="form-control">@Model.StartRentDate</p>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="MonthRent" class="control-label">How many months?</label>
+                                    <input asp-for="MonthRent" class="form-control" />
                                 </div>
                             </div>
                         }
-                    </div>
-                    <div>
-                        <a class="see-room-info">Room photos and details</a>
-                        <div class="room-description">
-                            @Model.room.RoomDescription
+                        else
+                        {
+                            <div class="form-group" hidden="hidden">
+                                <label asp-for="Rent.IsDeposited" class="control-label"></label>
+                                <input asp-for="Rent.IsDeposited" class="form-control" value="0" readonly />
+                                <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
+                            </div>
+                            <div class="form-group" hidden="hidden">
+                                <label asp-for="Rent.Status" class="control-label"></label>
+                                <input asp-for="Rent.Status" class="form-control" value="0" readonly />
+                                <span asp-validation-for="Rent.Status" class="text-danger"></span>
+                            </div>
+                            <div class="grouped-form">
+                                <div class="form-group">
+                                    <label asp-for="Rent.StartRentDate" class="control-label"></label>
+                                    <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date" />
+                                    <span asp-validation-for="Rent.StartRentDate" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                <label asp-for="MonthRent" class="control-label">How many months?</label>
+                                <input asp-for="MonthRent" class="form-control" />
+                            </div>
                         </div>
+                        }
+
+
+                        <div class="form-group" hidden="hidden">
+                            <label asp-for="Rent.Total" class="control-label"></label>
+                            <input asp-for="Rent.Total" class="form-control" value="@Model.room.Price" readonly />
+                            <span asp-validation-for="Rent.Total" class="text-danger"></span>
+                        </div>
+                    </form>
+                </div>
+
+                <div class="rent-form-wrapper mt-2">
+                    <h4 class="mb-3"><i class='bx bx-group'></i>Room Members</h4>
+                
+                    <div class="grouped-form flex-wrap">
+                    @for (int i = 0; i < Model.room.RomMaxCapacity; i++)
+                    {
+                        <div class="form-group">
+                            <label class="control-label">Member @(i+1) Email</label>
+                            <input asp-for="RoomMember[i].UserEmail" class="form-control" form="rent-form" id="member-@(i+1)"/>
+                            <span asp-validation-for="RoomMember[i].UserEmail" class="text-danger"></span>
+                        </div>
+                    }
                     </div>
                 </div>
-                <div class="room-booking-details">
-                    <div class="booking-details-inner">
-                        <div class="booking-details-header">
-                            <div class="header-item header-capacity p-2">Capacity</div>
-                            <div class="header-item header-price">Price per month</div>
-                            <div class="header-item header-book">Book</div>
+            </div>
+        </div>
+        <div class="col-md-4 px-0">
+            <div class="summary-block hostel-summary">
+                <div class="hostel-summary-wrapper summary-wrapper">
+                    <div class="summary-content">
+                        <div class="summary-thumb">
+                            <div class="summary-thumb-img" style="background-image: url(/images/placeholder.png);"></div>
                         </div>
-                        <div class="booking-details">
-                            <!--  child room list room -->
-                            <div class="booking-details-contents">
-                                <div class="booking-details-item details-capacity">
-                                    <span>
-                                        @Model.room.RomMaxCapacity adults
-                                        <i class='bx bx-male'></i>
-                                    </span>
-                                </div>
-                                <div class="booking-details-item details-price">
-                                    <div>
-                                        <span class="currency">
-                                            ₫
-                                        </span>
-                                        <span>@Model.room.Price/month</span>
-                                    </div>
-                                </div>
-                                <div class="booking-details-item details-book">
-                                    <div class="bookButton">
-                                        <div>
-                                            <button class="btn btn-primary">
-
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
+                        <div class="summary-info">
+                            <div class="summary-hostel-info">
+                                <p>@Model.hostel.HostelName</p>
+                                <div class="hostel-info-cate">@Model.hostel.Category.CategoryName</div>
+                                <p class="location">@Model.hostel.Location.AddressString, @Model.hostel.Location.Ward.WardName, @Model.hostel.Location.Ward.District.DistrictName, @Model.hostel.Location.Ward.District.Province.ProvinceName</p>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="summary-block room-summary">
+                <br>
+                <div class="room-summary-title">
+                    Studio
+                </div>
+                <hr>
+                <div class="summary-content">
+                    <div class="summary-thumb">
+                        <div class="summary-thumb-img" style="background-image: url(/images/placeholder.png);"></div>
+                    </div>
+                    <div class="summary-info">
+                        <div class="summary-room-numpeople">
+                            <p><i class='bx bx-group'></i> @Model.room.RomMaxCapacity <text>adult(s)</text></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="room-summary-price text-right">
+                    <span class="currency">₫</span>@Model.room.Price<span class="countUnit">/month</span>
+                </div>
+            </div>
+
+
+            <div class="summary-block booking-summary">
+                <p>By proceeding with this booking, I agree to Rentel’s Terms of Use and Privacy Policy.</p>
+            
+                <div class="booking-summary-action text-right mt-2">
+                    <button class="btn btn-primary btn-rent" type="submit" form="rent-form">Submit</button>
+                </div>
+            </div>
         </div>
-    </div>
-</div>
-<div class="row">
-    <div class="col-md-4">
-        <form method="post">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div hidden="@hidden">
-                <span class="text-danger">@Model.message</span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Rent.RoomId" class="control-label"></label>
-                <input asp-for="Rent.RoomId" class="form-control" value="@ViewBag.RoomId" readonly />
-            </div>
-            <div class="form-group">
-                <label asp-for="Rent.RentedBy" class="control-label"></label>
-                <input asp-for="Rent.RentedBy" class="form-control" value="@ViewBag.RentedBy" readonly />
-            </div>
-            @if (extend)
-            {
-                <div class="form-group">
-                    <label asp-for="Rent.IsDeposited" class="control-label"></label>
-                    <input asp-for="Rent.IsDeposited" class="form-control" value="2" readonly />
-                    <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Rent.Status" class="control-label"></label>
-                    <input asp-for="Rent.Status" class="form-control" value="1" readonly />
-                    <span asp-validation-for="Rent.Status" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Rent.StartRentDate" class="control-label"></label> 
-                    <p class="form-control">@Model.StartRentDate</p>
-                </div>
-            }
-            else
-            {
-                <div class="form-group">
-                    <label asp-for="Rent.IsDeposited" class="control-label"></label>
-                    <input asp-for="Rent.IsDeposited" class="form-control" value="0" readonly />
-                    <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Rent.Status" class="control-label"></label>
-                    <input asp-for="Rent.Status" class="form-control" value="0" readonly />
-                    <span asp-validation-for="Rent.Status" class="text-danger"></span>
-                </div>
-                <div class="form-group">
-                    <label asp-for="Rent.StartRentDate" class="control-label"></label>
-                    <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date" />
-                    <span asp-validation-for="Rent.StartRentDate" class="text-danger"></span>
-                </div>
-            }
-
-
-            <div class="form-group">
-                <label asp-for="Rent.Total" class="control-label"></label>
-                <input asp-for="Rent.Total" class="form-control" value="@Model.room.Price" readonly />
-                <span asp-validation-for="Rent.Total" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="MonthRent" class="control-label">How many months?</label>
-                <input asp-for="MonthRent" class="form-control" />
-            </div>
-            @for (int i = 0; i < Model.room.RomMaxCapacity; i++)
-            {
-                <div class="form-group">
-                    <label class="control-label">Member @(i+1)</label>
-                    <input asp-for="RoomMember[i].UserEmail" class="form-control" />
-                    <span asp-validation-for="RoomMember[i].UserEmail" class="text-danger"></span>
-                </div>
-            }
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+    </div>  
 </div>
 
-<div>
-    <a asp-page="Index">Back to List</a>
-</div>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $(window).on('load',function(){
+            $('.page-main').parent().closest('body').addClass('rent-main');
+            $('#member-1').val('@ViewBag.RentedBy');
+            $('#member-1').attr('readonly',true);
+        })
+    </script>
 }
