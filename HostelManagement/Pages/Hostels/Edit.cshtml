@@ -244,139 +244,78 @@
 <section class="edit-maincontent" id="/edit-rooms">
     <div class="edit-wrapper">
         <div class="col-md-6 pt-4 mt-2">
-            <table class="table">
-                <thead>
-                    <tr>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomTitle)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomDescription)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RomMaxCapacity)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomCurrentCapacity)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Status)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Deposit)
-                        </th>
-                        <th>
-                            @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Price)
-                        </th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
+        </div>
+        <div class="col-9 main-content">
+            <div class="hostel-list mt-3">
+                <div class="hostel-list-wrapper">
                     @foreach (var item in Model.Hostel.Rooms)
                     {
-                        <tr>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RoomTitle)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RoomDescription)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RomMaxCapacity)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
-                                </td>
-                                <td>
-                                    @{
-                                        var str = "Change Status";
-                                        if (item.Status == 0) str = "Pending";
-                                        if (item.Status == 1) str = "Active";
-                                        if (item.Status == 2) str = "InActive";
-                                        if (item.Status == 3) str = "Denied";
-                                        if (item.Status == 4) str = "Occupied";
+                        <div class="hostel-item mb-4">
+                            <div class="hostel-item-inner d-flex">
+                                <div class="hostel-dt hostel-images col p-0">
+                                    <div class="hostel-thumb">
+                                        @if (@item.RoomPics.Count > 0)
+                                        {
+                                            <img src="~/images/rooms/@item.RoomPics.ElementAt(0).RoomPicUrl" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/placeholder.png" alt="">
+                                        }
+                                    </div>
+                                    @if (@item.RoomPics.Count > 4)
+                                    {
+                                        <div class="hostel-imgs d-flex">
+                                            @for (int i = 1; i < item.RoomPics.Count; i++)
+                                            {
+                                                <div class="hostel-img">
+                                                    <img src="~/images/rooms/@item.RoomPics.ElementAt(i).RoomPicUrl" alt="">
+                                                </div>
+                                            }
+                                        </div>
                                     }
-                                    <span>
-                                        <a asp-page="../Rooms/ChangeStatus" asp-route-id="@item.RoomId">@str</a>
-                                    </span>
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Deposit)
-                                </td>
-                                <td>
-                                    @Html.DisplayFor(modelItem => item.Price)
-                                </td>
-                                <td>
-                                        <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit</a>
-
-                                </td>
-                         </tr>
-                    }
-                </tbody>
-            </table>
-            <!--<form method="post">
-        <span class="group-input-title">Room</span>
-        <div class="group-input-hostel">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @{
-                var roomCount = 1;
-            }
-            @foreach (var item in Model.Rooms)
-            {
-                <span class="group-input-title" id="Room">Room @roomCount</span>
-                <div class="roomform group-input-hostel">
-                    <div class="form-group">
-                        <label asp-for="@item.RoomTitle" class="control-label"></label>
-                        <input asp-for="@item.RoomTitle" class="form-control" />
-                        <span asp-validation-for="@item.RoomTitle" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@item.RoomDescription" class="control-label"></label>
-                        <input asp-for="@item.RoomDescription" class="form-control" />
-                        <span asp-validation-for="@item.RoomDescription" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@item.RomMaxCapacity" class="control-label"></label>
-                        <input asp-for="@item.RomMaxCapacity" class="form-control" />
-                        <span asp-validation-for="@item.RomMaxCapacity" class="text-danger"></span>
-                    </div>
-                    <div class="form-group d-none">
-                        <label asp-for="@item.RoomCurrentCapacity" class="control-label"></label>
-                        <input asp-for="@item.RoomCurrentCapacity" class="form-control" value="0" readonly />
-                        <span asp-validation-for="@item.RoomCurrentCapacity" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@Model.RoomStatus" class="control-label"></label>
-                        <select class="form-control" asp-for="@Model.RoomStatus" asp-items="@ViewBag.StatusId">
-                            <option>Change status</option>
-                        </select>
-                        <span asp-validation-for="@Model.RoomStatus" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@item.Price" class="control-label"></label>
-                        <input asp-for="@item.Price" class="form-control" />
-                        <span asp-validation-for="@item.Price" class="text-danger"></span>
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="@item.Deposit" class="control-label"></label>
-                        <input asp-for="@item.Deposit" class="form-control" />
-                        <span asp-validation-for="@item.Deposit" class="text-danger"></span>
-                    </div>
-                    <span class="group-input-title" id="Images">Upload some images of this room</span>
-                    <div class="group-input-hostel">
-                        <div class="form-group">
-                            @* <label asp-for="@Model.FileUploads[i]"></label>
-                                <input asp-for="@Model.FileUploads[i]" />
-                                <span asp-validation-foraction="@Model.FileUploads"></span> *@
+                                </div>
+                                @{
+                                    var detail = "";
+                                    if (item.RoomDescription.Length > 20) detail = item.RoomDescription.Substring(0, 20);
+                                    else detail = item.RoomDescription;
+                                    string stt = "";
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                            stt = "Active";
+                                            break;
+                                        case 2:
+                                            stt = "Inactive";
+                                            break;
+                                        case 3:
+                                            stt = "Denied";
+                                            break;
+                                        case 4:
+                                            stt = "Occupied";
+                                            break;
+                                        default:
+                                            stt = "Pending";
+                                            break;
+                                    }
+                                }
+                                <div class="hostel-info col">
+                                    <div class="hostel-name">@item.RoomTitle</div>
+                                    <div class="hostel-cate">@stt</div>
+                                    <div class="hostel-location">@detail</div>
+                                </div>
+                                <div class="hostel-price col">
+                                    <div class="col p-0"></div>
+                                    <div class="price col d-flex align-items-center justify-content-end">Capacity @item.RoomCurrentCapacity/@item.RomMaxCapacity</div>
+                                    <div class="col d-flex align-items-end justify-content-end">
+                                        <button class="btn btn-primary"><a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Select</a></button>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
-                    </div>
+                    }
                 </div>
-            }
-        </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    </form>-->
+            </div>
         </div>
     </div>
 </section>
