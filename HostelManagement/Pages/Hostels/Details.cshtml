@@ -47,7 +47,7 @@
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Hostel.Location.AddressString) - @Html.DisplayFor(model => model.Hostel.Location.Ward.WardName) -
             @Html.DisplayFor(model => model.Hostel.Location.Ward.District.DistrictName) - @Html.DisplayFor(model => model.Hostel.Location.Ward.District.Province.ProvinceName)
-            <p>|</p>
+            
             @if (Model.UserRole == "Owner")
             {
                 <a asp-page="../Locations/Edit" asp-route-id="@Model.Hostel.LocationId">Edit</a>
@@ -78,6 +78,31 @@
     }
 
 </div>
+@if(Model.Hostel.Status == 0)
+{
+<div class="card-action">
+    <div class="btn-card-action btn-card-activate" id="@Model.Hostel.HostelId">
+        <a asp-page-handler="Yes" asp-route-id="@Model.Hostel.HostelId">
+            <i class='bx bx-check'></i>
+        </a>
+    </div>
+    <div class="btn-card-action btn-card-denied btn-card-deactivate" id="@Model.Hostel.HostelId">
+        <a asp-page-handler="No" asp-route-id="@Model.Hostel.HostelId">
+            <i class='bx bx-x'></i>
+        </a>
+    </div>
+    @{
+        var name = Model.Hostel.HostelName;
+    }
+    <script type="text/javascript">
+                            $('.btn-card-deactivate#@Model.Hostel.HostelId').click(function(){
+                                $('.deactivate-form').append("<input type='hidden' name='id' value='@Model.Hostel.HostelId'/>");
+                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
+                                $('.popup-deactivate').show();
+                            })
+    </script>
+</div>
+}
 
 <table class="table">
     <thead>

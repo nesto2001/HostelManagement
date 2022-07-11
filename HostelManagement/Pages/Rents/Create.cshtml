@@ -11,6 +11,96 @@
 
 <h4>Rent</h4>
 <hr />
+<div class="hostel-room">
+    <div class="room-wrapper">
+        <div class="room-title">
+            <div class="room-title-left">@Model.room.RoomTitle</div>
+            <div class="room-title-right"></div>
+        </div>
+        <div class="room-content">
+            <div class="room-content-wrapper">
+                <div class="room-info">
+                    <p></p>
+                    <div class="room-photos-container">
+                        <div class="room-photo room-photo-thumb">
+                            @{
+                                string roomThumb = "placeholder.png";
+                                if (Model.room.RoomPics.Count > 0)
+                                {
+                                    roomThumb = "rooms/" + Model.room.RoomPics.ElementAt(0).RoomPicUrl;
+                                }
+                            }
+                            <div>
+                                <img src="~/images/@roomThumb" alt="">
+                            </div>
+                        </div>
+                        @if (Model.room.RoomPics.Count > 2)
+                        {
+                            <div class="room-photo room-photo-others">
+                                <div class="photo-small-wrapper">
+                                    @for (int i = 1; i < Model.room.RoomPics.Count; i++)
+                                    {
+                                        var pic = Model.room.RoomPics.ElementAt(i).RoomPicUrl;
+                                        <div class="photo-item">
+                                            <div class="photo">
+                                                <div>
+                                                    <img src="~/images/rooms/@pic" alt="">
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                </div>
+                            </div>
+                        }
+                    </div>
+                    <div>
+                        <a class="see-room-info">Room photos and details</a>
+                        <div class="room-description">
+                            @Model.room.RoomDescription
+                        </div>
+                    </div>
+                </div>
+                <div class="room-booking-details">
+                    <div class="booking-details-inner">
+                        <div class="booking-details-header">
+                            <div class="header-item header-capacity p-2">Capacity</div>
+                            <div class="header-item header-price">Price per month</div>
+                            <div class="header-item header-book">Book</div>
+                        </div>
+                        <div class="booking-details">
+                            <!--  child room list room -->
+                            <div class="booking-details-contents">
+                                <div class="booking-details-item details-capacity">
+                                    <span>
+                                        @Model.room.RomMaxCapacity adults
+                                        <i class='bx bx-male'></i>
+                                    </span>
+                                </div>
+                                <div class="booking-details-item details-price">
+                                    <div>
+                                        <span class="currency">
+                                            ₫
+                                        </span>
+                                        <span>@Model.room.Price/month</span>
+                                    </div>
+                                </div>
+                                <div class="booking-details-item details-book">
+                                    <div class="bookButton">
+                                        <div>
+                                            <button class="btn btn-primary">
+
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 <div class="row">
     <div class="col-md-4">
         <form method="post">

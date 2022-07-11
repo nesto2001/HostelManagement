@@ -46,5 +46,51 @@ namespace HostelManagement.Pages.Hostels
             }
             return Page();
         }
+
+        public async Task<IActionResult> OnGetYesAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (HttpContext.User.Claims != null)
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+                //int UId = Int32.Parse(userId);
+                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            }
+            HttpContext.Session.SetInt32("HostelID", (int)id);
+            Hostel = await hostelRepository.GetHostelByID((int)id);
+            Hostel.Status = 1;
+            await hostelRepository.UpdateHostel(Hostel);
+            if (Hostel == null)
+            {
+                return NotFound();
+            }
+            return Page();
+        }
+
+        public async Task<IActionResult> OnGetNoAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+            if (HttpContext.User.Claims != null)
+            {
+                var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+                //int UId = Int32.Parse(userId);
+                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
+            }
+            HttpContext.Session.SetInt32("HostelID", (int)id);
+            Hostel = await hostelRepository.GetHostelByID((int)id);
+            Hostel.Status = 3;
+            await hostelRepository.UpdateHostel(Hostel);
+            if (Hostel == null)
+            {
+                return NotFound();
+            }
+            return Page();
+        }
     }
 }
