@@ -41,7 +41,7 @@ namespace BusinessObject.BusinessObject
         public DateTime? Dob { get; set; }
         [Display(Name = "Avatar")]
         public string ProfilePicUrl { get; set; }
-        [Required(ErrorMessage = "ID Card is required!")]
+        //[Required(ErrorMessage = "ID Card is required!")]
         [Display(Name = "Identity Card Number")]
         public string IdCardNumber { get; set; }
 
