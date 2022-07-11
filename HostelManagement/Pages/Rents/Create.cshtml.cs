@@ -11,6 +11,7 @@ using DataAccess.Repository;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using HostelManagement.Helpers;
+using System.ComponentModel.DataAnnotations;
 
 namespace HostelManagement.Pages.Rents
 {
@@ -65,6 +66,8 @@ namespace HostelManagement.Pages.Rents
         [BindProperty]
         public Rent Rent { get; set; }
         [BindProperty]
+        [Required]
+        [Range(1, 24, ErrorMessage = "Your contract must be from 1 to 24 months.")]
         public int MonthRent { get; set; }
         [BindProperty]
         public RoomMember[] RoomMember { get; set; }
@@ -85,6 +88,7 @@ namespace HostelManagement.Pages.Rents
                 int UId = Int32.Parse(userId);
                 account = await accountRepository.GetAccountByID(UId);
                 room = await roomRepository.GetRoomByID(Rent.RoomId);
+                hostel = await hostelRepository.GetHostelByID(room.HostelId);
                 ViewData["RentedBy"] = account.UserEmail;
                 ViewData["RoomId"] = room.RoomId;
                 return Page();
