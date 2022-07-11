@@ -1485,6 +1485,182 @@ ul li, ol li{
   color: whitesmoke;
 }
 
+body.rent-main{
+  background: #fcfcfc;
+}
+
+.summary-block{
+  margin: 0px 8px 8px;
+  box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px 1px;
+  border-radius: 2px;
+  background: #fff;
+  border: 1px solid rgb(221, 223, 226);
+}
+
+.summary-block .summary-wrapper{
+  padding: 12px;
+  position: relative;
+}
+
+.summary-content{
+  box-sizing: border-box;
+  display: flex;
+  flex-wrap: wrap;
+  margin: -6px;
+  width: calc(100% + 12px);
+}
+
+.summary-content .summary-thumb{
+  display: block;
+  flex-basis: 25%;
+  -webkit-box-flex: 0;
+  flex-grow: 0;
+  max-width: 25%;
+  padding: 6px;
+  margin: 0px;
+}
+
+.summary-thumb-img{
+  width: 87px;
+  height: 127px;
+  max-height: 129px;
+  background-position: center center;
+  background-size: cover;
+  border-radius: 3px;
+}
+
+.summary-info{
+  display: block;
+  flex-basis: 75%;
+  -webkit-box-flex: 0;
+  flex-grow: 0;
+  max-width: 75%;
+  padding: 6px;
+}
+
+.summary-info .summary-hostel-info{
+  padding-left: 12px;
+  padding-right: 12px;
+}
+
+.summary-info .summary-hostel-info p{
+  font-size: 20px;
+  line-height: 28px;
+  font-weight: 500;
+}
+
+.summary-info .summary-hostel-info p.location{
+  font-size: 12px;
+  line-height: 18px;
+  font-weight: 300;
+}
+
+.hostel-info-cate{
+  display: inline-block;
+  font-weight: 500;
+  font-size: 12px;
+  border-radius: 20px;
+  padding:0 8px;
+  max-height: 18px;
+  margin-top: 4px;
+  margin-bottom: 8px;
+  color: #fff;
+  background: #0a7900;
+}
+
+.summary-block.room-summary{
+  margin: 8px;
+  padding: 16px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px 1px;
+  border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  border: none;
+}
+
+br{
+  content: "";
+  display: block;
+  margin-top: 19px;
+}
+
+.room-summary-title{
+  font-size: 16px;
+  line-height: 22px;
+  font-weight: 500;
+  margin: 8px 0px;
+}
+
+.room-summary hr{
+  margin: 12px 0;
+  border-color: rgb(221, 223, 226);
+}
+
+.summary-room-numpeople p{
+  font-size: 18px;
+  font-family: 500;
+  color: gray;
+}
+.summary-room-numpeople p i{
+  font-size: 24px;
+  padding: 0;
+  vertical-align: sub;
+}
+
+.rent-form-wrapper{
+  margin-right: 5px;
+  padding: 16px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px 1px;
+  border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  border: 1px solid rgb(221, 223, 226);
+}
+
+.rent-form-wrapper h4{
+  margin-top: 8px;
+  font-size: 21px;
+}
+
+.rent-form-wrapper h4 i{
+  padding: 0;
+  vertical-align: sub;
+  margin-right: 8px;
+  color: #0083CC;
+}
+
+.grouped-form{
+  display: flex;
+  justify-content: space-between;
+}
+
+.grouped-form .form-group{
+  flex-basis: 49%;
+}
+
+.countUnit{
+  color: #737373;
+}
+
+.room-summary-price{
+  font-weight: bold;
+}
+
+.summary-block.booking-summary{
+  margin: 8px;
+  padding: 16px;
+  position: relative;
+  box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px 1px;
+  border-radius: 0px;
+  background-color: rgb(255, 255, 255);
+  border: none;
+}
+
+.btn-rent{
+  padding: 8px 30px;
+}
+}
+
 * {
     box-sizing: border-box
 }

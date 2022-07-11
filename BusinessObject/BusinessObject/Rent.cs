@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 #nullable disable
 
@@ -15,6 +16,7 @@ namespace BusinessObject.BusinessObject
 
         public int RentId { get; set; }
         public int RoomId { get; set; }
+        [Display(Name = "Renter")]
         public string RentedBy { get; set; }
         public int IsDeposited { get; set; }
         public int Status { get; set; }
