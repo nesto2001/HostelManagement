@@ -61,7 +61,9 @@ namespace DataAccess.DAO
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Accounts
-                    .Include(id => id.IdCardNumber)
+                    .Include(id => id.IdCardNumberNavigation)
+                    .Include(id => id.Hostels)
+                    .Include(id => id.Rents)
                     .SingleOrDefaultAsync(account => account.UserEmail == email);
             }
             catch (Exception ex)
@@ -76,7 +78,9 @@ namespace DataAccess.DAO
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Accounts
-                    .Include(id => id.IdCardNumber)
+                    .Include(id => id.IdCardNumberNavigation)
+                    .Include(id => id.Hostels)
+                    .Include(id => id.Rents)
                     .SingleOrDefaultAsync(account => account.UserId == id);
             }
             catch (Exception ex)
@@ -91,7 +95,9 @@ namespace DataAccess.DAO
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Accounts
-                    .Include(id => id.IdCardNumber)
+                    .Include(id => id.IdCardNumberNavigation)
+                    .Include(id => id.Hostels)
+                    .Include(id => id.Rents)
                     .ToListAsync();
             }
             catch (Exception ex)
@@ -106,7 +112,9 @@ namespace DataAccess.DAO
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Accounts
-                    .Include(id => id.IdCardNumber)
+                    .Include(id => id.IdCardNumberNavigation)
+                    .Include(id => id.Hostels)
+                    .Include(id => id.Rents)
                     .SingleOrDefaultAsync(account => account.UserEmail == email && account.UserPassword == password);
             }
             catch (Exception ex)
