@@ -146,9 +146,7 @@ namespace HostelManagement.Pages.Rents
                     RoomMem.RoomId = Rent.RoomId;
                     RoomMem.StartRentDate = Rent.StartRentDate;
                     RoomMem.EndRentDate = Rent.EndRentDate;
-                    if(!(countCurrent>0)){
                     RoomMem.IsPresentator = true;
-                    }
                     RoomMem.Status = 1;
                     await roomMemberRepository.AddRoomMember(RoomMem);
                     countCurrent++;
