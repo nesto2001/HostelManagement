@@ -15,13 +15,27 @@
         <div class="form-group">
             <label class="control-label">Hostel</label>
             <select id="HostelList" asp-items="@ViewBag.HostelId" class="form-control" name="slHostel">
-                <option>Choose Hostel</option>
+                @if (!String.IsNullOrEmpty(@ViewBag.HostelName))
+                {
+                    <option>@ViewBag.HostelName</option>
+                }
+                else
+                {
+                    <option>Choose Hostel</option>
+                }
             </select>
         </div>
         <div class="form-group">
             <label class="control-label">Room</label>
             <select id="RoomList" class="form-control" name="slRoom">
-                <option>Select Room</option>
+                @if (!String.IsNullOrEmpty(@ViewBag.RoomName))
+                {
+                    <option>@ViewBag.RoomName</option>
+                }
+                else
+                {
+                    <option>Select Room</option>
+                }
             </select>
         </div>
     </div>

@@ -84,7 +84,17 @@ namespace HostelManagement.Pages.Rents
 
         public async Task<ActionResult> OnPostAsync(int slHostel, int slRoom)
         {
-            Rents = await rentRepository.GetRentListByRoom(slRoom);
+            Rents = await rentRepository.GetRentListByRoom(slRoom); 
+            int UId = 0;
+            var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                UId = Int32.Parse(userId);
+            }
+            Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
+            ViewData["HostelId"] = new SelectList(Hostels, "HostelId", "HostelName");
+            ViewData["HostelName"] = hostelRepository.GetHostelByID(slHostel).Result.HostelName;
+            ViewData["RoomName"] = roomRepository.GetRoomByID(slRoom).Result.RoomTitle;
             return Page();
         }
 
