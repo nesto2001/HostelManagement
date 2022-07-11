@@ -177,44 +177,66 @@
 <section class="edit-maincontent" id="/edit-images">
     <div class="edit-wrapper">
         <div class="col-md-7 pt-4 mt-2">
+            <!--
+        <form method="post" asp-page-handler="Uploadhostel">
+            <span class="group-input-title">Photo</span>
+            <div class="group-input-hostel">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Location.LocationId" />
+                <div class="form-group">
+                    <label asp-for="@Model.FileUploads"></label>
+                    <input asp-for="@Model.FileUploads" />
+                    <span asp-validation-foraction="@Model.FileUploads"></span>
+                </div>
+                @if (Model.HostelPics.Count() > 0)
+                {
+                    <div class="group-input-hostel hostel-edit-imgs d-flex p-4">
+                        @foreach (var item in Model.HostelPics)
+                        {
+                            <div class="hostel-pre-imgs">
+                                <div class="img">
+                                    <img src="~/images/hostels/@item.HostelPicUrl" alt="">
+                                </div>
+                                <div class="img-remove text-center">
+                                    <a asp-page-handler="Removeimage" asp-route-id="@item.HostelPicsId" asp-route-hostelId="@Model.Hostel.HostelId">Remove</a>
+                                </div>
+                            </div>
+                        }
+                    </div>
+                }
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+            -->
+        </div>
+        <div class="slideshow-container" style="text-align:center">
+            @{
+                int m = 1;
+            }
             @foreach (var item in Model.Hostel.HostelPics)
             {
-                <img src="~/images/hostels/@(item.HostelPicUrl)" width="200" />
-            }
-            <a asp-page="./HostelPics" asp-route-id="@Model.Hostel.HostelId"> Edit </a>
-            <!--
-    <form method="post" asp-page-handler="Uploadhostel">
-        <span class="group-input-title">Photo</span>
-        <div class="group-input-hostel">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Location.LocationId" />
-            <div class="form-group">
-                <label asp-for="@Model.FileUploads"></label>
-                <input asp-for="@Model.FileUploads" />
-                <span asp-validation-foraction="@Model.FileUploads"></span>
-            </div>
-            @if (Model.HostelPics.Count() > 0)
-            {
-                <div class="group-input-hostel hostel-edit-imgs d-flex p-4">
-                    @foreach (var item in Model.HostelPics)
-                    {
-                        <div class="hostel-pre-imgs">
-                            <div class="img">
-                                <img src="~/images/hostels/@item.HostelPicUrl" alt="">
-                            </div>
-                            <div class="img-remove text-center">
-                                <a asp-page-handler="Removeimage" asp-route-id="@item.HostelPicsId" asp-route-hostelId="@Model.Hostel.HostelId">Remove</a>
-                            </div>
-                        </div>
-                    }
+                <div class="mySlides fade">
+                    <div class="numbertext">@m / @Model.Hostel.HostelPics.Count</div>
+                    <img src="~/images/hostels/@(item.HostelPicUrl)" style="width:500px; height:300px">
+                    <div class="text">Image @m</div>
                 </div>
+                <p hidden="hidden">
+                    @(m++)
+                </p>
             }
         </div>
-        <div class="form-group">
-            <input type="submit" value="Save" class="btn btn-primary" />
-        </div>
-    </form>
-        -->
+        <br>
+            
+        <div style="text-align:center">
+            @foreach (var item in Model.Hostel.HostelPics)
+            {
+                <span class="dot"></span>
+                }
+            </div>
+        <div style="text-align:center">
+            <a asp-page="./HostelPics" asp-route-id="@Model.Hostel.HostelId" class="btn btn-danger"> Edit </a>
         </div>
     </div>
 </section>
@@ -374,5 +396,24 @@
             $('.edit-maincontent').removeClass('content-active');
             $('#' + $.escapeSelector(selector)).addClass('content-active');
         })
+        var slideIndex = 0;
+        showSlides();
+
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
+            }
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
+            }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 2000); // Chuyển ảnh sau 2 giây
+        }
     </script>
 }
