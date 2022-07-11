@@ -1659,3 +1659,8 @@ br{
 .btn-rent{
   padding: 8px 30px;
 }
+
+.select-contract .btn.btn-primary{
+  position: relative;
+  top: 8px;
+}
