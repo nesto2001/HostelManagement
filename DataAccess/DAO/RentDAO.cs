@@ -3,7 +3,6 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAO
@@ -71,7 +70,7 @@ namespace DataAccess.DAO
                                 .ThenInclude(r => r.HostelOwnerEmailNavigation)
                         .Include(r => r.RentedByNavigation)
                         .Include(r => r.RoomMembers)
-                        .Include(r => r.Bills)
+                        .Include(r => r.Bills.OrderByDescending(b => b.CreatedDate))
                         .ToListAsync();
             }
             catch (Exception ex)
@@ -91,7 +90,7 @@ namespace DataAccess.DAO
                                 .ThenInclude(r => r.HostelOwnerEmailNavigation)
                     .Include(r => r.RentedByNavigation)
                     .Include(r => r.RoomMembers)
-                    .Include(r => r.Bills)
+                    .Include(r => r.Bills.OrderByDescending(b => b.CreatedDate))
                         .ThenInclude(r => r.BillDetails)
                     .FirstOrDefaultAsync(r => r.RentId == id);
             }

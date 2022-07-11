@@ -1740,3 +1740,84 @@ br{
         font-size: 11px
     }
 }
+
+.deposit-status{
+  display: inline-block;
+  padding: 5px 20px;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.roommem-status{
+  display: inline-block;
+  padding: 0 10px;
+  font-size: 14px;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.action-btn{
+  display: inline-block;
+  cursor: pointer;
+}
+
+.rent-action{
+  /* position: relative;
+  left: -170px;
+  top: -40px; */
+  width: 180px;
+  z-index: 9999;
+  background: #fff;
+  display: block;
+}
+
+.rent-action .action-menu{
+  text-align: right;
+  box-shadow: 0 2px 5px 1px rgba(0, 0, 0, .2);
+  padding: 0;
+}
+
+.rent-action .action-menu li a{
+  display: block;
+  padding: 10px 10px 10px 0;
+}
+
+.rent-action .action-menu li:hover{
+  background-color: #0083CC;
+  color: #fff;
+}
+
+.grouped-form.status label{
+  display: block;
+}
+
+.bill-list-wrapper{
+  width: 66%;
+
+}
+
+.bill-list .bill-card{
+  display: flex;
+  justify-content: space-between;
+  padding: 10px;
+  border: 1px solid #ccc;
+  margin-bottom: 12px;
+}
+
+.bill-card .bill-info .bill-no{
+  font-size: 20px;
+  font-weight: 600;
+  margin-bottom: 30px;
+  transition: all 0.2ms ease-in-out;
+}
+
+.bill-card .bill-payment .bill-total{
+  font-size: 32px;
+  font-weight: 600;
+  margin-bottom: 12px;
+}
+
+.bill-card:hover .bill-info .bill-no{
+  color: #0083CC;
+}
+

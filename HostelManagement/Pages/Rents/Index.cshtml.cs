@@ -1,5 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -8,7 +9,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Rents
 {
@@ -44,6 +44,7 @@ namespace HostelManagement.Pages.Rents
         public async Task<ActionResult> OnGetAsync(int? id)
         {
             Rents = await rentRepository.GetRentList();
+            Rents = Rents.OrderByDescending(r => r.IsDeposited).ThenByDescending(r => r.RentId);
             if (id != null)
             {
                 Rents = Rents.Where(r => r.RoomId == (int)id);
@@ -86,7 +87,13 @@ namespace HostelManagement.Pages.Rents
 
         public async Task<ActionResult> OnPostAsync(int slHostel, int slRoom)
         {
-            Rents = await rentRepository.GetRentListByRoom(slRoom); 
+            if (slRoom != 0)
+                Rents = await rentRepository.GetRentListByRoom(slRoom);
+            else
+            {
+                var rooms = await roomRepository.GetRoomsOfAHostel(slHostel);
+                //implement get all contract of each room and concat to create list contract of hostel
+            }
             int UId = 0;
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
@@ -94,6 +101,7 @@ namespace HostelManagement.Pages.Rents
                 UId = Int32.Parse(userId);
             }
             Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
+            Rents = Rents.OrderByDescending(r => r.IsDeposited).ThenByDescending(r => r.RentId);
             ViewData["HostelId"] = new SelectList(Hostels, "HostelId", "HostelName");
             ViewData["HostelName"] = hostelRepository.GetHostelByID(slHostel).Result.HostelName;
             ViewData["RoomName"] = roomRepository.GetRoomByID(slRoom).Result.RoomTitle;

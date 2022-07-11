@@ -1,14 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject.BusinessObject;
-using DataAccess;
+﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.RazorPages;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Rents
 {
@@ -18,18 +13,21 @@ namespace HostelManagement.Pages.Rents
         private IAccountRepository accountRepository { get; }
         private IRentRepository rentRepository { get; }
         private IRoomRepository roomRepository { get; }
+        private IHostelRepository hostelRepository { get; }
         private IRoomMemberRepository roomMemberRepository { get; }
         public DetailsModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository)
+                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IHostelRepository _hostelRepository)
         {
             accountRepository = _accountRepository;
             rentRepository = _rentRepository;
             roomRepository = _roomRepository;
             roomMemberRepository = _roomMemberRepository;
+            hostelRepository = _hostelRepository;
         }
 
         public Rent Rent { get; set; }
-
+        public Room Room { get; set; }
+        public Hostel Hostel { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -38,7 +36,8 @@ namespace HostelManagement.Pages.Rents
             }
 
             Rent = await rentRepository.GetRentByID((int)id);
-
+            Room = await roomRepository.GetRoomByID(Rent.RoomId);
+            Hostel = await hostelRepository.GetHostelByID(Room.HostelId);
             if (Rent == null)
             {
                 return NotFound();
@@ -71,7 +70,7 @@ namespace HostelManagement.Pages.Rents
             }
             await roomMemberRepository.UpdateRoomMember(roomMember);
             await roomRepository.UpdateRoom(room);
-            return RedirectToPage("./Details", new {id= roomMember.RentId});
+            return RedirectToPage("./Details", new { id = roomMember.RentId });
         }
 
         public async Task<IActionResult> OnGetDepositedCheckAsync(int? id)

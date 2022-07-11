@@ -45,29 +45,29 @@
 </div>
 </form>
 
-<table class="table">
+<table class="table rent-table">
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Rents.First().IsDeposited)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rents.First().Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rents.First().Total)
+                @Html.DisplayNameFor(model => model.Rents.First().Room)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rents.First().RentedBy)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Rents.First().Room)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rents.First().StartRentDate)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Rents.First().EndRentDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rents.First().Total)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rents.First().IsDeposited)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Rents.First().Status)
             </th>
             <th></th>
         </tr>
@@ -77,19 +77,10 @@
         {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.IsDeposited)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Status)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
+                @Html.DisplayFor(modelItem => item.Room.RoomTitle)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.RentedBy)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.RoomId)
             </td>
             <td>
                 @item.StartRentDate.ToString("dd-MM-yyyy")
@@ -98,12 +89,62 @@
                 @item.EndRentDate.ToString("dd-MM-yyyy")
             </td>
             <td>
-                <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-                @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
-                {
-                    <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                @Html.DisplayFor(modelItem => item.Total)
+            </td>
+            <td>
+                @{
+                    var deposit="";
+                    var classStatus="";
+                    switch(item.IsDeposited){
+                        case 1: 
+                            deposit="Pending";
+                            classStatus="pending";
+                            break;
+                        case 2:
+                            deposit="Confirm";
+                            classStatus="active";
+                            break;
+                        default:
+                            deposit="Not yet";
+                            classStatus="inactive";
+                            break;
+                    }
                 }
-                <a asp-page="../Bills/Index" asp-route-id="@item.RentId">Bills</a>
+                <span class="deposit-status status-@classStatus">@deposit</span>
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Status)
+            </td>
+            
+            
+            
+            
+            <td class="col-2">
+                <div class="action-btn"><i class='bx bx-dots-vertical-rounded py-0'></i></div>
+                <div class="rent-action">
+                    <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+                    <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
+                    @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                        {
+                            <li>
+                                <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                            </li>
+                        }
+                    @* <ul class="action-menu">
+                        <li>
+                            <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+                        </li>
+                        <li>
+                            <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
+                        </li>
+                        @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                        {
+                            <li>
+                                <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                            </li>
+                        }
+                    </ul> *@
+                </div>
             </td>
         </tr>
         }
@@ -127,6 +168,15 @@
                 });
             });
     });
+
+    $('.action-btn').click(function(){
+        console.log(event.target.closest('div'))
+        event.target.closest('div').querySelector('.rent-action').show();
+    })
+
+    $('.rent-action').on('onMouseOff',function(){
+        event.target.closest('div').querySelector('.rent-action').hide();
+    })
 </script>
 }
 
