@@ -9,41 +9,44 @@
 }
 
 <h1>Rent List</h1>
-<form method="post">
-<div class="row select-contract">
-    <div class="grouped-form col-6">
-        <div class="form-group">
-            <label class="control-label">Hostel</label>
-            <select id="HostelList" asp-items="@ViewBag.HostelId" class="form-control" name="slHostel">
-                @if (!String.IsNullOrEmpty(@ViewBag.HostelName))
-                {
-                    <option>@ViewBag.HostelName</option>
-                }
-                else
-                {
-                    <option>Choose Hostel</option>
-                }
-            </select>
+@if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+{
+    <form method="post">
+        <div class="row select-contract">
+            <div class="grouped-form col-6">
+                <div class="form-group">
+                    <label class="control-label">Hostel</label>
+                    <select id="HostelList" asp-items="@ViewBag.HostelId" class="form-control" name="slHostel">
+                        @if (!String.IsNullOrEmpty(@ViewBag.HostelName))
+                        {
+                            <option>@ViewBag.HostelName</option>
+                        }
+                        else
+                        {
+                            <option>Choose Hostel</option>
+                        }
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">Room</label>
+                    <select id="RoomList" class="form-control" name="slRoom">
+                        @if (!String.IsNullOrEmpty(@ViewBag.RoomName))
+                        {
+                            <option>@ViewBag.RoomName</option>
+                        }
+                        else
+                        {
+                            <option>Select Room</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-2 pt-4">
+                <button class="btn btn-primary" type="submit">Select</button>
+            </div>
         </div>
-        <div class="form-group">
-            <label class="control-label">Room</label>
-            <select id="RoomList" class="form-control" name="slRoom">
-                @if (!String.IsNullOrEmpty(@ViewBag.RoomName))
-                {
-                    <option>@ViewBag.RoomName</option>
-                }
-                else
-                {
-                    <option>Select Room</option>
-                }
-            </select>
-        </div>
-    </div>
-    <div class="col-2 pt-4">
-        <button class="btn btn-primary" type="submit">Select</button>
-    </div>
-</div>
-</form>
+    </form>
+}
 
 <table class="table rent-table">
     <thead>
@@ -75,145 +78,146 @@
     <tbody>
         @foreach (var item in Model.Rents)
         {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Room.RoomTitle)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RentedBy)
-            </td>
-            <td>
-                @item.StartRentDate.ToString("dd-MM-yyyy")
-            </td>
-            <td>
-                @item.EndRentDate.ToString("dd-MM-yyyy")
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Total)
-            </td>
-            <td>
-                @{
-                    var deposit="";
-                    var classStatus="";
-                    switch(item.IsDeposited){
-                        case 1: 
-                            deposit="Pending";
-                            classStatus="pending";
-                            break;
-                        case 2:
-                            deposit="Confirm";
-                            classStatus="active";
-                            break;
-                        default:
-                            deposit="Not yet";
-                            classStatus="inactive";
-                            break;
-                    }
-                }
-                <span class="deposit-status status-@classStatus">@deposit</span>
-            </td>
-            <td>
-                @{
-                    var status = "";
-                    var classStatus1 = "";
-                    switch (item.Status)
-                    {
-                        case 1:
-                            status = "Active";
-                            classStatus1 = "active";
-                            break;
-                        case 2:
-                            status = "Renewing";
-                            classStatus1 = "active";
-                            break;
-                        case 3:
-                            status = "Canceled";
-                            classStatus1 = "denied";
-                            break;
-                        case 4:
-                            status = "Expired";
-                            classStatus1 = "inactive";
-                            break;
-                        default:
-                            status = "Pending";
-                            classStatus1 = "pending";
-                            break;
-                    }
-                }
-                <span class="deposit-status status-@classStatus1">@status</span>
-            </td>
-            
-            
-            
-            
-            <td class="col-2">
-                @*<div class="action-btn"><i class='bx bx-dots-vertical-rounded py-0'></i></div>*@
-                <div class="rent-action">
-                    <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-                    @*<a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>*@
-                    @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
-                    {
-                        var lastBill = item.StartRentDate;
-                        if (item.Bills.Count() != 0)
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Room.RoomTitle)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RentedBy)
+                </td>
+                <td>
+                    @item.StartRentDate.ToString("dd-MM-yyyy")
+                </td>
+                <td>
+                    @item.EndRentDate.ToString("dd-MM-yyyy")
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Total)
+                </td>
+                <td>
+                    @{
+                        var deposit = "";
+                        var classStatus = "";
+                        switch (item.IsDeposited)
                         {
-                            lastBill = (DateTime)item.Bills.Max(b => b.CreatedDate);
+                            case 1:
+                                deposit = "Pending";
+                                classStatus = "pending";
+                                break;
+                            case 2:
+                                deposit = "Confirm";
+                                classStatus = "active";
+                                break;
+                            default:
+                                deposit = "Not yet";
+                                classStatus = "inactive";
+                                break;
                         }
-                        if (DateTime.Now.AddMonths(-1) > item.StartRentDate && item.Status == 1)
+                    }
+                    <span class="deposit-status status-@classStatus">@deposit</span>
+                </td>
+                <td>
+                    @{
+                        var status = "";
+                        var classStatus1 = "";
+                        switch (item.Status)
                         {
-                            if (lastBill < DateTime.Now.AddDays(-15))
+                            case 1:
+                                status = "Active";
+                                classStatus1 = "active";
+                                break;
+                            case 2:
+                                status = "Renewing";
+                                classStatus1 = "active";
+                                break;
+                            case 3:
+                                status = "Canceled";
+                                classStatus1 = "denied";
+                                break;
+                            case 4:
+                                status = "Expired";
+                                classStatus1 = "inactive";
+                                break;
+                            default:
+                                status = "Pending";
+                                classStatus1 = "pending";
+                                break;
+                        }
+                    }
+                    <span class="deposit-status status-@classStatus1">@status</span>
+                </td>
+
+
+
+
+                <td class="col-2">
+                    @*<div class="action-btn"><i class='bx bx-dots-vertical-rounded py-0'></i></div>*@
+                    <div class="rent-action">
+                        <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+                        @*<a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>*@
+                        @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                        {
+                            var lastBill = item.StartRentDate;
+                            if (item.Bills.Count() != 0)
                             {
-                                <a asp-page="../Bills/Create" asp-route-id="@item.RentId">-- Generate bill</a>
+                                lastBill = (DateTime)item.Bills.Max(b => b.CreatedDate);
+                            }
+                            if (DateTime.Now.AddMonths(-1) > item.StartRentDate && item.Status == 1)
+                            {
+                                if (lastBill < DateTime.Now.AddDays(-15))
+                                {
+                                    <a asp-page="../Bills/Create" asp-route-id="@item.RentId">-- Generate bill</a>
+                                }
                             }
                         }
-                    }
-                    @* <ul class="action-menu">
-            <li>
-                <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-            </li>
-            <li>
-                <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
-            </li>
-            @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
-            {
-                <li>
-                    <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
-                </li>
-            }
-        </ul> *@
-                </div>
-            </td>
-        </tr>
+                        @* <ul class="action-menu">
+                                <li>
+                                    <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+                                </li>
+                                <li>
+                                    <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
+                                </li>
+                                @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                                {
+                                    <li>
+                                        <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                                    </li>
+                                }
+                            </ul> *@
+                    </div>
+                </td>
+            </tr>
         }
     </tbody>
 </table>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-<script>
-    document.getElementById('HostelList').addEventListener('change', (e) => {
-        document.getElementById('RoomList').innerHTML = "<option value=''>Select Room</option>";
-        fetch(`?handler=LoadRoom&HostelId=${e.target.value}`)
-            .then((response) => {
-                return response.json();
-            })
-            .then((data) => {
-                Array.prototype.forEach.call(data, function (item, i) {
-                    console.log(item);
-                    console.log(i);
-                    $("#RoomList").append(`<option value="${item.roomId.toString()}">${item.roomName}</option>`);
+    <script>
+        document.getElementById('HostelList').addEventListener('change', (e) => {
+            document.getElementById('RoomList').innerHTML = "<option value=''>Select Room</option>";
+            fetch(`?handler=LoadRoom&HostelId=${e.target.value}`)
+                .then((response) => {
+                    return response.json();
+                })
+                .then((data) => {
+                    Array.prototype.forEach.call(data, function (item, i) {
+                        console.log(item);
+                        console.log(i);
+                        $("#RoomList").append(`<option value="${item.roomId.toString()}">${item.roomName}</option>`);
+                    });
                 });
-            });
-    });
+        });
 
-    $('.action-btn').click(function(){
-        console.log(event.target.closest('div'))
-        event.target.closest('div').querySelector('.rent-action').show();
-    })
+        $('.action-btn').click(function () {
+            console.log(event.target.closest('div'))
+            event.target.closest('div').querySelector('.rent-action').show();
+        })
 
-    $('.rent-action').on('onMouseOff',function(){
-        event.target.closest('div').querySelector('.rent-action').hide();
-    })
-</script>
+        $('.rent-action').on('onMouseOff', function () {
+            event.target.closest('div').querySelector('.rent-action').hide();
+        })
+    </script>
 }
 
 
