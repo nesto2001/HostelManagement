@@ -3,6 +3,189 @@
 @{
     string activeNav = "overview-nav";
 }
+<div class="owner-dasboard pr-5 pl-5 pt-5">
+
+    <h1 class="">Admin Dashboard</h1>
+    <div class="row w-75 justify-content-center m-auto">
+        @if (ViewData["HostelOwnerDashboardMessage"] != null)
+        {
+            <p>@ViewData["HostelOwnerDashboardMessage"]</p>
+        }
+        @if (ViewData["hostelCount"] != null)
+        {
+
+            <div class="col-lg-12">
+
+                <div class="count-section bg-light shadow-lg">
+                    <h5 class="m-2">Service count: </h5>
+                    <div class="row gx-4 owner-dasboard__blocks">
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #DC143C	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of hostels:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["hostelCount"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #F08080	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of rooms:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["roomCount"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #FFA07A	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of rentings:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["rentingCount"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-4 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #FF6347	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of rented rooms:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["rentedRoomCount"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="count-section bg-light shadow-lg">
+                    <h5 class="m-2">Status count: </h5>
+                    <div class="row gx-4 owner-dasboard__blocks">
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #2E8B57	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of running rents:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["runningRent"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #3CB371	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of completed rent:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["completedRent"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="col-xxl-4 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #32CD32	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of pending contract: </div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["pendingStartRent"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="count-section bg-light shadow-lg">
+                    <h5 class="m-2">Customer count: </h5>
+                    <div class="row gx-4 owner-dasboard__blocks">
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #4169E1	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of hostels</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["hostelCount"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-xxl-3 col-lg-6">
+                            <div class="card text-white mb-4" style="background-color: #6495ED	;">
+                                <div class="card-body">
+                                    <div class="d-flex justify-content-between align-items-center">
+                                        <div class="me-3">
+                                            <div class="text-white-75">Number of renters:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["renterCount"]</div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="card-footer d-flex align-items-center justify-content-between">
+                                    <a class="small text-white stretched-link" href="/dashboard">View all</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    @*
+                <p>roomCount- @ViewData["roomCount"]</p>
+                <p>rentingCount- @ViewData["rentingCount"]</p>
+                <p>rentedRoomCount- @ViewData["rentedRoomCount"]</p>
+                <p>runningRent- @ViewData["runningRent"]</p>
+                <p>completedRent- @ViewData["completedRent"]</p>
+                <p>pendingStartRent- @ViewData["pendingStartRent"]</p>
+                <p>renterCount- @ViewData["renterCount"]</p>
+                <p>roomMemberCount- @ViewData["roomMemberCount"]</p>
+                <p>revenues of current Year- @ViewData["revenuesYear"]</p>
+                <p>revenues of current Month- @ViewData["revenuesMonth"]</p>*@
+                </div>
+            </div>
+        }
+    </div>
+</div>
 
 <div class="main-content">
 
