@@ -142,13 +142,15 @@ namespace HostelManagement.Pages.Rents
             int countCurrent = 0;
             foreach (var RoomMem in RoomMember)
             { 
+
                 if (!String.IsNullOrEmpty(RoomMem.UserEmail))
                 {
                     RoomMem.RentId = Rent.RentId;
                     RoomMem.RoomId = Rent.RoomId;
                     RoomMem.StartRentDate = Rent.StartRentDate;
                     RoomMem.EndRentDate = Rent.EndRentDate;
-                    RoomMem.IsPresentator = true;
+                    RoomMem.IsPresentator = false;
+                    if (countCurrent == 0) RoomMem.IsPresentator = true;
                     RoomMem.Status = 1;
                     await roomMemberRepository.AddRoomMember(RoomMem);
                     countCurrent++;
