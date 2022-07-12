@@ -38,7 +38,7 @@
                 @Html.DisplayNameFor(model => model.Account[0].ProfilePicUrl)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Account[0].IdCardNumberNavigation)
+                @Html.DisplayNameFor(model => model.Account[0].IdCardNumber)
             </th>
             <th></th>
         </tr>
@@ -81,7 +81,7 @@
                 <img src="~/Images/accounts/@profilePic" height="100" class="card-img" />
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.IdCardNumberNavigation.IdCardNumber)
+                @Html.DisplayFor(modelItem => item.IdCardNumber)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |

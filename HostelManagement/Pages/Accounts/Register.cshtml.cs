@@ -73,6 +73,13 @@ namespace HostelManagement.Pages.Accounts
             else
             {
                 Account acc = null;
+                IdCard.IdCardNumber = Input.IdCardNumber;
+                if (FrontPicUrl != null && BackPicUrl != null)
+                {
+                    IdCard.FrontIdPicUrl = await Utilities.UploadFile(FrontPicUrl, @"images\accounts\idCard", FrontPicUrl.FileName);
+                    IdCard.BackIdPicUrl = await Utilities.UploadFile(BackPicUrl, @"images\accounts\idCard", BackPicUrl.FileName);
+                }
+                await identityCardRepository.AddIdCard(IdCard);
                 var account = new Account()
                 {
 
@@ -83,16 +90,11 @@ namespace HostelManagement.Pages.Accounts
                     RoleName = "renter",
                     Status = 1,
                     Dob = Input.Dob,
-                    IdCardNumber = Input.IdCardNumber
+                    IdCardNumber = Input.IdCardNumber,
+                    IdCardNumberNavigation = IdCard
                 };
 
-                IdCard.IdCardNumber = Input.IdCardNumber;
-                if (FrontPicUrl != null && BackPicUrl != null)
-                {
-                    IdCard.FrontIdPicUrl = await Utilities.UploadFile(FrontPicUrl, @"images\accounts\idCard", FrontPicUrl.FileName);
-                    IdCard.BackIdPicUrl = await Utilities.UploadFile(BackPicUrl, @"images\accounts\idCard", BackPicUrl.FileName);
-                }
-                await identityCardRepository.AddIdCard(IdCard);
+                
                 await accountRepository.AddAccount(account);
 
                 acc = accountRepository.GetAccountByEmail(account.UserEmail).Result;

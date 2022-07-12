@@ -15,7 +15,7 @@
                 <label asp-for="Input.UserEmail" class="control-label"></label>
             </div>
             <div class="col-9">
-                <input asp-for="Input.UserEmail" class="form-control" />
+                <input asp-for="Input.UserEmail" class="form-control" required/>
             </div>
             <div class="col-9" hidden="@hidden">
                 <span class="text-danger">@Model.MessageExistEmail</span>
@@ -27,7 +27,7 @@
                 <label asp-for="Input.UserPassword" class="control-label"></label>
             </div>
             <div class="col-9">
-                <input asp-for="Input.UserPassword" class="form-control" />
+                <input asp-for="Input.UserPassword" class="form-control" required/>
             </div>
             <span asp-validation-for="Input.UserPassword" class="text-danger"></span>
         </div>
@@ -45,7 +45,7 @@
                 <label asp-for="Input.FullName" class="control-label"></label>
             </div>
             <div class="col-9">
-                <input asp-for="Input.FullName" class="form-control" />
+                <input asp-for="Input.FullName" class="form-control" required/>
             </div>
             <span asp-validation-for="Input.FullName" class="text-danger"></span>
         </div>

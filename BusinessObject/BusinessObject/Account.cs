@@ -15,13 +15,13 @@ namespace BusinessObject.BusinessObject
         }
 
         public int UserId { get; set; }
-        [Required(ErrorMessage ="Email is required!")]
+        //[Required(ErrorMessage ="Email is required!")]
         [DataType(DataType.EmailAddress)]
         [Display(Name = "Email")]
         [StringLength(50, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 5)]
         [RegularExpression("^[a-z0-9_\\+-]+(\\.[a-z0-9_\\+-]+)*@[a-z0-9-]+(\\.[a-z0-9]+)*\\.([a-z]{2,4})$", ErrorMessage = "Invalid email format")]
         public string UserEmail { get; set; }
-        [Required(ErrorMessage = "Password is required!")]
+        //[Required(ErrorMessage = "Password is required!")]
         [StringLength(30, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 6)]
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
@@ -29,7 +29,7 @@ namespace BusinessObject.BusinessObject
         [Display(Name = "Role")]
         public string RoleName { get; set; }
         public int Status { get; set; }
-        [Required(ErrorMessage = "Fullname is required!")]
+        //[Required(ErrorMessage = "Fullname is required!")]
         [Display(Name = "Fullname")]
         public string FullName { get; set; }
         //[Required(ErrorMessage = "Phone is required!")]
