@@ -1274,12 +1274,17 @@ a.see-room-info{
   margin-right: 32px;
   font-weight: 1000;
   height: 34px;
+  cursor: pointer;
 }
 
 .listings-filter-items a {
   display: inline-block;
   font-size: 16px;
   line-height: 1;
+}
+
+.listings-filter-items a:hover {
+  color: #0083CC !important;
 }
 
 .listings-filter .listing-link-action:last-child {
@@ -1702,7 +1707,7 @@ br{
     transition: background-color 0.6s ease;
 }
 
-.active {
+.active:not(.nav-item) {
     background-color: #717171;
 }
 
