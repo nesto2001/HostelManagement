@@ -89,7 +89,7 @@
             <label class="control-label">Front picture</label>
             <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" required />
             <span asp-validation-for="@Model.FrontPicUrl" class="text-danger"></span>
-            <img id="previewF" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+            <img id="previewF" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" style="margin-left: 120px" />
             <script>
 
                 frontImage.onchange = evt => {
@@ -106,7 +106,7 @@
             <label class="control-label">Back Picture</label>
             <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px" required />
             <span asp-validation-for="@Model.BackPicUrl" class="text-danger"></span>
-            <img id="previewB" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+            <img id="previewB" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" style="margin-left: 120px" />
             <script>
 
                 backImage.onchange = evt => {

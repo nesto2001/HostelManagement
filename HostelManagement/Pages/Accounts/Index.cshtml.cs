@@ -18,11 +18,13 @@ namespace HostelManagement.Pages.Accounts
     {
         private readonly DataAccess.HostelManagementContext _context;
         private IAccountRepository _accountRepository;
+        private IIdentityCardRepository _identityCardRepository;
 
-        public IndexModel(DataAccess.HostelManagementContext context, IAccountRepository accountRepository)
+        public IndexModel(DataAccess.HostelManagementContext context, IAccountRepository accountRepository, IIdentityCardRepository identityCardRepository)
         {
             _context = context;
             _accountRepository = accountRepository;
+            _identityCardRepository = identityCardRepository;
         }
 
         public IEnumerable<Account> Account { get;set; }
@@ -30,15 +32,12 @@ namespace HostelManagement.Pages.Accounts
         public async Task OnGetAsync(string searchUser)
         {
             Account = await _accountRepository.GetAccountList();
-            /*Account = await _context.Accounts
-                    .Include(a => a.IdCardNumberNavigation)
-                    .Include(a => a.Hostels)
-                    .Include(a => a.Rents)
-                    .ToListAsync();*/
+            IEnumerable<Account> AccountSearch = Account;
             if (!String.IsNullOrEmpty(searchUser))
             {
                 Account = Account.Where(a => a.FullName.ToLower().Contains(searchUser.ToLower()) ||
-                                            a.UserEmail.ToLower().Contains(searchUser.ToLower()));
+                                            a.UserEmail.ToLower().Contains(searchUser.ToLower()))
+                                        .ToList();
             }
             ViewData["searchUser"] = searchUser;
         }

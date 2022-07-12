@@ -1905,3 +1905,11 @@ button.btn-logout:hover{
 button.btn-logout a{
   color: white !important;
 }
+
+.hostel-listings-card:hover .card-inner{
+  background: rgba(0, 81, 255, 0.1);
+}
+
+.hostel-listings-card{
+  cursor: pointer;
+}
