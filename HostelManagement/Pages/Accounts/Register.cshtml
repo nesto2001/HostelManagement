@@ -1,7 +1,10 @@
 ﻿@page
 @model HostelManagement.Pages.Accounts.RegisterModel
-@{var hidden = false;
+@{
+    var hidden = false;
     if (Model.MessageExistEmail == null) hidden = true;
+    var hiddenId = false;
+    if (Model.MessageExistId == null) hiddenId = true;
 }
 <h1 class="text-center" style="margin-bottom:50px; margin-top: 50px">REGISTER</h1>
 <div class="container border h-100 d-flex align-items-center justify-content-center" style="padding: 20px; width: 500px">
@@ -14,7 +17,7 @@
             <div class="col-9">
                 <input asp-for="Input.UserEmail" class="form-control" />
             </div>
-            <div hidden="@hidden">
+            <div class="col-9" hidden="@hidden">
                 <span class="text-danger">@Model.MessageExistEmail</span>
             </div>
             <span asp-validation-for="Input.UserEmail" class="text-danger"></span>
@@ -72,11 +75,14 @@
             <div class="col-9">
                 <input asp-for="Input.IdCardNumber" class="form-control" required maxlength="15" />
             </div>
+            <div class="col-9" hidden="@hiddenId">
+                <span class="text-danger">@Model.MessageExistId</span>
+            </div>
             <span asp-validation-for="Input.IdCardNumber" class="text-danger"></span>
         </div>
         <div class="form-group">
             <label class="control-label">Front picture</label>
-            <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" />
+            <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" required/>
             <span asp-validation-for="@Model.FrontPicUrl" class="text-danger"></span>
             <img id="previewF" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
             <script>
@@ -93,7 +99,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">Back Picture</label>
-            <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px"/>
+            <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px" required/>
             <span asp-validation-for="@Model.BackPicUrl" class="text-danger"></span>
             <img id="previewB" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
             <script>

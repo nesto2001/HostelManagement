@@ -27,6 +27,7 @@ namespace HostelManagement.Pages.Accounts
         [BindProperty]
         public InputModel Input { get; set; }
         public string MessageExistEmail { get; set; }
+        public string MessageExistId { get; set; }
         [BindProperty]
         public IList<Account> Accounts { get; set; }
         [BindProperty]
@@ -44,14 +45,6 @@ namespace HostelManagement.Pages.Accounts
             [Compare(nameof(UserPassword), ErrorMessage = "Did not match with password")]
             public string ConfirmPassword { get; set; }
         }
-
-        public bool CheckExist(string email)
-        {
-            Task<Account> acc = accountRepository.GetAccountByEmail(email);
-            if (acc.Result != null) return true;
-            else return false;
-        }
-
         public void OnGet()
         {
             //fixed
@@ -61,18 +54,21 @@ namespace HostelManagement.Pages.Accounts
             //}
         }
 
-        public async Task OnPost()
+        public async Task<IActionResult> OnPostAsync()
         {
             if (!ModelState.IsValid)
             {
+                return Page();
             }
             else if (CheckExist(Input.UserEmail))
             {
                 MessageExistEmail = "Email is existing. Please choose other email.";
+                return Page();
             }
             else if (IdExists(Input.IdCardNumber))
             {
-                MessageExistEmail = "ID is existing. Please choose other ID.";
+                MessageExistId = "ID is existing. Please choose other ID.";
+                return Page();
             }
             else
             {
@@ -89,6 +85,7 @@ namespace HostelManagement.Pages.Accounts
                     Dob = Input.Dob,
                     IdCardNumber = Input.IdCardNumber
                 };
+
                 IdCard.IdCardNumber = Input.IdCardNumber;
                 if (FrontPicUrl != null && BackPicUrl != null)
                 {
@@ -97,13 +94,20 @@ namespace HostelManagement.Pages.Accounts
                 }
                 await identityCardRepository.AddIdCard(IdCard);
                 await accountRepository.AddAccount(account);
+
                 acc = accountRepository.GetAccountByEmail(account.UserEmail).Result;
                 HttpContext.Session.SetInt32("isLoggedIn", 1);
                 HttpContext.Session.SetInt32("ID", acc.UserId);
                 HttpContext.Session.SetString("ContactName", acc.FullName);
 
-                Response.Redirect("/Index");
+                return RedirectToPage("./Login");
             }
+        }
+        public bool CheckExist(string email)
+        {
+            Task<Account> acc = accountRepository.GetAccountByEmail(email);
+            if (acc.Result != null) return true;
+            else return false;
         }
         private bool IdExists(string id)
         {

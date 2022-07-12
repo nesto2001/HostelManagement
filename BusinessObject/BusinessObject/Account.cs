@@ -32,7 +32,7 @@ namespace BusinessObject.BusinessObject
         [Required(ErrorMessage = "Fullname is required!")]
         [Display(Name = "Fullname")]
         public string FullName { get; set; }
-        [Required(ErrorMessage = "Phone is required!")]
+        //[Required(ErrorMessage = "Phone is required!")]
         [Phone]
         [StringLength(15, ErrorMessage = "The {0} must be {2} - {1} characters long.", MinimumLength = 9)]
         [Display(Name = "Phone")]
