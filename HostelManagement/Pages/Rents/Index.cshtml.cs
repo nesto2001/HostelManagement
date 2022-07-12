@@ -94,6 +94,12 @@ namespace HostelManagement.Pages.Rents
                 else
                 {
                     var rooms = await roomRepository.GetRoomsOfAHostel(slHostel);
+                    Rents = await rentRepository.GetRentList();
+                    Rents = Rents.Where(r => r.Room.HostelId == slHostel);
+                    if (rooms == null)
+                    {
+                        Rents = await rentRepository.GetRentList();
+                    }
                     //implement get all contract of each room and concat to create list contract of hostel
                 }
             } else
