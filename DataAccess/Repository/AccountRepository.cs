@@ -24,5 +24,7 @@ namespace DataAccess.Repository
         public async Task<Account> GetLoginAccount(string email, string password) => await AccountDAO.Instance.GetLoginAccount(email, password);
 
         public async Task UpdateAccount(Account Account) => await AccountDAO.Instance.UpdateAccount(Account);
+        public async Task ActivateUser(int id) => await AccountDAO.Instance.ActivateUser(id);
+        public async Task InactivateUser(int id) => await AccountDAO.Instance.InactiveUser(id);
     }
 }

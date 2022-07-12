@@ -11,78 +11,92 @@
     <form method="post" enctype="multipart/form-data">
         <div asp-validation-summary="ModelOnly" class="text-danger"></div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.UserEmail" class="control-label"></label>
             </div>
-            <div class="col-9">
-                <input asp-for="Input.UserEmail" class="form-control" required/>
+            <div class="col-sm-9">
+                <input asp-for="Input.UserEmail" class="form-control" required />
             </div>
-            <div class="col-9" hidden="@hidden">
+            <div class="col-sm-9" hidden="@hidden">
                 <span class="text-danger">@Model.MessageExistEmail</span>
             </div>
-            <span asp-validation-for="Input.UserEmail" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.UserEmail" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.UserPassword" class="control-label"></label>
             </div>
-            <div class="col-9">
-                <input asp-for="Input.UserPassword" class="form-control" required/>
+            <div class="col-sm-9">
+                <input asp-for="Input.UserPassword" class="form-control" required />
             </div>
-            <span asp-validation-for="Input.UserPassword" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.UserPassword" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.ConfirmPassword" class="control-label"></label>
             </div>
-            <div class="col-9">
+            <div class="col-sm-9">
                 <input asp-for="Input.ConfirmPassword" class="form-control" />
             </div>
-            <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.FullName" class="control-label"></label>
             </div>
-            <div class="col-9">
-                <input asp-for="Input.FullName" class="form-control" required/>
+            <div class="col-sm-9">
+                <input asp-for="Input.FullName" class="form-control" required />
             </div>
-            <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.FullName" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.PhoneNumber" class="control-label"></label>
             </div>
-            <div class="col-9">
+            <div class="col-sm-9">
                 <input asp-for="Input.PhoneNumber" class="form-control" />
             </div>
-            <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.Dob" class="control-label"></label>
             </div>
-            <div class="col-9">
+            <div class="col-sm-9">
                 <input asp-for="Input.Dob" class="form-control" type="date" />
             </div>
-            <span asp-validation-for="Input.Dob" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.Dob" class="text-danger"></span>
+            </div>
         </div>
         <hr />
         <div class="form-group row">
-            <div class="col-3">
+            <div class="col-sm-3">
                 <label asp-for="Input.IdCardNumber" class="control-label"></label>
             </div>
-            <div class="col-9">
+            <div class="col-sm-9">
                 <input asp-for="Input.IdCardNumber" class="form-control" required maxlength="15" />
             </div>
-            <div class="col-9" hidden="@hiddenId">
+            <div class="col-sm-9" hidden="@hiddenId">
                 <span class="text-danger">@Model.MessageExistId</span>
             </div>
-            <span asp-validation-for="Input.IdCardNumber" class="text-danger"></span>
+            <div class="col-sm-9">
+                <span asp-validation-for="Input.IdCardNumber" class="text-danger"></span>
+            </div>
         </div>
         <div class="form-group">
             <label class="control-label">Front picture</label>
-            <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" required/>
+            <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" required />
             <span asp-validation-for="@Model.FrontPicUrl" class="text-danger"></span>
             <img id="previewF" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
             <script>
@@ -99,7 +113,7 @@
         </div>
         <div class="form-group">
             <label class="control-label">Back Picture</label>
-            <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px" required/>
+            <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px" required />
             <span asp-validation-for="@Model.BackPicUrl" class="text-danger"></span>
             <img id="previewB" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
             <script>
@@ -115,10 +129,10 @@
             </script>
         </div>
         <div class="form-group row">
-            <input type="submit" value="Register" class="btn btn-primary col-2 text-center" style="margin-left: 200px; margin-top: 50px"/>
+            <input type="submit" value="Register" class="btn btn-primary col-2 text-center" style="margin-left: 200px; margin-top: 50px" />
         </div>
     </form>
 </div>
-    @section Scripts {
-        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-    }
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

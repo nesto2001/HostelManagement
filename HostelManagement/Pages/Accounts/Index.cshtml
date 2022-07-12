@@ -3,92 +3,220 @@
 
 @{
     ViewData["Title"] = "Index";
+    var activeNav = "listings-nav";
 }
 
-<h1>Index</h1>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<section class="action-section searchbox-owner">
+    <div class="row">
+        <div class="col-4">
+            <form method="get" asp-page-handler="">
+                <div class="form-group">
+                    <input placeholder="Search user" name="searchUser" type="text" id="searchBox" class="form-control" value="@ViewData["searchUser"]">
+                    <i class='bx bx-search'></i>
+                </div>
+            </form>
+        </div>
+        <div class="col-3"></div>
+        <div class="col-5">
+            <div class="action-button">
+                <button class="atn-btn btn-addnew">
+                    <a asp-page="Create">Add a User</a>
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].UserEmail)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].UserPassword)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].RoleName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].PhoneNumber)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].Dob)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].ProfilePicUrl)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Account[0].IdCardNumber)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Account) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.UserPassword)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RoleName)
-            </td>
-            <td>
-                @{
-                    string status;
-                    if (item.Status == 1) status = "Active";
-                    else status = "Inactive";
-                }
-                <div> @status </div>
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.FullName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.PhoneNumber)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Dob)
-            </td>
-            <td>
-                @{
-                    string profilePic = "ano-ava.jpg";
-                    if (item.ProfilePicUrl != null)
-                        profilePic = item.ProfilePicUrl;
-                }
-                <img src="~/Images/accounts/@profilePic" height="100" class="card-img" />
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.IdCardNumber)
-            </td>
-            <td>
-                <a asp-page="./Edit" asp-route-id="@item.UserId">Edit</a> |
-                <a asp-page="./Details" asp-route-id="@item.UserId">Details</a> |
-                <a asp-page="./Delete" asp-route-id="@item.UserId">Delete</a>
-            </td>
-        </tr>
+<section class="listings-user">
+    <div class="listings-user-tab">
+        <div class="listings-filter">
+            <div class="listings-filter-items">
+                <a class="listing-link-action listing-link-action-active" href="#/active">Active</a>
+                <a class="listing-link-action" href="#/deactivated">Inactivated</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="listings-user-wrapper" id="/active">
+        @foreach (var item in Model.Account)
+        {
+            @if (item.Status == 1)
+            {
+                <div class="user-listings-card mb-3">
+                    <div class="card-inner">
+                        @if (item.ProfilePicUrl != null)
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/accounts/@item.ProfilePicUrl');"></div>
+                        }
+                        else
+                        {
+                            <div class="card-img-thumb" style="background: url('../images/accounts/ano-ava.jpg');"></div>
+                        }
+                        <div class="card-details">
+                            <div class="card-info">
+                                <div class="card-title"> <a asp-page="./Details" asp-route-id="@item.UserId"> [@item.UserEmail] @item.FullName </a></div>
+                                @{
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                            <text>
+                                                <span class="card-status status-active">
+                                                    Active
+                                                </span>
+                                            </text>
+                                            break;
+                                        case 0:
+                                            <text>
+                                                <span class="card-status status-inactive">
+                                                    Inactive
+                                                </span>
+                                            </text>
+                                            break;
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <div class="btn-card-action"></div>
+                            <div class="btn-card-action btn-card-edit">
+                                <a asp-page="./Edit" asp-route-id="@item.UserId">
+                                    <i class='bx bx-edit'></i>
+                                </a>
+                            </div>
+                            <div class="btn-card-action btn-card-deactivate" id="@item.UserId">
+                                <a>
+                                    <i class='bx bx-power-off'></i>
+                                </a>
+                            </div>
+                            @{
+                                var name = item.FullName;
+                            }
+                            <script type="text/javascript">
+                            $('.btn-card-deactivate#@item.UserId').click(function(){
+                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.UserId'/>");
+                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
+                                $('.popup-deactivate').show();
+                            })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+
+    <div class="listings-user-wrapper" id="/deactivated">
+        @foreach (var item in Model.Account)
+        {
+            @if (item.Status == 0)
+            {
+                <div class="user-listings-card mb-3">
+                    <div class="card-inner">
+                        @if (item.ProfilePicUrl != null)
+                        {
+                            <div class="card-img-thumb" src="../images/accounts/@item.ProfilePicUrl"></div>
+                        }
+                        else
+                        {
+                            <div class="card-img-thumb" src="../images/accounts/ano-ava.jpg"></div>
+                        }
+                        <div class="card-details">
+                            <div class="card-info">
+                                <div class="card-title"><a asp-page="./Details" asp-route-id="@item.UserId"> [@item.UserEmail] @item.FullName </a></div>
+                                @{
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                            <text>
+                                                <span class="card-status status-active">
+                                                    Active
+                                                </span>
+                                            </text>
+                                            break;
+                                        case 0:
+                                            <text>
+                                                <span class="card-status status-inactive">
+                                                    Inactive
+                                                </span>
+                                            </text>
+                                            break;
+                                    }
+                                }
+                            </div>
+                        </div>
+                        <div class="card-action">
+                            <div class="btn-card-action btn-card-edit">
+                                <a asp-page="./Edit" asp-route-id="@item.UserId">
+                                    <i class='bx bx-edit'></i>
+                                </a>
+                            </div>
+                            <div class="btn-card-action btn-card-activate" id="@item.UserId">
+                                <a>
+                                    <i class='bx bx-power-off'></i>
+                                </a>
+                            </div>
+                            @{
+                                var name = item.FullName;
+                            }
+                            <script type="text/javascript">
+                            $('.btn-card-activate#@item.UserId').click(function(){
+                                $('.reactivate-form').append("<input type='hidden' name='id' value='@item.UserId'/>");
+                                $('.popup-activate p').html('Do you really want to reactivate <strong>@name</strong>?');
+                                $('.popup-activate').show();
+                            })
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</section>
+
+<div class="popup-deactivate">
+    <h3 class="mb-4">Deactivate user</h3>
+    <p>Do you really want to deactivate this user?</p>
+    <form method="post" class="deactivate-form" asp-page-handler="deactivate">
+        <div class="popup-action">
+            <button type="submit" class="btn btn-yes"><a>Yes</a></button>
+            <div class="btn btn-cancel">Cancel</div>
+        </div>
+    </form>
+</div>
+
+<div class="popup-activate">
+    <h3 class="mb-4">Activate user</h3>
+    <p>Do you really want to reactivate this user?</p>
+    <form method="post" class="reactivate-form" asp-page-handler="reactivate">
+        <div class="popup-action">
+            <button type="submit" class="btn btn-yes"><a>Yes</a></button>
+            <div class="btn btn-cancel">Cancel</div>
+        </div>
+    </form>
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+    $('#@activeNav').addClass('active');
+    $('.btn-cancel').click(function(){
+        $(event.target).parent().closest('.popup-deactivate').hide();
+    });
+    $('.listing-link-action').click(function(){
+        $('.listing-link-action').removeClass('listing-link-action-active');
+        $(event.target).addClass('listing-link-action-active');
+
+        var content = $(event.target).attr('href');
+        let selector = content.substring(1);
+        $('.listings-user-wrapper').hide()
+        $('#'+ $.escapeSelector(selector)).show();
+    });
+
+    $(window).on('load',function(){
+        $('.listings-user-wrapper').hide();
+        let content = $('.listing-link-action-active').attr('href');
+        let selector = content.substring(1);
+        $('#'+ $.escapeSelector(selector)).show();
+    })
+    </script>
 }
-    </tbody>
-</table>
