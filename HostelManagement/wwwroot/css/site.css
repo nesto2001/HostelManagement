@@ -1918,7 +1918,7 @@ button.btn-logout a{
   opacity: 0;
   position: absolute;
   background: #fff;
-  z-index: 5;
+  z-index: -5;
   width: 200px;
   border-radius: 4px;
   padding: 20px 10px;
@@ -1929,10 +1929,12 @@ button.btn-logout a{
 }
 
 .profile-wrapper:hover +.user-menu{
+  z-index: 5;
   opacity: 1;
 }
 
 .user-menu:hover{
+  z-index: 5;
   opacity: 1;
 }
 
