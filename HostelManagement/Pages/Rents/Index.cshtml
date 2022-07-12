@@ -8,11 +8,11 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Rent List</h1>
+<h1 class="pl-4 mt-3">Rent List</h1>
 @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
 {
     <form method="post">
-        <div class="row select-contract">
+        <div class="row select-contract pl-4">
             <div class="grouped-form col-6">
                 <div class="form-group">
                     <label class="control-label">Hostel</label>
@@ -51,35 +51,35 @@
 <table class="table rent-table">
     <thead>
         <tr>
-            <th>
+            <th class="col-2 pl-4">
                 @Html.DisplayNameFor(model => model.Rents.First().Room)
             </th>
-            <th>
+            <th class="col-2">
                 @Html.DisplayNameFor(model => model.Rents.First().RentedBy)
             </th>
-            <th>
+            <th class="col-1">
                 @Html.DisplayNameFor(model => model.Rents.First().StartRentDate)
             </th>
-            <th>
+            <th class="col-1">
                 @Html.DisplayNameFor(model => model.Rents.First().EndRentDate)
             </th>
-            <th>
+            <th class="col-1">
                 @Html.DisplayNameFor(model => model.Rents.First().Total)
             </th>
-            <th>
+            <th class="col-1 text-center">
                 @Html.DisplayNameFor(model => model.Rents.First().IsDeposited)
             </th>
-            <th>
+            <th class="col-1 text-center">
                 @Html.DisplayNameFor(model => model.Rents.First().Status)
             </th>
-            <th></th>
+            <th class="col-1"></th>
         </tr>
     </thead>
     <tbody>
         @foreach (var item in Model.Rents)
         {
-            <tr>
-                <td>
+            <tr onclick="viewDetails(@item.RentId);">
+                <td class="pl-4 font-weight-bold">
                     @Html.DisplayFor(modelItem => item.Room.RoomTitle)
                 </td>
                 <td>
@@ -94,7 +94,7 @@
                 <td>
                     @Html.DisplayFor(modelItem => item.Total)
                 </td>
-                <td>
+                <td class="text-center">
                     @{
                         var deposit = "";
                         var classStatus = "";
@@ -116,7 +116,7 @@
                     }
                     <span class="deposit-status status-@classStatus">@deposit</span>
                 </td>
-                <td>
+                <td class="text-center">
                     @{
                         var status = "";
                         var classStatus1 = "";
@@ -150,10 +150,9 @@
 
 
 
-                <td class="col-2">
+                <td class="col-1">
                     @*<div class="action-btn"><i class='bx bx-dots-vertical-rounded py-0'></i></div>*@
                     <div class="rent-action">
-                        <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
                         @*<a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>*@
                         @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
                         {
@@ -166,7 +165,9 @@
                             {
                                 if (lastBill < DateTime.Now.AddDays(-15))
                                 {
-                                    <a asp-page="../Bills/Create" asp-route-id="@item.RentId">-- Generate bill</a>
+                                    <button class="btn btn-primary">
+                                        <a asp-page="../Bills/Create" asp-route-id="@item.RentId">-- Generate bill</a>
+                                    </button>
                                 }
                             }
                         }
@@ -217,6 +218,12 @@
         $('.rent-action').on('onMouseOff', function () {
             event.target.closest('div').querySelector('.rent-action').hide();
         })
+
+    function viewDetails(id) {
+        if (id != undefined && id != null) {
+            window.location = '../Rents/Details?id=' + id;
+        }
+    }
     </script>
 }
 

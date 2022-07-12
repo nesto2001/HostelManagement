@@ -40,7 +40,8 @@ namespace HostelManagement.Pages.Accounts
             {
                 message = "Your account or password is incorrect. Try again!";
                 return Page();
-            } else if (acc.Result.Status != 1)
+            }
+            else if (acc.Result.Status != 1)
             {
                 message = "Your account is locked!";
                 return Page();
@@ -51,6 +52,7 @@ namespace HostelManagement.Pages.Accounts
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Admin"),
+                            new Claim(ClaimTypes.Name, acc.Result.FullName)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -77,6 +79,7 @@ namespace HostelManagement.Pages.Accounts
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Owner"),
+                            new Claim(ClaimTypes.Name, acc.Result.FullName)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -103,6 +106,7 @@ namespace HostelManagement.Pages.Accounts
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Owner"),
+                            new Claim(ClaimTypes.Name, acc.Result.FullName)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
