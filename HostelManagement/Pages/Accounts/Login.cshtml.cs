@@ -44,6 +44,7 @@ namespace HostelManagement.Pages.Accounts
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Admin"),
+                            new Claim(ClaimTypes.Name, acc.Result.FullName)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -70,6 +71,7 @@ namespace HostelManagement.Pages.Accounts
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Renter"),
+                            new Claim(ClaimTypes.Name, acc.Result.FullName)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
@@ -105,6 +107,7 @@ namespace HostelManagement.Pages.Accounts
                         {
                             new Claim(ClaimTypes.NameIdentifier, acc.Result.UserId.ToString()),
                             new Claim(ClaimTypes.Role, "Renter"),
+                            new Claim(ClaimTypes.Name, acc.Result.FullName)
                         };
 
                 var claimsIdentity = new ClaimsIdentity(
