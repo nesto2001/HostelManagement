@@ -1913,3 +1913,43 @@ button.btn-logout a{
 .hostel-listings-card{
   cursor: pointer;
 }
+
+.user-menu{
+  opacity: 0;
+  position: absolute;
+  background: #fff;
+  z-index: 5;
+  width: 200px;
+  border-radius: 4px;
+  padding: 20px 10px;
+  box-shadow: -1px 2px 5px 2px rgba(0, 47, 255, 0.1);
+  left: -8px;
+  top: 65px;
+  transition: all 0.1s ease-in-out;
+}
+
+.profile-wrapper:hover +.user-menu{
+  opacity: 1;
+}
+
+.user-menu:hover{
+  opacity: 1;
+}
+
+.user-menu .user-menu-inner{
+  padding: 0;
+}
+
+.user-menu .user-menu-inner li{
+  padding: 10px 0;
+  padding-right: 10px;
+  text-align: end;
+  color: #2a2a2e;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.2s ease-in-out;
+}
+
+.user-menu .user-menu-inner li:hover{
+  background: rgba(159, 201, 255, 0.322);
+}

@@ -144,6 +144,15 @@
                                             </div>
                                         </div>
                                     </div>
+                                    <div class="user-menu">
+                                        <div class="user-menu-wrapper">
+                                            <ul class="user-menu-inner">
+                                                <li class="user-menu-item" data-target="Accounts" data-action="Edit" data-id="@sessionUser.UserId">
+                                                    <span>Update Profile</span>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
                             <li class="nav-item d-flex align-items-center ml-3">
@@ -176,5 +185,13 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+    <script type="text/javascript">
+            $('.user-menu-item').click(function(){
+        var link= $(this).data('target');
+        var action = $(this).data('action');
+        var id = $(this).data('id')
+        window.location = '../' + link + "/"+ action + "?id="+ id;
+    })
+    </script>
 </body>
 </html>

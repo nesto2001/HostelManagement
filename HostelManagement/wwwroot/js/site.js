@@ -60,5 +60,3 @@ document.getElementById('DistrictList').addEventListener('change', (e) => {
 });
 
 
-
-
