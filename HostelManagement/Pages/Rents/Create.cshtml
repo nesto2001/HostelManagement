@@ -69,7 +69,8 @@
                             <div class="grouped-form">
                                 <div class="form-group">
                                     <label asp-for="Rent.StartRentDate" class="control-label"></label>
-                                    <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date" />
+                                    <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@DateTime.Now.Date"
+                                           min="@DateTime.Now.ToString("yyyy-MM-dd")" max="@DateTime.Now.AddDays(10).ToString("yyyy-MM-dd")" required />
                                     <span asp-validation-for="Rent.StartRentDate" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">

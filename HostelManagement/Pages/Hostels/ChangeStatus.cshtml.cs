@@ -27,11 +27,13 @@ namespace HostelManagement.Pages.Hostels
         private ILocationRepository locationRepository;
         private IHostelPicRepository hostelPicRepository;
         private IRoomRepository roomRepository;
+        private IRentRepository rentRepository;
 
         public ChangeStatusModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
+            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository,
+            IRentRepository _rentRepository)
         {
             hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
@@ -42,6 +44,7 @@ namespace HostelManagement.Pages.Hostels
             locationRepository = _locationRepository;
             hostelPicRepository = _hostelPicRepository;
             roomRepository = _roomRepository;
+            rentRepository = _rentRepository;
         }
 
         [BindProperty]
@@ -144,7 +147,26 @@ namespace HostelManagement.Pages.Hostels
             }
 
             Hostel = await hostelRepository.GetHostelByID((int)id);
+            if (Hostel == null)
+            {
+                return NotFound();
+            }
+            foreach (var item in Hostel.Rooms)
+            {
+                var rents = await rentRepository.GetRentListByRoom(item.RoomId);
+                if (rents != null)
+                {
 
+                    foreach (var it in rents)
+                    {
+                        if (it.Status == 2 || it.Status == 5)
+                        {
+                            HttpContext.Session.SetString("AccessDeniedMessage", "Don't accept Inactive an hostel that exist room is renting.");
+                            return RedirectToPage("../AccessDenied");
+                        }
+                    }
+                }
+            }
             if (Hostel != null)
             {
                 Hostel.Status = 2;
