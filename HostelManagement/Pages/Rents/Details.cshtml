@@ -101,7 +101,7 @@
                     <h4 class="mb-3"><i class='bx bx-group'></i>Room Members</h4>
                 
                     <div class="grouped-form flex-wrap">
-                    @for (int i = 0; i < @Model.Rent.Room.RomMaxCapacity; i++)
+                    @for (int i = 0; i < @Model.Rent.RoomMembers.Count; i++)
                     {   
                         @if(Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==1){
                             <div class="form-group">
