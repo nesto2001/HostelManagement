@@ -21,7 +21,7 @@
             <div class="container">
                 @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
                 {
-                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/Overview">
+                    <a class="navbar-brand" asp-area="" asp-page="/AdminDashboard">
                         <img class="site-logo" src="~/images/rentel-logo_v2.png" />
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
@@ -47,7 +47,7 @@
                 }
                 else if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
                 {
-                    <a class="navbar-brand" asp-area="" asp-page="/Accounts/Overview">
+                    <a class="navbar-brand" asp-area="" asp-page="/HostelOwnerDashboard">
                         <img class="site-logo" src="~/images/rentel-logo_v2.png" />
                     </a>
                     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
