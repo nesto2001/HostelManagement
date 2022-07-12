@@ -1,76 +1,253 @@
 ﻿@page
+@using System.Security.Claims
 @model HostelManagement.Pages.Hostels.DetailsModel
 
 @{
     ViewData["Title"] = "Details";
+    var userRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
 
 <h1>Details</h1>
 
-<div>
-    <h4>Hostel</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.HostelName)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.HostelName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.Category)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.Category.CategoryName)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.HostelOwnerEmail)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.HostelOwnerEmail)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.Location)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Hostel.Location.AddressString) - @Html.DisplayFor(model => model.Hostel.Location.Ward.WardName) -
-            @Html.DisplayFor(model => model.Hostel.Location.Ward.District.DistrictName) - @Html.DisplayFor(model => model.Hostel.Location.Ward.District.Province.ProvinceName)
-            
-            @if (Model.UserRole == "Owner")
-            {
-                <a asp-page="../Locations/Edit" asp-route-id="@Model.Hostel.LocationId">Edit</a>
+<section class="hostel-edit-nav">
+    <div class="edit-nav-wrapper">
+        <div class="edit-nav-item edit-nav-item-active" data-target="#/edit-listing">
+            <a data-target="#/edit-listing" class="edit-nav">Edit Listing</a>
+        </div>
+        <div class="edit-nav-item" data-target="#/edit-location">
+            <a data-target="#/edit-location" class="edit-nav">Listing Location</a>
+        </div>
+        <div class="edit-nav-item" data-target="#/edit-images">
+            <a data-target="#/edit-images" class="edit-nav">Listing Images</a>
+        </div>
+        <div class="edit-nav-item" data-target="#/edit-rooms">
+            <a data-target="#/edit-rooms" class="edit-nav">Rooms</a>
+        </div>
+    </div>
+</section>
+
+<section class="edit-maincontent content-active" id="/edit-listing">
+    <div class="edit-wrapper">
+        <div class="col-md-6 pt-4 mt-2">
+            <form method="post" asp-page-handler="UpdateHostel">
+                <span class="group-input-title" id="Hostel">Hostel</span>
+                <div class="group-input-hostel">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Hostel.HostelId" readonly />
+                    <div class="form-group">
+                        <label asp-for="Hostel.HostelName" class="control-label"></label>
+                        <input asp-for="Hostel.HostelName" class="form-control" readonly />
+                        <span asp-validation-for="Hostel.HostelName" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Hostel.Description" class="control-label"></label>
+                        <textarea asp-for="Hostel.Description" class="form-control" style="height:200px" readonly></textarea>
+                        <span asp-validation-for="Hostel.Description" class="text-danger"></span>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Hostel.CategoryId" class="control-label"></label>
+                        <select asp-for="Hostel.CategoryId" class="form-control" asp-items="@ViewBag.CategoryId" readonly></select>
+                        <span asp-validation-for="Hostel.CategoryId" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Hostel.HostelOwnerEmail" class="control-label"></label>
+                        <input asp-for="Hostel.HostelOwnerEmail" class="form-control" value="@ViewBag.HostelOwnerEmail" readonly />
+                        <span asp-validation-for="Hostel.HostelOwnerEmail" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Hostel.LocationId" class="control-label"></label>
+                        <input asp-for="Hostel.LocationId" class="form-control" value="@ViewBag.LocationId" readonly />
+                        <span asp-validation-for="Hostel.LocationId" class="text-danger"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+<section class="edit-maincontent" id="/edit-location">
+    <div class="edit-wrapper">
+        <div class="col-md-6 pt-4 mt-2">
+            <form method="post" asp-page-handler="UpdateLocation">
+                <span class="group-input-title">Location</span>
+                <div class="group-input-hostel">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Location.LocationId" />
+                    <div class="form-group">
+                        <label class="control-label">Province</label>
+                        <select id="ProvinceList" class="form-control" readonly>
+                            <option>@Model.Location.Ward.District.Province.ProvinceName</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">District</label>
+                        <select id="DistrictList" class="form-control" readonly>
+                            <option>@Model.Location.Ward.District.DistrictName</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">Ward</label>
+                        <select id="WardList" class="form-control" asp-for="Location.WardId" readonly>
+                            <option>@Model.Location.Ward.WardName</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Location.AddressString" class="control-label"></label>
+                        <input asp-for="Location.AddressString" class="form-control" readonly />
+                        <span asp-validation-for="Location.AddressString" class="text-danger"></span>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</section>
+
+
+
+<section class="edit-maincontent" id="/edit-images">
+    <div class="edit-wrapper">
+        <div class="col-md-7 pt-4 mt-2">
+            <!--
+            <form method="post" asp-page-handler="Uploadhostel">
+                <span class="group-input-title">Photo</span>
+                <div class="group-input-hostel">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    <input type="hidden" asp-for="Location.LocationId" />
+                    <div class="form-group">
+                        <label asp-for="@Model.FileUploads"></label>
+                        <input asp-for="@Model.FileUploads" />
+                        <span asp-validation-foraction="@Model.FileUploads"></span>
+                    </div>
+                    @if (Model.HostelPics.Count() > 0)
+                    {
+                        <div class="group-input-hostel hostel-edit-imgs d-flex p-4">
+                            @foreach (var item in Model.HostelPics)
+                            {
+                                <div class="hostel-pre-imgs">
+                                    <div class="img">
+                                        <img src="~/images/hostels/@item.HostelPicUrl" alt="">
+                                    </div>
+                                    <div class="img-remove text-center">
+                                        <a asp-page-handler="Removeimage" asp-route-id="@item.HostelPicsId" asp-route-hostelId="@Model.Hostel.HostelId">Remove</a>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    }
+                </div>
+                <div class="form-group">
+                    <input type="submit" value="Save" class="btn btn-primary" />
+                </div>
+            </form>
+                -->
+        </div>
+        <div class="slideshow-container" style="text-align:center">
+            @{
+                int m = 1;
             }
-
-
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Hostel.HostelPics)
-        </dt>
-        <dd class="col-sm-10">
             @foreach (var item in Model.Hostel.HostelPics)
             {
-                <img src="~/images/hostels/@(item.HostelPicUrl)" width="200" />
+                <div class="mySlides fade">
+                    <div class="numbertext">@m / @Model.Hostel.HostelPics.Count</div>
+                    <img src="~/images/hostels/@(item.HostelPicUrl)" style="width:500px; height:300px">
+                    <div class="text">Image @m</div>
+                </div>
+                <p hidden="hidden">
+                    @(m++)
+                </p>
             }
-            @if (Model.UserRole == "Owner")
-            {<p>|</p> <a asp-page="./HostelPics" asp-route-id="@Model.Hostel.HostelId"> Edit </a>}
+        </div>
+        <br>
 
-        </dd>
-    </dl>
-</div>
+        <div style="text-align:center">
+            @foreach (var item in Model.Hostel.HostelPics)
+            {
+                <span class="dot"></span>
+            }
+        </div>
+    </div>
+</section>
+
+<section class="edit-maincontent" id="/edit-rooms">
+    <div class="edit-wrapper">
+        <div class="col-md-6 pt-4 mt-2">
+        </div>
+        <div class="col-9 main-content">
+            <div class="hostel-list mt-3">
+                <div class="hostel-list-wrapper">
+                    @foreach (var item in Model.Hostel.Rooms)
+                    {
+                        <div class="hostel-item mb-4">
+                            <div class="hostel-item-inner d-flex">
+                                <div class="hostel-dt hostel-images col p-0">
+                                    <div class="hostel-thumb">
+                                        @if (@item.RoomPics.Count > 0)
+                                        {
+                                            <img src="~/images/rooms/@item.RoomPics.ElementAt(0).RoomPicUrl" alt="">
+                                        }
+                                        else
+                                        {
+                                            <img src="~/images/placeholder.png" alt="">
+                                        }
+                                    </div>
+                                    @if (@item.RoomPics.Count > 4)
+                                    {
+                                        <div class="hostel-imgs d-flex">
+                                            @for (int i = 1; i < item.RoomPics.Count; i++)
+                                            {
+                                                <div class="hostel-img">
+                                                    <img src="~/images/rooms/@item.RoomPics.ElementAt(i).RoomPicUrl" alt="">
+                                                </div>
+                                            }
+                                        </div>
+                                    }
+                                </div>
+                                @{
+                                    var detail = "";
+                                    if (item.RoomDescription.Length > 20) detail = item.RoomDescription.Substring(0, 20);
+                                    else detail = item.RoomDescription;
+                                    string stt = "";
+                                    switch (item.Status)
+                                    {
+                                        case 1:
+                                            stt = "Active";
+                                            break;
+                                        case 2:
+                                            stt = "Inactive";
+                                            break;
+                                        case 3:
+                                            stt = "Denied";
+                                            break;
+                                        case 4:
+                                            stt = "Occupied";
+                                            break;
+                                        default:
+                                            stt = "Pending";
+                                            break;
+                                    }
+                                }
+                                <div class="hostel-info col">
+                                    <div class="hostel-name">@item.RoomTitle</div>
+                                    <div class="hostel-cate">@stt</div>
+                                    <div class="hostel-location">@detail</div>
+                                </div>
+                                <div class="hostel-price col">
+                                    <div class="col p-0"></div>
+                                    <div class="price col d-flex align-items-center justify-content-end">Capacity @item.RoomCurrentCapacity/@item.RomMaxCapacity</div>
+                                    <div class="col d-flex align-items-end justify-content-end">
+                                        <button class="btn btn-primary"><a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Select</a></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <div>
-    @if (Model.UserRole == "Owner")
+    @if (userRole == "Owner")
     {
         <a asp-page="./Edit" asp-route-id="@Model.Hostel.HostelId">Edit</a>
         <p>|</p>
@@ -78,142 +255,37 @@
     }
 
 </div>
-@if(Model.Hostel.Status == 0)
-{
-<div class="card-action">
-    <div class="btn-card-action btn-card-activate" id="@Model.Hostel.HostelId">
-        <a asp-page-handler="Yes" asp-route-id="@Model.Hostel.HostelId">
-            <i class='bx bx-check'></i>
-        </a>
-    </div>
-    <div class="btn-card-action btn-card-denied btn-card-deactivate" id="@Model.Hostel.HostelId">
-        <a asp-page-handler="No" asp-route-id="@Model.Hostel.HostelId">
-            <i class='bx bx-x'></i>
-        </a>
-    </div>
-    @{
-        var name = Model.Hostel.HostelName;
-    }
-    <script type="text/javascript">
-                            $('.btn-card-deactivate#@Model.Hostel.HostelId').click(function(){
-                                $('.deactivate-form').append("<input type='hidden' name='id' value='@Model.Hostel.HostelId'/>");
-                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
-                                $('.popup-deactivate').show();
-                            })
-    </script>
-</div>
-}
+<a asp-page="./Index">Back to List</a>
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script>
+        $('.edit-nav-item').click(function () {
+            $('.edit-nav-item').removeClass('edit-nav-item-active');
+            $(event.target).closest('.edit-nav-item').addClass('edit-nav-item-active');
+            var content = $(event.target).data("target");
+            let selector = content.substring(1);
+            $('.edit-maincontent').removeClass('content-active');
+            $('#' + $.escapeSelector(selector)).addClass('content-active');
+        })
+        var slideIndex = 0;
+        showSlides();
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomTitle)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomDescription)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RomMaxCapacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().RoomCurrentCapacity)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Status)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Deposit)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Hostel.Rooms.First().Price)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach (var item in Model.Hostel.Rooms)
-        {
-            @if (Model.UserRole == "Renter" || String.IsNullOrEmpty(Model.UserRole))
-            {
-                @if (item.Status == 1)
-                {
-                    <tr>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoomTitle)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoomDescription)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RomMaxCapacity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Status)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Deposit)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Price)
-                        </td>
-                        <td>
-                            <a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Details</a>
-                        </td>
-                    </tr>
-                }
+        function showSlides() {
+            var i;
+            var slides = document.getElementsByClassName("mySlides");
+            var dots = document.getElementsByClassName("dot");
+            for (i = 0; i < slides.length; i++) {
+                slides[i].style.display = "none";
             }
-            else
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomTitle)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomDescription)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RomMaxCapacity)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.RoomCurrentCapacity)
-                    </td>
-                    <td>
-                        @{
-                            var str = "Change Status";
-                            if (item.Status == 0) str = "Pending";
-                            if (item.Status == 1) str = "Active";
-                            if (item.Status == 2) str = "InActive";
-                            if (item.Status == 3) str = "Denied";
-                            if (item.Status == 4) str = "Occupied";
-                        }
-                        <span>
-                            <a asp-page="../Rooms/ChangeStatus" asp-route-id="@item.RoomId">@str</a>
-                        </span>
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Deposit)
-                    </td>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.Price)
-                    </td>
-                    <td>
-                        @if (Model.UserRole == "Owner")
-                        {
-                        <a asp-page="../Rooms/Edit" asp-route-id="@item.RoomId">Edit |</a>
-                        }
-                        <a asp-page="../Rooms/Details" asp-route-id="@item.RoomId">Details</a>
-
-                    </td>
-                </tr>
+            slideIndex++;
+            if (slideIndex > slides.length) { slideIndex = 1 }
+            for (i = 0; i < dots.length; i++) {
+                dots[i].className = dots[i].className.replace(" active", "");
             }
+            slides[slideIndex - 1].style.display = "block";
+            dots[slideIndex - 1].className += " active";
+            setTimeout(showSlides, 2000); // Chuyển ảnh sau 2 giây
         }
-    </tbody>
-</table>
-@if (Model.UserRole == "Owner")
-{
-    <a asp-page="../Rooms/Insert" asp-route-id="@Model.Hostel.HostelId">Add new room</a>
+    </script>
 }
+

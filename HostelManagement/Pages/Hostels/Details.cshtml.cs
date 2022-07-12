@@ -11,6 +11,8 @@ using DataAccess.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Authorization;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -18,14 +20,57 @@ namespace HostelManagement.Pages.Hostels
     public class DetailsModel : PageModel
     {
         private IHostelRepository hostelRepository;
+        private IAccountRepository accountRepository;
+        private ICategoryRepository categoryRepository;
+        private IProvinceRepository provinceRepository;
+        private IDistrictRepository districtRepository;
+        private IWardRepository wardRepository;
+        private ILocationRepository locationRepository;
+        private IHostelPicRepository hostelPicRepository;
+        private IRoomRepository roomRepository;
 
-        public DetailsModel(IHostelRepository _hostelRepository)
+        public DetailsModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
+            ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
+            IDistrictRepository _districtRepository, IWardRepository _wardRepository,
+            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
         {
             hostelRepository = _hostelRepository;
+            accountRepository = _accountRepository;
+            categoryRepository = _categoryRepository;
+            provinceRepository = _provinceRepository;
+            districtRepository = _districtRepository;
+            wardRepository = _wardRepository;
+            locationRepository = _locationRepository;
+            hostelPicRepository = _hostelPicRepository;
+            roomRepository = _roomRepository;
         }
 
+
+        [BindProperty]
         public Hostel Hostel { get; set; }
-        public string UserRole { get; set; }
+        [BindProperty]
+        public Location Location { get; set; }
+        public IEnumerable<Room> Rooms { get; set; }
+
+        public HostelPic HostelPic { get; set; }
+
+        public IEnumerable<HostelPic> HostelPics { get; set; }
+
+        public Status RoomStatus { get; set; }
+        public class Status
+        {
+            public int StatusInt { get; set; }
+            public string StatusType { get; set; }
+        }
+
+
+
+        [Required(ErrorMessage = "Please chose at least one file.")]
+        [DataType(DataType.Upload)]
+        //[FileExtensions(Extensions = "png,jpg,jpeg,gif")]
+        [Display(Name = "Choose Hostel images(s)")]
+        [BindProperty]
+        public IFormFile[] FileUploads { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -33,19 +78,27 @@ namespace HostelManagement.Pages.Hostels
             {
                 return NotFound();
             }
-            if (HttpContext.User.Claims != null)
-            {
-                var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
-                //int UId = Int32.Parse(userId);
-                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
-            }
-            HttpContext.Session.SetInt32("HostelID", (int)id);
-            Hostel = await hostelRepository.GetHostelByID((int)id);
 
+            Hostel = await hostelRepository.GetHostelByID((int)id);
+            HttpContext.Session.SetInt32("HostelID", (int)id);
             if (Hostel == null)
             {
                 return NotFound();
             }
+            Location = await locationRepository.GetLocationByID(Hostel.Location.LocationId);
+            Rooms = await roomRepository.GetRoomsOfAHostel((int)id);
+            HostelPics = await hostelPicRepository.GetHostelPicsOfAHostel((int)id);
+            IEnumerable<Status> StatusList = new List<Status>
+            {
+                new Status{StatusInt=1, StatusType="Active"},
+                new Status{StatusInt=2, StatusType="Inactive"},
+                new Status{StatusInt=4, StatusType="Occupied"}
+            };
+            ViewData["ProvinceId"] = new SelectList(await provinceRepository.GetProvincesList(), "ProvinceId", "ProvinceName");
+            ViewData["CategoryId"] = new SelectList(categoryRepository.GetCategoriesList().Result.Where(a => a.CategoryId == Hostel.CategoryId), "CategoryId", "CategoryName");
+            ViewData["StatusId"] = new SelectList(StatusList, "StatusInt", "StatusType");
+            ViewData["LocationId"] = Hostel.LocationId;
+            ViewData["HostelOwnerEmail"] = Hostel.HostelOwnerEmail;
             return Page();
         }
 
@@ -59,7 +112,6 @@ namespace HostelManagement.Pages.Hostels
             {
                 var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
                 //int UId = Int32.Parse(userId);
-                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             }
             HttpContext.Session.SetInt32("HostelID", (int)id);
             Hostel = await hostelRepository.GetHostelByID((int)id);
@@ -82,7 +134,6 @@ namespace HostelManagement.Pages.Hostels
             {
                 var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
                 //int UId = Int32.Parse(userId);
-                UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             }
             HttpContext.Session.SetInt32("HostelID", (int)id);
             Hostel = await hostelRepository.GetHostelByID((int)id);
