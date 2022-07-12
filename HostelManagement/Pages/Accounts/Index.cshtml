@@ -117,11 +117,11 @@
                     <div class="card-inner">
                         @if (item.ProfilePicUrl != null)
                         {
-                            <div class="card-img-thumb" src="../images/accounts/@item.ProfilePicUrl"></div>
+                            <div class="card-img-thumb" style="background: url('../images/accounts/@item.ProfilePicUrl');"></div>
                         }
                         else
                         {
-                            <div class="card-img-thumb" src="../images/accounts/placeholder.png"></div>
+                            <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
                         }
                         <div class="card-details">
                             <div class="card-info">
@@ -130,18 +130,18 @@
                                     switch (item.Status)
                                     {
                                         case 1:
-                                                <text>
-                                                    <span class="card-status status-active">
-                                                        Active
-                                                    </span>
-                                                </text>
+                                            <text>
+                                                <span class="card-status status-active">
+                                                    Active
+                                                </span>
+                                            </text>
                                             break;
                                         case 0:
-                                                <text>
-                                                    <span class="card-status status-inactive">
-                                                        Inactive
-                                                    </span>
-                                                </text>
+                                            <text>
+                                                <span class="card-status status-inactive">
+                                                    Inactive
+                                                </span>
+                                            </text>
                                             break;
                                     }
                                 }
