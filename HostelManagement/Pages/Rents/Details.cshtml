@@ -6,13 +6,17 @@
     ViewData["Title"] = "Details";
     var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
+@if (ViewData["HostelOwnerDashboardMessage"] != null)
+{
+    <p class="text-danger">@ViewData["HostelOwnerDashboardMessage"]</p>
+}
 <div class="container main-container mt-5">
     <div class="row">
         <div class="col-md-8 p-0">
             <div>
                 <div class="rent-form-wrapper">
-                    <h4 class="mb-3"><i class='bx bx-receipt' ></i>Renting Details</h4>
-                        
+                    <h4 class="mb-3"><i class='bx bx-receipt'></i>Renting Details</h4>
+
                     <div class="form-group" hidden="hidden">
                         <label asp-for="Rent.RoomId" class="control-label"></label>
                         <input asp-for="Rent.RoomId" class="form-control" value="@ViewBag.RoomId" readonly />
@@ -34,11 +38,11 @@
                     <div class="grouped-form">
                         <div class="form-group">
                             <label asp-for="Rent.StartRentDate" class="control-label"></label>
-                            <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@Model.Rent.StartRentDate.Date.ToString("yyyy-MM-dd")" readonly/>
+                            <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@Model.Rent.StartRentDate.Date.ToString("yyyy-MM-dd")" readonly />
                         </div>
                         <div class="form-group">
                             <label asp-for="Rent.EndRentDate" class="control-label"></label>
-                            <input asp-for="Rent.EndRentDate" class="form-control" type="date" value="@Model.Rent.EndRentDate.Date.ToString("yyyy-MM-dd")" readonly/>
+                            <input asp-for="Rent.EndRentDate" class="form-control" type="date" value="@Model.Rent.EndRentDate.Date.ToString("yyyy-MM-dd")" readonly />
                         </div>
                     </div>
                     <div class="grouped-form status">
@@ -82,28 +86,29 @@
                         </div>
                         <div class="form-group">
                             @{
-                                var status="";
-                                var classStatus1="";
-                                switch(Model.Rent.Status){
+                                var status = "";
+                                var classStatus1 = "";
+                                switch (Model.Rent.Status)
+                                {
                                     case 1:
-                                        status="Active";
-                                        classStatus1="active";
+                                        status = "Active";
+                                        classStatus1 = "active";
                                         break;
                                     case 2:
-                                        status="Renewing";
-                                        classStatus1="active";
+                                        status = "Renewing";
+                                        classStatus1 = "active";
                                         break;
                                     case 3:
-                                        status="Canceled";
-                                        classStatus1="denied";
+                                        status = "Canceled";
+                                        classStatus1 = "denied";
                                         break;
                                     case 4:
-                                        status="Expired";
-                                        classStatus1="inactive";
+                                        status = "Expired";
+                                        classStatus1 = "inactive";
                                         break;
                                     default:
-                                        status="Pending";
-                                        classStatus1="pending";
+                                        status = "Pending";
+                                        classStatus1 = "pending";
                                         break;
                                 }
                             }
@@ -115,46 +120,53 @@
 
                 <div class="rent-form-wrapper mt-2">
                     <h4 class="mb-3"><i class='bx bx-group'></i>Room Members</h4>
-                
+
                     <div class="grouped-form flex-wrap">
-                    @for (int i = 0; i < @Model.Rent.RoomMembers.Count; i++)
-                    {   
-                        @if(Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==1){
-                            <div class="form-group">
-                                <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-active">Active</span>
-                                @if (i==0){
-                                <div class="input-group">
-                                    <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
-                                    <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2' ></i></div>
+                        @for (int i = 0; i < @Model.Rent.RoomMembers.Count; i++)
+                        {
+                            @if (Model.Rent.RoomMembers.ElementAt(i) != null && Model.Rent.RoomMembers.ElementAt(i).Status == 1)
+                            {
+                                <div class="form-group">
+                                    <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-active">Active</span>
+                                    @if (i == 0)
+                                    {
+                                        <div class="input-group">
+                                            <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                            <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2'></i></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                        <a asp-page-handler="changeStatus"></a>
+                                    }
                                 </div>
-                                }
-                                else{
-                                    <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
-                                    <a asp-page-handler="changeStatus"></a>
-                                }
-                            </div>
-                        }
-                        else if (role.Equals("Owner")){
-                            
-                            var memStatus="Active";
-                            if (Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==0){
-                                memStatus="Inactive";
                             }
-                            <div class="form-group">
-                                <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-@memStatus.ToLower()">@memStatus</span>
-                                @if (i==0){
-                                <div class="input-group">
-                                    <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
-                                    <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2' ></i></div>
+                            else if (role.Equals("Owner"))
+                            {
+
+                                var memStatus = "Active";
+                                if (Model.Rent.RoomMembers.ElementAt(i) != null && Model.Rent.RoomMembers.ElementAt(i).Status == 0)
+                                {
+                                    memStatus = "Inactive";
+                                }
+                                <div class="form-group">
+                                    <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-@memStatus.ToLower()">@memStatus</span>
+                                    @if (i == 0)
+                                    {
+                                        <div class="input-group">
+                                            <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                            <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2'></i></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                        <a asp-page-handler="changeStatus"></a>
+                                    }
                                 </div>
-                                }
-                                else{
-                                    <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
-                                    <a asp-page-handler="changeStatus"></a>
-                                }
-                            </div>
+                            }
                         }
-                    }
                     </div>
                 </div>
             </div>
@@ -165,9 +177,10 @@
                     <div class="summary-content">
                         <div class="summary-thumb">
                             @{
-                                string hostelThumb ="placeholder.png";
-                                if (Model.Hostel.HostelPics.Count>0){
-                                    hostelThumb = "hostels/"+ Model.Hostel.HostelPics.ElementAt(0).HostelPicUrl;
+                                string hostelThumb = "placeholder.png";
+                                if (Model.Hostel.HostelPics.Count > 0)
+                                {
+                                    hostelThumb = "hostels/" + Model.Hostel.HostelPics.ElementAt(0).HostelPicUrl;
                                 }
                             }
                             <div class="summary-thumb-img" style="background-image: url(/images/@hostelThumb);"></div>
@@ -192,9 +205,10 @@
                 <div class="summary-content">
                     <div class="summary-thumb">
                         @{
-                            string roomThumb ="placeholder.png";
-                            if (Model.Room.RoomPics.Count>0){
-                                roomThumb = "rooms/"+ Model.Room.RoomPics.ElementAt(0).RoomPicUrl;
+                            string roomThumb = "placeholder.png";
+                            if (Model.Room.RoomPics.Count > 0)
+                            {
+                                roomThumb = "rooms/" + Model.Room.RoomPics.ElementAt(0).RoomPicUrl;
                             }
                         }
                         <div class="summary-thumb-img" style="background-image: url(/images/@roomThumb);"></div>
@@ -212,11 +226,11 @@
             </div>
 
         </div>
-    </div>  
+    </div>
 </div>
 
 <div>
-    <hr class="mt-5"/>
+    <hr class="mt-5" />
 </div>
 @if (Model.Rent.Bills.Count() != 0)
 {
@@ -225,25 +239,26 @@
             <h3 class="mb-2">Billing List</h3>
             <div class="bill-list-wrapper">
                 <div class="bill-list">
-                     @foreach (var item in Model.Rent.Bills)
+                    @foreach (var item in Model.Rent.Bills)
                     {
-                    <div class="bill-card">
-                        <div class="bill-info">
-                            <div class="bill-no"><a asp-page="../Bills/Details" asp-route-id="@item.BillId">Billing No. @item.BillId</a></div>
-                            <div class="bill-issued">Date: @item.CreatedDate</div>
+                        <div class="bill-card">
+                            <div class="bill-info">
+                                <div class="bill-no"><a asp-page="../Bills/Details" asp-route-id="@item.BillId">Billing No. @item.BillId</a></div>
+                                <div class="bill-issued">Date: @item.CreatedDate</div>
+                            </div>
+                            <div class="bill-payment text-right">
+                                <div class="bill-total"><span class="currency">₫</span>@item.BillDetails.Sum(b => b.Fee)</div>
+                                <div class="bill-due">Due: <span class="text-danger"><strong>@item.DueDate</strong></span></div>
+                            </div>
                         </div>
-                        <div class="bill-payment text-right">
-                            <div class="bill-total"><span class="currency">₫</span>@item.BillDetails.Sum(b => b.Fee)</div>
-                            <div class="bill-due">Due: <span class="text-danger"><strong>@item.DueDate</strong></span></div>
-                        </div>
-                    </div>
                     }
                 </div>
             </div>
         </div>
     </text>
 }
-else{
+else
+{
     <text>
         <div class="container text-center">
             <h1 class="m-5"><strong style="color: rgb(77, 77, 77);">Bill not found!</strong></h1>

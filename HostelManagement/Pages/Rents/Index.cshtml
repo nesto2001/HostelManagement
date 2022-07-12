@@ -113,37 +113,73 @@
                 <span class="deposit-status status-@classStatus">@deposit</span>
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Status)
+                @{
+                    var status = "";
+                    var classStatus1 = "";
+                    switch (item.Status)
+                    {
+                        case 1:
+                            status = "Active";
+                            classStatus1 = "active";
+                            break;
+                        case 2:
+                            status = "Renewing";
+                            classStatus1 = "active";
+                            break;
+                        case 3:
+                            status = "Canceled";
+                            classStatus1 = "denied";
+                            break;
+                        case 4:
+                            status = "Expired";
+                            classStatus1 = "inactive";
+                            break;
+                        default:
+                            status = "Pending";
+                            classStatus1 = "pending";
+                            break;
+                    }
+                }
+                <span class="deposit-status status-@classStatus1">@status</span>
             </td>
             
             
             
             
             <td class="col-2">
-                <div class="action-btn"><i class='bx bx-dots-vertical-rounded py-0'></i></div>
+                @*<div class="action-btn"><i class='bx bx-dots-vertical-rounded py-0'></i></div>*@
                 <div class="rent-action">
                     <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-                    <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
-                    @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                    @*<a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>*@
+                    @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+                    {
+                        var lastBill = item.StartRentDate;
+                        if (item.Bills.Count() != 0)
                         {
-                            <li>
-                                <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
-                            </li>
+                            lastBill = (DateTime)item.Bills.Max(b => b.CreatedDate);
                         }
+                        if (DateTime.Now.AddMonths(-1) > item.StartRentDate && item.Status == 1)
+                        {
+                            if (lastBill < DateTime.Now.AddDays(-15))
+                            {
+                                <a asp-page="../Bills/Create" asp-route-id="@item.RentId">-- Generate bill</a>
+                            }
+                        }
+                    }
                     @* <ul class="action-menu">
-                        <li>
-                            <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
-                        </li>
-                        <li>
-                            <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
-                        </li>
-                        @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
-                        {
-                            <li>
-                                <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
-                            </li>
-                        }
-                    </ul> *@
+            <li>
+                <a asp-page="Details" asp-route-id="@item.RentId">Details</a>
+            </li>
+            <li>
+                <a asp-page="../Bills/Index" asp-route-id="@item.RentId">View bills</a>
+            </li>
+            @if (item.StartRentDate.Day < DateTime.Now.Day && User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
+            {
+                <li>
+                    <a asp-page="../Bills/Create" asp-route-id="@item.RentId">Generate bill</a>
+                </li>
+            }
+        </ul> *@
                 </div>
             </td>
         </tr>

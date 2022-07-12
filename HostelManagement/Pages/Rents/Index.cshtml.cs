@@ -87,13 +87,20 @@ namespace HostelManagement.Pages.Rents
 
         public async Task<ActionResult> OnPostAsync(int slHostel, int slRoom)
         {
-            if (slRoom != 0)
-                Rents = await rentRepository.GetRentListByRoom(slRoom);
-            else
+            if (slHostel != 0)
             {
-                var rooms = await roomRepository.GetRoomsOfAHostel(slHostel);
-                //implement get all contract of each room and concat to create list contract of hostel
+                if (slRoom != 0)
+                    Rents = await rentRepository.GetRentListByRoom(slRoom);
+                else
+                {
+                    var rooms = await roomRepository.GetRoomsOfAHostel(slHostel);
+                    //implement get all contract of each room and concat to create list contract of hostel
+                }
+            } else
+            {
+                Rents = await rentRepository.GetRentList();
             }
+            
             int UId = 0;
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
@@ -103,8 +110,8 @@ namespace HostelManagement.Pages.Rents
             Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
             Rents = Rents.OrderByDescending(r => r.IsDeposited).ThenByDescending(r => r.RentId);
             ViewData["HostelId"] = new SelectList(Hostels, "HostelId", "HostelName");
-            ViewData["HostelName"] = hostelRepository.GetHostelByID(slHostel).Result.HostelName;
-            ViewData["RoomName"] = roomRepository.GetRoomByID(slRoom).Result.RoomTitle;
+            if (slHostel != 0) ViewData["HostelName"] = hostelRepository.GetHostelByID(slHostel).Result.HostelName;
+            if (slRoom != 0) ViewData["RoomName"] = roomRepository.GetRoomByID(slRoom).Result.RoomTitle;
             return Page();
         }
 

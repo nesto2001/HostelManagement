@@ -1,8 +1,10 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using System;
 using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Rents
@@ -41,6 +43,12 @@ namespace HostelManagement.Pages.Rents
             if (Rent == null)
             {
                 return NotFound();
+            }
+            string Message = HttpContext.Session.GetString("HostelOwnerDashboardMessage");
+            if (!String.IsNullOrEmpty(Message))
+            {
+                ViewData["HostelOwnerDashboardMessage"] = Message;
+                HttpContext.Session.Remove("HostelOwnerDashboardMessage");
             }
             return Page();
         }

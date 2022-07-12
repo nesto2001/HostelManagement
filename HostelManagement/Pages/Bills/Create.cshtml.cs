@@ -52,7 +52,7 @@ namespace HostelManagement.Pages.Bills
             if (LastBill > DateTime.Now.AddDays(-15))
             {
                 HttpContext.Session.SetString("HostelOwnerDashboardMessage", "This contract have already exist bill in recent months.");
-                return RedirectToPage("../HostelOwnerDashboard");
+                return RedirectToPage("../Rents/Details", new {id= id });
             }
             rent.RentedByNavigation.Rents = null;
             rent.Room = null;
