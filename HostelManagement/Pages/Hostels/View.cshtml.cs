@@ -11,7 +11,7 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
-    [Authorize(Roles = "Renter")]
+    [Authorize(Roles = "Renter,Owner")]
     public class ViewModel : PageModel
     {
 
