@@ -171,10 +171,12 @@
                     <span class="dot"></span>
                 }
             </div>
-            <div style="text-align:center">
-                <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId" class="btn btn-danger"> Edit </a>
+            @if (Model.UserRole == "Owner")
+            {
+                <div style="text-align:center">
+                    <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId" class="btn btn-danger"> Edit </a>
+                </div>}
             </div>
-        </div>
     </div>
     @if (Model.UserRole == "Owner")
     {
