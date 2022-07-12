@@ -41,6 +41,7 @@ namespace HostelManagement.Pages.Accounts
         public IFormFile BackPicUrl { get; set; }
         public string MessageExistId { get; set; }
         public string MessageExistEmail { get; set; }
+        public string MessageDob { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -74,6 +75,11 @@ namespace HostelManagement.Pages.Accounts
             else if (IdExists(Input.IdCardNumber))
             {
                 MessageExistId = "ID is existing. Please choose other ID.";
+                return Page();
+            }
+            else if (!CheckDob(Account.Dob))
+            {
+                MessageDob = "Invalid DOB.";
                 return Page();
             }
             else
@@ -123,6 +129,13 @@ namespace HostelManagement.Pages.Accounts
         {
             Task<IdentityCard> idCard = _identityCardRepository.GetIdentityCardByID(id);
             if (idCard.Result != null) return true;
+            else return false;
+        }
+        public bool CheckDob(DateTime? Dob)
+        {
+            TimeSpan timeDifference = DateTime.Now - Dob.Value;
+            double Age = timeDifference.TotalDays / 365.2425;
+            if (Age >= 16) return true;
             else return false;
         }
     }

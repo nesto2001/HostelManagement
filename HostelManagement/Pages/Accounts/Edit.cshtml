@@ -9,6 +9,8 @@
     if (Model.Account.IdCardNumberNavigation != null) readOnly = true;
     var checkReq = false;
     if (Model.Account.IdCardNumberNavigation == null) checkReq = true;
+    var dob = false;
+    if (Model.MessageDob == null) dob = true;
     string profilePic = "ano-ava.jpg";
     if (Model.Account.ProfilePicUrl != null)
         profilePic = Model.Account.ProfilePicUrl;
@@ -85,6 +87,9 @@
             </div>
             <div class="col-sm-8">
                 <input asp-for="Account.Dob" class="form-control" />
+            </div>
+            <div class="col-sm-8" hidden="@dob">
+                <span class="text-danger">@Model.MessageDob</span>
             </div>
             <div class="col-sm-8">
                 <span asp-validation-for="Account.Dob" class="text-danger"></span>
