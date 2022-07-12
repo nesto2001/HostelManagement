@@ -1,6 +1,7 @@
 ﻿@page
 @model HostelManagement.Pages.Hostels.RequestsModel
 @{
+    string activeNav = "listings-nav";
 }
 <section class="action-section searchbox-owner">
     <div class="row">
@@ -19,12 +20,18 @@
 </section>
 
 <section class="listings-hostel">
-
-    <div class="listings-hostel-wrapper" id="/pending">
+    <div class="listings-hostel-tab">
+        <div class="listings-filter">
+            <div class="listings-filter-items">
+                <a class="listing-link-action listing-link-action-active" data-target="#/Hostel">Hostels</a>
+                <a class="listing-link-action" data-target="#/Room">Room</a>
+            </div>
+        </div>
+    </div>
+    <div class="listings-hostel-wrapper" id="/Hostel">
         @foreach (var item in Model.Hostels) {
             @if (item.Status == 0){
                 <div class="hostel-listings-card mb-3">
-                    <a asp-page="./ChangeStatus" asp-route-id="@item.HostelId">
                         <div class="card-inner">
                             @if (@item.HostelPics.Count > 0)
                             {
@@ -96,9 +103,117 @@
                                 </script>
                             </div>
                         </div>
-                    </a>
+                </div>
+            }
+        }
+    </div>
+    <div class="listings-hostel-wrapper" id="/Room">
+        @foreach (var item in Model.Rooms) {
+            @if (item.Status == 0){
+                <div class="hostel-listings-card mb-3">
+                        <div class="card-inner">
+                            @if (@item.RoomPics.Count > 0)
+                            {
+                                <div class="card-img-thumb" style="background: url('../images/hostels/@item.RoomPics.ElementAt(0).RoomPicUrl');"></div>
+                            }
+                            else
+                            {
+                                <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                            }
+                            <div class="card-details">
+                                <div class="card-info">
+                                    <div class="card-title">[@item.Hostel.HostelName] @item.RoomTitle</div>
+                                    @{
+                                        switch (item.Status)
+                                        {
+                                            case 1:
+                                                <text>
+                                                    <span class="card-status status-active">
+                                                        Active
+                                                    </span>
+                                                </text>
+                                                break;
+                                            case 2:
+                                                <text>
+                                                    <span class="card-status status-inactive">
+                                                        Inactive
+                                                    </span>
+                                                </text>
+                                                break;
+                                            case 3:
+                                                <text>
+                                                    <span class="card-status status-denied">
+                                                        Denied
+                                                    </span>
+                                                </text>
+                                                break;
+                                            case 4:
+                                                <text>
+                                                    <span class="card-status status-denied">
+                                                        Occupied
+                                                    </span>
+                                                </text>
+                                                break;
+                                            default:
+                                                <text>
+                                                    <span class="card-status status-pending">
+                                                        Pending
+                                                    </span>
+                                                </text>
+                                                break;
+                                        }
+                                    }
+                                </div>
+                            </div>
+                            <div class="card-action">
+                                <div class="btn-card-action btn-card-activate" id="@item.RoomId">
+                                    <a>
+                                        <i class='bx bx-check'></i>
+                                    </a>
+                                </div>
+                                <div class="btn-card-action btn-card-denied btn-card-deactivate" id="@item.RoomId">
+                                    <a>
+                                        <i class='bx bx-x'></i>
+                                    </a>
+                                </div>
+                                @{
+                                    var name = item.RoomTitle;
+                                }
+                                <script type="text/javascript">
+                            $('.btn-card-deactivate#@item.RoomId').click(function(){
+                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.RoomId'/>");
+                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
+                                $('.popup-deactivate').show();
+                            })
+                                </script>
+                            </div>
+                        </div>
                 </div>
             }
         }
     </div>
 </section>
+@section Scripts {
+<script type="text/javascript">
+    $('#@activeNav').addClass('active');
+    $('.btn-cancel').click(function(){
+        $(event.target).parent().closest('.popup-deactivate').hide();
+    });
+    $('.listing-link-action').click(function(){
+        $('.listing-link-action').removeClass('listing-link-action-active');
+        $(event.target).addClass('listing-link-action-active');
+
+        var content = $(event.target).data("target");
+        let selector = content.substring(1);
+        $('.listings-hostel-wrapper').hide()
+        $('#'+ $.escapeSelector(selector)).show();
+    });
+
+    $(window).on('load',function(){
+        $('.listings-hostel-wrapper').hide();
+        let content = $('.listing-link-action-active').data("target");
+        let selector = content.substring(1);
+        $('#'+ $.escapeSelector(selector)).show();
+    })
+</script>
+}

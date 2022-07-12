@@ -136,5 +136,36 @@ namespace DataAccess.DAO
                 throw new Exception(ex.InnerException.Message);
             }
         }
+        public async Task InactiveUser(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                var account = HostelManagementContext.Accounts.SingleOrDefault(a => a.UserId.Equals(id));
+                HostelManagementContext.Accounts.Attach(account);
+                account.Status = 0;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task ActivateUser(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                var account = HostelManagementContext.Accounts.SingleOrDefault(a => a.UserId.Equals(id));
+                HostelManagementContext.Accounts.Attach(account);
+                account.Status = 1;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

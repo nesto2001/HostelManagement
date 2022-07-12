@@ -1274,12 +1274,17 @@ a.see-room-info{
   margin-right: 32px;
   font-weight: 1000;
   height: 34px;
+  cursor: pointer;
 }
 
 .listings-filter-items a {
   display: inline-block;
   font-size: 16px;
   line-height: 1;
+}
+
+.listings-filter-items a:hover {
+  color: #0083CC !important;
 }
 
 .listings-filter .listing-link-action:last-child {
@@ -1702,7 +1707,7 @@ br{
     transition: background-color 0.6s ease;
 }
 
-.active {
+.active:not(.nav-item) {
     background-color: #717171;
 }
 
@@ -1857,4 +1862,46 @@ table tbody tr{
 
 table tbody tr:hover td{
   background: rgba(0, 0, 0, .05);
+}
+
+.profile-wrapper{
+  display: inline-flex;
+  width: 50px;
+  height: 50px;
+  margin-left: 10px;
+}
+
+.profile-wrapper .avatar-wrapper{
+  width: 100%;
+  height: 100%;
+  border-radius: 24px;
+  background-color: #ccc;
+  border: 1px solid #bbb;
+  overflow: hidden;
+}
+
+.profile-wrapper .avatar-wrapper .avatar{
+  width: 100%;
+  height: 100%;
+}
+
+.profile-wrapper .avatar-wrapper .avatar img{
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+button.btn-logout{
+  background: #ed5c59;
+  color: white;
+  border-radius: 8px;
+  padding: 2px 10px;
+}
+
+button.btn-logout:hover{
+  background: #f03434;
+}
+
+button.btn-logout a{
+  color: white !important;
 }

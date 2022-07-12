@@ -34,6 +34,7 @@ namespace HostelManagement.Pages.Accounts
         [BindProperty]
         public IFormFile FileUploads { get; set; }
         public string MessageExistEmail { get; set; }
+        public string MessageDob { get; set; }
         // To protect from overposting attacks, see https://aka.ms/RazorPagesCRUD
         public async Task<IActionResult> OnPostAsync()
         {
@@ -44,6 +45,11 @@ namespace HostelManagement.Pages.Accounts
             else if (CheckExist(Account.UserEmail))
             {
                 MessageExistEmail = "Email is existing. Please choose other email.";
+                return Page();
+            }
+            else if (!CheckDob(Account.Dob))
+            {
+                MessageDob = "Invalid DOB.";
                 return Page();
             }
             else
@@ -62,6 +68,13 @@ namespace HostelManagement.Pages.Accounts
         {
             Task<Account> acc = _accountRepository.GetAccountByEmail(email);
             if (acc.Result != null) return true;
+            else return false;
+        }
+        public bool CheckDob(DateTime? Dob)
+        {
+            TimeSpan timeDifference = DateTime.Now - Dob.Value;
+            double Age = timeDifference.TotalDays / 365.2425;
+            if (Age >= 16) return true;
             else return false;
         }
     }

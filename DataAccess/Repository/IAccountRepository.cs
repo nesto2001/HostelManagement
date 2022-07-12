@@ -16,5 +16,7 @@ namespace DataAccess.Repository
         Task DeleteAccount(Account Account);
         Task AddAccount(Account Account);
         Task<IEnumerable<Account>> GetAccountList();
+        Task ActivateUser(int id);
+        Task InactivateUser(int id);
     }
 }
