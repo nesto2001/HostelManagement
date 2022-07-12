@@ -80,7 +80,7 @@ namespace HostelManagement.Pages.Accounts
                     FullName = Input.FullName,
                     UserPassword = Input.UserPassword,
                     PhoneNumber = Input.PhoneNumber,
-                    RoleName = "Renter",
+                    RoleName = "renter",
                     Status = 1,
                     Dob = Input.Dob,
                     IdCardNumber = Input.IdCardNumber

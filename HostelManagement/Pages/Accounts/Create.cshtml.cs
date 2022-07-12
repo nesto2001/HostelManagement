@@ -48,7 +48,7 @@ namespace HostelManagement.Pages.Accounts
             }
             else
             {
-                Account.RoleName = "Renter";
+                Account.RoleName = "renter";
                 Account.Status = 1;
                 if (FileUploads != null)
                 {
