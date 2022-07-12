@@ -4,84 +4,186 @@
 @{
     ViewData["Title"] = "Details";
 }
+<section class="listings-hostel edit-listings">
+    <div class="listings-hostel-wrapper">
 
-<h1>Details</h1>
-
-<div>
-    <h4>Room</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.RoomTitle)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.RoomTitle)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.RoomDescription)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.RoomDescription)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.RomMaxCapacity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.RomMaxCapacity)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.RoomCurrentCapacity)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.RoomCurrentCapacity)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.Deposit)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.Deposit)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.Price)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.Price)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.Hostel)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Room.Hostel.HostelOwnerEmail)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Room.RoomPics)
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var item in Model.Room.RoomPics)
-            {
-                <img src="~/images/rooms/@(item.RoomPicUrl)" width="200" />
-            }
-            @if (Model.UserRole == "Owner")
-            {   <p> | </p>
-                <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId">Edit Pictures</a>
-            }
-        </dd>
-    </dl>
-</div>
-@if (Model.UserRole == "Owner")
-{
-    <div>
-        <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a> |
-        <a asp-page="../Rents/Index" asp-route-id="@Model.Room.RoomId">View Rent History</a> |
-        <a asp-page="../Hostels/Details" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
+        <div class="hostel-listings-card">
+            <div class="card-inner">
+                @if (@Model.hostel.HostelPics.Count > 0)
+                {
+                    <div class="card-img-thumb" style="background: url('../images/hostels/@Model.hostel.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                }
+                else
+                {
+                    <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                }
+                <div class="card-details">
+                    <div class="card-info">
+                        <div class="card-title">[@Model.hostel.Category.CategoryName] @Model.hostel.HostelName</div>
+                        @{
+                            switch (@Model.hostel.Status)
+                            {
+                                case 1:
+                                    <text>
+                                        <span class="card-status status-active">
+                                            Active
+                                        </span>
+                                    </text>
+                                    break;
+                                case 2:
+                                    <text>
+                                        <span class="card-status status-inactive">
+                                            Inactive
+                                        </span>
+                                    </text>
+                                    break;
+                                case 3:
+                                    <text>
+                                        <span class="card-status status-denied">
+                                            Denied
+                                        </span>
+                                    </text>
+                                    break;
+                                default:
+                                    <text>
+                                        <span class="card-status status-pending">
+                                            Pending
+                                        </span>
+                                    </text>
+                                    break;
+                            }
+                        }
+                        <span class="card-location">@Model.hostel.Location.Ward.District.Province.ProvinceName, @Model.hostel.Location.Ward.District.DistrictName</span>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="btn-card-action btn-card-edit">
+                        <a asp-page="./View" asp-route-id="@Model.hostel.HostelId">
+                            Preview
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-}
+</section>
+<div>
+    <h4 style="margin-left: 100px; margin-top: 50px">@Model.Room.RoomTitle</h4>
+    <hr />
+    <div class="row">
+        <div class="row border" style="width: 65%; margin-left: 20px">
+            <div class="border-right" style="width: 65%; margin-left: 10px">
+                <div>
+                    <b>Description</b>
+                </div>
+                <div>
+                    @Html.DisplayFor(model => model.Room.RoomDescription)
+                </div>
+            </div>
+            <div style="width:30%; margin-left: 10px">
+
+                <dl class="row">
+
+                    <dt class="col-sm-5">
+                        Max Capacity
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.Room.RomMaxCapacity)
+                    </dd>
+                    <dt class="col-sm-5">
+                        Current Capacity
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.Room.RoomCurrentCapacity)
+                    </dd>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.Room.Status)
+                    </dt>
+                    @{
+                        string stt = "";
+                        switch (Model.Room.Status)
+                        {
+                            case 1:
+                                stt = "Active";
+                                break;
+                            case 2:
+                                stt = "Inactive";
+                                break;
+                            case 3:
+                                stt = "Denied";
+                                break;
+                            case 4:
+                                stt = "Occupied";
+                                break;
+                            default:
+                                stt = "Pending";
+                                break;
+                        }
+                    }
+                    <dd class="col-sm-7">
+                        <div class="status-@stt.ToLower()">@stt</div>
+                    </dd>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.Room.Deposit)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.Room.Deposit)
+                    </dd>
+                    <dt class="col-sm-5">
+                        @Html.DisplayNameFor(model => model.Room.Price)
+                    </dt>
+                    <dd class="col-sm-7">
+                        @Html.DisplayFor(model => model.Room.Price)
+                    </dd>
+                </dl>
+            </div>
+
+            @if (Model.UserRole == "Owner")
+            {
+                <div class="border-top btn btn-danger" style="width: 100%; text-align:center">
+                    <a asp-page="./Edit" asp-route-id="@Model.Room.RoomId">Edit Room</a>
+                </div>
+            }
+        </div>
+        <div style="width:30%">
+
+            <div class="slideshow-container" style="text-align:center">
+                @{
+                    int m = 1;
+                }
+                @foreach (var item in Model.Room.RoomPics)
+                {
+                    <div class="mySlides fade">
+                        <div class="numbertext">@m / @Model.Room.RoomPics.Count</div>
+                        <img src="~/images/rooms/@(item.RoomPicUrl)" style="width:350px; height:200px">
+                        <div class="text">Image @m</div>
+                    </div>
+                    <p hidden="hidden">
+                        @(m++)
+                    </p>
+                }
+            </div>
+            <br>
+
+            <div style="text-align:center">
+                @foreach (var item in Model.Room.RoomPics)
+                {
+                    <span class="dot"></span>
+                }
+            </div>
+            <div style="text-align:center">
+                <a asp-page="./RoomPics" asp-route-id="@Model.Room.RoomId" class="btn btn-danger"> Edit </a>
+            </div>
+        </div>
+    </div>
+    @if (Model.UserRole == "Owner")
+    {
+        <div class="border-top" style="width: 100%">
+            <a asp-page="../Rents/Index" asp-route-id="@Model.Room.RoomId">View Rent History</a> |
+            <a asp-page="../Hostels/Edit" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
+        </div>
+    }
+</div>
 
 @if (Model.UserRole == "Renter")
 {
@@ -92,3 +194,24 @@
 {
     <a asp-page="../Accounts/Login">Rent this room</a>
 }
+
+<script>
+    var slideIndex = 0;
+    showSlides();
+    function showSlides() {
+        var i;
+        var slides = document.getElementsByClassName("mySlides");
+        var dots = document.getElementsByClassName("dot");
+        for (i = 0; i < slides.length; i++) {
+            slides[i].style.display = "none";
+        }
+        slideIndex++;
+        if (slideIndex > slides.length) { slideIndex = 1 }
+        for (i = 0; i < dots.length; i++) {
+            dots[i].className = dots[i].className.replace(" active", "");
+        }
+        slides[slideIndex - 1].style.display = "block";
+        dots[slideIndex - 1].className += " active";
+        setTimeout(showSlides, 2000); // Chuyển ảnh sau 2 giây
+    }
+</script>

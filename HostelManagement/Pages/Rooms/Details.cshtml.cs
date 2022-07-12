@@ -18,14 +18,17 @@ namespace HostelManagement.Pages.Rooms
     public class DetailsModel : PageModel
     {
         private IRoomRepository roomRepository;
+        private IHostelRepository hostelRepository;
 
-        public DetailsModel(IRoomRepository _roomRepository)
+        public DetailsModel(IRoomRepository _roomRepository, IHostelRepository _hostelRepository)
         {
             roomRepository = _roomRepository;
+            hostelRepository = _hostelRepository;
         }
 
         public Room Room { get; set; }
         public String UserRole { get; set; }
+        public Hostel hostel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -39,6 +42,7 @@ namespace HostelManagement.Pages.Rooms
 
 
             Room = await roomRepository.GetRoomByID((int)id);
+            hostel = await hostelRepository.GetHostelByID(Room.HostelId);
             HttpContext.Session.SetInt32("RoomView", (int)id);
             
             if (Room == null)
