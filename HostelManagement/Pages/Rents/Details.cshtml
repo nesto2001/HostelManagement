@@ -266,7 +266,6 @@ else
     </text>
 }
 <div>
-    @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
     <a asp-page="./Index">Back to List</a>
 </div>
 @{
@@ -277,9 +276,12 @@ else
         {
             lastBill = (DateTime)Model.Rent.Bills.Max(b => b.CreatedDate);
         }
-        if (lastBill < DateTime.Now.AddDays(-15))
+        if (DateTime.Now.AddMonths(-1) > Model.Rent.StartRentDate && Model.Rent.Status == 1)
         {
+            if (lastBill < DateTime.Now.AddDays(-15))
+            {
             <a asp-page="../Bills/Create" asp-route-id="@Model.Rent.RentId">Generate bill</a>
+            }
         }
     }
 
