@@ -2,12 +2,74 @@
 @model HostelManagement.Pages.Rooms.InsertModel
 @{
 }
+<section class="listings-hostel edit-listings">
+    <div class="listings-hostel-wrapper">
 
+        <div class="hostel-listings-card">
+            <div class="card-inner">
+                @if (@Model.hostel.HostelPics.Count > 0)
+                {
+                    <div class="card-img-thumb" style="background: url('../images/hostels/@Model.hostel.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                }
+                else
+                {
+                    <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                }
+                <div class="card-details">
+                    <div class="card-info">
+                        <div class="card-title">[@Model.hostel.Category.CategoryName] @Model.hostel.HostelName</div>
+                        @{
+                            switch (@Model.hostel.Status)
+                            {
+                                case 1:
+                                    <text>
+                                        <span class="card-status status-active">
+                                            Active
+                                        </span>
+                                    </text>
+                                    break;
+                                case 2:
+                                    <text>
+                                        <span class="card-status status-inactive">
+                                            Inactive
+                                        </span>
+                                    </text>
+                                    break;
+                                case 3:
+                                    <text>
+                                        <span class="card-status status-denied">
+                                            Denied
+                                        </span>
+                                    </text>
+                                    break;
+                                default:
+                                    <text>
+                                        <span class="card-status status-pending">
+                                            Pending
+                                        </span>
+                                    </text>
+                                    break;
+                            }
+                        }
+                        <span class="card-location">@Model.hostel.Location.Ward.District.Province.ProvinceName, @Model.hostel.Location.Ward.District.DistrictName</span>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="btn-card-action btn-card-edit">
+                        <a asp-page="./View" asp-route-id="@Model.hostel.HostelId">
+                            Preview
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <h1>Insert</h1>
 
 <h4>Room</h4>
 <hr />
-<div class="row">
+<div class="roomform row" >
     <div class="col-md-4">
         <form method="post" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>

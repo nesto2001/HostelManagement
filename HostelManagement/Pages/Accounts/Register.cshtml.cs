@@ -101,7 +101,8 @@ namespace HostelManagement.Pages.Accounts
                 HttpContext.Session.SetInt32("isLoggedIn", 1);
                 HttpContext.Session.SetInt32("ID", acc.UserId);
                 HttpContext.Session.SetString("ContactName", acc.FullName);
-
+                string success = $"Email {acc.UserEmail} register successfully.";
+                HttpContext.Session.SetString("RegisterSuccess", success);
                 return RedirectToPage("./Login");
             }
         }

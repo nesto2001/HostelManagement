@@ -4,6 +4,11 @@
     var hidden = false;
     if (Model.message == null) hidden = true;
 }
+@if (!string.IsNullOrEmpty((string)ViewData["RegisterSuccessMessage"]))
+{
+
+    <p class="text-danger btn">@ViewData["RegisterSuccessMessage"]</p>
+}
 <h1 class="text-center" style="margin-bottom:50px; margin-top: 50px">LOGIN</h1>
 <div class="container border h-100 d-flex align-items-center justify-content-center" style="padding: 20px; width: 500px">
     <form method="post">
@@ -38,10 +43,10 @@
     </form>
 
 </div>
-        <p id="emailHelp" class="form-text text-center">
-            Dont have an ancount?
-            <b><a href="/Accounts/Register" class="text-decoration-none">Register here</a></b>
-        </p>
-        <p class="text-center">
-            <b class="text-danger"><a class="text-decoration-none" href="/Accounts/ForgotPassword">Forgot password?</a></b>
+<p id="emailHelp" class="form-text text-center">
+    Dont have an ancount?
+    <b><a href="/Accounts/Register" class="text-decoration-none">Register here</a></b>
+</p>
+<p class="text-center">
+    <b class="text-danger"><a class="text-decoration-none" href="/Accounts/ForgotPassword">Forgot password?</a></b>
 </p>

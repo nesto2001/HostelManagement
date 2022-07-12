@@ -18,11 +18,13 @@ namespace HostelManagement.Pages.Rooms
     {
         private IRoomPicRepository roomPicRepository;
         private IRoomRepository roomRepository;
+        private IHostelRepository hostelRepository;
 
-        public InsertModel(IRoomPicRepository _roomPicRepository, IRoomRepository _roomRepository)
+        public InsertModel(IRoomPicRepository _roomPicRepository, IRoomRepository _roomRepository, IHostelRepository _hostelRepository)
         {
             roomPicRepository = _roomPicRepository;
             roomRepository = _roomRepository;
+            hostelRepository = _hostelRepository;
         }
 
 
@@ -36,9 +38,11 @@ namespace HostelManagement.Pages.Rooms
         [BindProperty]
         public IFormFile[] FileUploads { get; set; }
         public RoomPic RoomPic { get; set; }
+        public Hostel hostel { get; set; }
         public async Task<IActionResult> OnGetAsync(int id)
         {
             HttpContext.Session.SetInt32("HostelId", id);
+            hostel = await hostelRepository.GetHostelByID(id);
             return Page();
         }
 

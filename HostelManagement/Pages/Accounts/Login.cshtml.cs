@@ -155,6 +155,11 @@ namespace HostelManagement.Pages.Accounts
             {
                 return RedirectToPage("/Index");
             }
+            if (!string.IsNullOrEmpty(HttpContext.Session.GetString("RegisterSuccess")))
+            {
+                ViewData["RegisterSuccessMessage"] = HttpContext.Session.GetString("RegisterSuccess");
+                HttpContext.Session.Remove("RegisterSuccess");
+            }
             return Page();
         }
     }

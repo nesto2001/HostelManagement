@@ -21,6 +21,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="wwwroot\images\accounts\idCard\" />
     <Folder Include="wwwroot\images\rooms\" />
   </ItemGroup>
 
