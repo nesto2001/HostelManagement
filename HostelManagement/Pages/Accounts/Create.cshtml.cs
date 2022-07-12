@@ -44,6 +44,7 @@ namespace HostelManagement.Pages.Accounts
             else if (CheckExist(Account.UserEmail))
             {
                 MessageExistEmail = "Email is existing. Please choose other email.";
+                return Page();
             }
             else
             {
@@ -54,8 +55,8 @@ namespace HostelManagement.Pages.Accounts
                     Account.ProfilePicUrl = await Utilities.UploadFile(FileUploads, @"images\accounts", FileUploads.FileName);
                 }
                 await _accountRepository.AddAccount(Account);
+                return RedirectToPage("./Index");
             }
-            return RedirectToPage("./Index");
         }
         public bool CheckExist(string email)
         {
