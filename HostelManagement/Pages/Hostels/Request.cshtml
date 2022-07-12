@@ -31,7 +31,7 @@
     <div class="listings-hostel-wrapper" id="/Hostel">
         @foreach (var item in Model.Hostels) {
             @if (item.Status == 0){
-                <div class="hostel-listings-card mb-3">
+                <div class="hostel-listings-card mb-3" onclick="viewDetails(@item.HostelId, 'Hostels')">
                         <div class="card-inner">
                             @if (@item.HostelPics.Count > 0)
                             {
@@ -110,7 +110,7 @@
     <div class="listings-hostel-wrapper" id="/Room">
         @foreach (var item in Model.Rooms) {
             @if (item.Status == 0){
-                <div class="hostel-listings-card mb-3">
+                <div class="hostel-listings-card mb-3" onclick="viewDetails(@item.RoomId, 'Rooms')">
                         <div class="card-inner">
                             @if (@item.RoomPics.Count > 0)
                             {
@@ -215,5 +215,11 @@
         let selector = content.substring(1);
         $('#'+ $.escapeSelector(selector)).show();
     })
+
+    function viewDetails(id, type) {
+        if (id != undefined && id != null) {
+            window.location = '../'+type+'/Details?id=' + id;
+        }
+    }
 </script>
 }
