@@ -70,6 +70,23 @@
                         </ul>
                     </div>
                 }
+                else if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Renter")
+                {
+                    <a class="navbar-brand" asp-area="" asp-page="/Index">
+                        <img class="site-logo" src="~/images/rentel-logo_v3.png" />
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-page="/Rents/Index">My Rent</a>
+                            </li>
+                        </ul>
+                    </div>
+                }
                 else
                 {
                     <a class="navbar-brand" asp-area="" asp-page="/Index">
