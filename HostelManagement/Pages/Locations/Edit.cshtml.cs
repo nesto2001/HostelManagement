@@ -10,9 +10,11 @@ using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Locations
 {
+    [Authorize(Roles ="Owner")]
     public class EditModel : PageModel
     {
         private ILocationRepository locationRepository; 

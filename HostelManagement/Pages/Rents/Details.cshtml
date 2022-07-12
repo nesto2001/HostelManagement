@@ -6,116 +6,264 @@
     ViewData["Title"] = "Details";
     var role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
+@if (ViewData["HostelOwnerDashboardMessage"] != null)
+{
+    <p class="text-danger">@ViewData["HostelOwnerDashboardMessage"]</p>
+}
+<div class="container main-container mt-5">
+    <div class="row">
+        <div class="col-md-8 p-0">
+            <div>
+                <div class="rent-form-wrapper">
+                    <h4 class="mb-3"><i class='bx bx-receipt'></i>Renting Details</h4>
 
-<h1>Details</h1>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Rent.RoomId" class="control-label"></label>
+                        <input asp-for="Rent.RoomId" class="form-control" value="@ViewBag.RoomId" readonly />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="Rent.RentedBy" class="control-label"></label>
+                        <input asp-for="Rent.RentedBy" class="form-control" value="@Model.Rent.RentedByNavigation.UserEmail" readonly />
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Rent.IsDeposited" class="control-label"></label>
+                        <input asp-for="Rent.IsDeposited" class="form-control" value="0" readonly />
+                        <span asp-validation-for="Rent.IsDeposited" class="text-danger"></span>
+                    </div>
+                    <div class="form-group" hidden="hidden">
+                        <label asp-for="Rent.Status" class="control-label"></label>
+                        <input asp-for="Rent.Status" class="form-control" value="0" readonly />
+                        <span asp-validation-for="Rent.Status" class="text-danger"></span>
+                    </div>
+                    <div class="grouped-form">
+                        <div class="form-group">
+                            <label asp-for="Rent.StartRentDate" class="control-label"></label>
+                            <input asp-for="Rent.StartRentDate" class="form-control" type="date" value="@Model.Rent.StartRentDate.Date.ToString("yyyy-MM-dd")" readonly />
+                        </div>
+                        <div class="form-group">
+                            <label asp-for="Rent.EndRentDate" class="control-label"></label>
+                            <input asp-for="Rent.EndRentDate" class="form-control" type="date" value="@Model.Rent.EndRentDate.Date.ToString("yyyy-MM-dd")" readonly />
+                        </div>
+                    </div>
+                    <div class="grouped-form status">
+                        <div class="form-group">
+                            @{
+                                var deposit = "";
+                                var classStatus = "";
+                                switch (Model.Rent.IsDeposited)
+                                {
+                                    case 1:
+                                        deposit = "Pending";
+                                        classStatus = "pending";
+                                        break;
+                                    case 2:
+                                        deposit = "Confirm";
+                                        classStatus = "active";
+                                        break;
+                                    default:
+                                        deposit = "Not yet";
+                                        classStatus = "inactive";
+                                        break;
+                                }
+                            }
+                            <label class="control-label">Deposit Status</label>
+                            <span class="deposit-status status-@classStatus">@deposit</span>
+                            @if (Model.Rent.IsDeposited == 0 && role == "Renter")
+                            {
+                                <div class="btn btn-danger">
+                                    <a asp-page-handler="DepositedCheck" asp-route-id="@Model.Rent.RentId">Send Check Deposited</a>
+                                </div>
+                            }
+                            @if (Model.Rent.IsDeposited == 1 && role == "Owner")
+                            {
+                                <div class="btn btn-danger">
+                                    <a asp-page-handler="DepositedConfirm" asp-route-id="@Model.Rent.RentId">Deposited</a>
+                                </div>
+                                <div class="btn btn-danger">
+                                    <a asp-page-handler="DepositedNone" asp-route-id="@Model.Rent.RentId">None</a>
+                                </div>
+                            }
+                        </div>
+                        <div class="form-group">
+                            @{
+                                var status = "";
+                                var classStatus1 = "";
+                                switch (Model.Rent.Status)
+                                {
+                                    case 1:
+                                        status = "Active";
+                                        classStatus1 = "active";
+                                        break;
+                                    case 2:
+                                        status = "Renewing";
+                                        classStatus1 = "active";
+                                        break;
+                                    case 3:
+                                        status = "Canceled";
+                                        classStatus1 = "denied";
+                                        break;
+                                    case 4:
+                                        status = "Expired";
+                                        classStatus1 = "inactive";
+                                        break;
+                                    default:
+                                        status = "Pending";
+                                        classStatus1 = "pending";
+                                        break;
+                                }
+                            }
+                            <label class="control-label">Rental Status</label>
+                            <div class="deposit-status status-@classStatus1">@status</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="rent-form-wrapper mt-2">
+                    <h4 class="mb-3"><i class='bx bx-group'></i>Room Members</h4>
+
+                    <div class="grouped-form flex-wrap">
+                        @for (int i = 0; i < @Model.Rent.RoomMembers.Count; i++)
+                        {
+                            @if (Model.Rent.RoomMembers.ElementAt(i) != null && Model.Rent.RoomMembers.ElementAt(i).Status == 1)
+                            {
+                                <div class="form-group">
+                                    <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-active">Active</span>
+                                    @if (i == 0)
+                                    {
+                                        <div class="input-group">
+                                            <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                            <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2'></i></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                        <a asp-page-handler="changeStatus"></a>
+                                    }
+                                </div>
+                            }
+                            else if (role.Equals("Owner"))
+                            {
+
+                                var memStatus = "Active";
+                                if (Model.Rent.RoomMembers.ElementAt(i) != null && Model.Rent.RoomMembers.ElementAt(i).Status == 0)
+                                {
+                                    memStatus = "Inactive";
+                                }
+                                <div class="form-group">
+                                    <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-@memStatus.ToLower()">@memStatus</span>
+                                    @if (i == 0)
+                                    {
+                                        <div class="input-group">
+                                            <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                            <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2'></i></div>
+                                        </div>
+                                    }
+                                    else
+                                    {
+                                        <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
+                                        <a asp-page-handler="changeStatus"></a>
+                                    }
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4 px-0">
+            <div class="summary-block hostel-summary">
+                <div class="hostel-summary-wrapper summary-wrapper">
+                    <div class="summary-content">
+                        <div class="summary-thumb">
+                            @{
+                                string hostelThumb = "placeholder.png";
+                                if (Model.Hostel.HostelPics.Count > 0)
+                                {
+                                    hostelThumb = "hostels/" + Model.Hostel.HostelPics.ElementAt(0).HostelPicUrl;
+                                }
+                            }
+                            <div class="summary-thumb-img" style="background-image: url(/images/@hostelThumb);"></div>
+                        </div>
+                        <div class="summary-info">
+                            <div class="summary-hostel-info">
+                                <p>@Model.Hostel.HostelName</p>
+                                <div class="hostel-info-cate">@Model.Hostel.Category.CategoryName</div>
+                                <p class="location">@Model.Hostel.Location.AddressString, @Model.Hostel.Location.Ward.WardName, @Model.Hostel.Location.Ward.District.DistrictName, @Model.Hostel.Location.Ward.District.Province.ProvinceName</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="summary-block room-summary">
+                <br>
+                <div class="room-summary-title">
+                    @Model.Rent.Room.RoomTitle
+                </div>
+                <hr>
+                <div class="summary-content">
+                    <div class="summary-thumb">
+                        @{
+                            string roomThumb = "placeholder.png";
+                            if (Model.Room.RoomPics.Count > 0)
+                            {
+                                roomThumb = "rooms/" + Model.Room.RoomPics.ElementAt(0).RoomPicUrl;
+                            }
+                        }
+                        <div class="summary-thumb-img" style="background-image: url(/images/@roomThumb);"></div>
+                    </div>
+                    <div class="summary-info">
+                        <div class="summary-room-numpeople">
+                            <p><i class='bx bx-group'></i> @Model.Room.RomMaxCapacity <text>adult(s)</text></p>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="room-summary-price text-right">
+                    <span class="currency">₫</span>@Model.Room.Price<span class="countUnit">/month</span>
+                </div>
+            </div>
+
+        </div>
+    </div>
+</div>
 
 <div>
-    <h4>Rent</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.IsDeposited)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.IsDeposited)
-            @if (Model.Rent.IsDeposited == 0 && role == "Renter")
-            {
-                <div class="btn btn-danger">
-                    <a asp-page-handler="DepositedCheck" asp-route-id="@Model.Rent.RentId">Send Check Deposited</a>
-                </div>
-            }
-            @if (Model.Rent.IsDeposited == 1 && role == "Owner")
-            {
-                <div class="btn btn-danger">
-                    <a asp-page-handler="DepositedConfirm" asp-route-id="@Model.Rent.RentId">Deposited</a>
-                </div>
-                <div class="btn btn-danger">
-                    <a asp-page-handler="DepositedNone" asp-route-id="@Model.Rent.RentId">None</a>
-                </div>
-            }
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.Status)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.Status)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.Total)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.Total)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.Total)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.Total)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.Total)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.Total)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.RentedByNavigation)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.RentedByNavigation.UserEmail)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.Room)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Rent.Room.RoomId)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Rent.RoomMembers)
-        </dt>
-        <dd class="col-sm-10">
-            @foreach (var item in @Model.Rent.RoomMembers)
-            {
-                var IsPresent = "Yes";
-                if (item.IsPresentator == false) IsPresent = "No";
-                <p>@item.UserEmail --- Present: </p>
-                <a asp-page-handler="ChangePresent" asp-route-id="@item.RoomMemberId">@IsPresent</a>
-            }
-
-        </dd>
-    </dl>
+    <hr class="mt-5" />
 </div>
 @if (Model.Rent.Bills.Count() != 0)
 {
-    <table class="table">
-        <thead>
-            <tr>
-                <th>
-                    @Html.DisplayNameFor(model => model.Rent.Bills.First().CreatedDate)
-                </th>
-                <th>
-                    Total
-                </th>
-                <th></th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model.Rent.Bills)
-            {
-                <tr>
-                    <td>
-                        @Html.DisplayFor(modelItem => item.CreatedDate)
-                    </td>
-                    <td>
-                        @item.BillDetails.Sum(b => b.Fee)
-                    </td>
-                    <td>
-                        <a asp-page="../Bills/Details" asp-route-id="@item.BillId">Details</a>
-                    </td>
-                </tr>
-            }
-        </tbody>
-    </table>
+    <text>
+        <div class="container main-container p-0">
+            <h3 class="mb-2">Billing List</h3>
+            <div class="bill-list-wrapper">
+                <div class="bill-list">
+                    @foreach (var item in Model.Rent.Bills)
+                    {
+                        <div class="bill-card">
+                            <div class="bill-info">
+                                <div class="bill-no"><a asp-page="../Bills/Details" asp-route-id="@item.BillId">Billing No. @item.BillId</a></div>
+                                <div class="bill-issued">Date: @item.CreatedDate</div>
+                            </div>
+                            <div class="bill-payment text-right">
+                                <div class="bill-total"><span class="currency">₫</span>@item.BillDetails.Sum(b => b.Fee)</div>
+                                <div class="bill-due">Due: <span class="text-danger"><strong>@item.DueDate</strong></span></div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </text>
+}
+else
+{
+    <text>
+        <div class="container text-center">
+            <h1 class="m-5"><strong style="color: rgb(77, 77, 77);">Bill not found!</strong></h1>
+        </div>
+    </text>
 }
 <div>
     @Html.ActionLink("Edit", "Edit", new { /* id = Model.PrimaryKey */ }) |
@@ -143,7 +291,7 @@
                 <a asp-page="./Delete" asp-route-id="@Model.Rent.RentId">Cancel Rent</a>
             </div>
         }
-        if (Model.Rent.EndRentDate <= DateTime.Now.AddDays(3) && Model.Rent.EndRentDate >= DateTime.Now.AddDays(-12) && Model.Rent.Status == 1)
+        if (Model.Rent.EndRentDate >= DateTime.Now.AddDays(3) && Model.Rent.EndRentDate <= DateTime.Now.AddDays(18) && Model.Rent.Status == 1)
         {
             <div class="btn btn-danger">
                 <a asp-page="./Create" asp-route-id="@Model.Rent.RoomId" asp-route-extend="@Model.Rent.RentId">Extend</a>

@@ -51,6 +51,7 @@ namespace DataAccess.DAO
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Hostels
                     .Include(h => h.Rooms)
+                        .ThenInclude(h => h.RoomPics)
                     .Include(h => h.Category)
                     .Include(h => h.HostelOwnerEmailNavigation)
                     .Include(h => h.Location)

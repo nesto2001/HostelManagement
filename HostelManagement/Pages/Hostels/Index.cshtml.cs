@@ -7,10 +7,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
-    //[Authorize(Roles = "Owner")]
+    [Authorize(Roles = "Owner,Admin")]
     public class IndexModel : PageModel
     {
         private IHostelRepository hostelRepository;

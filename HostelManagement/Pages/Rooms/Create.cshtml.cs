@@ -11,9 +11,11 @@ using DataAccess.Repository;
 using HostelManagement.Helpers;
 using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Rooms
 {
+    [Authorize(Roles = "Owner")]
     public class CreateModel : PageModel
     {
         private IHostelRepository hostelRepository;

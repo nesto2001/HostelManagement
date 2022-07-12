@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAO
@@ -47,6 +45,13 @@ namespace DataAccess.DAO
             {
                 var HostelManagementContext = new HostelManagementContext();
                 return await HostelManagementContext.Bills
+                    .Include(b => b.BillDetails)
+                        .Include(b => b.Rent)
+                            .ThenInclude(b => b.Room)
+                                .ThenInclude(b => b.Hostel)
+                                    .ThenInclude(b => b.HostelOwnerEmailNavigation)
+                        .Include(b => b.Rent)
+                            .ThenInclude(b => b.RentedByNavigation)
                     .FirstOrDefaultAsync(bill => bill.BillId == BillId);
             }
             catch (Exception ex)

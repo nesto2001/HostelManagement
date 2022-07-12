@@ -9,9 +9,11 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Rooms
 {
+    [Authorize(Roles = "Owner")]
     public class EditModel : PageModel
     {
         private IRoomRepository roomRepository;

@@ -65,7 +65,7 @@
         </div>
     </div>
 </section>
-<table class="table">
+<table class="table table-bordered" style="text-align: center; border: 1px solid black; border-collapse: collapse; width: 75%; margin-left: 200px; margin-top: 50px">
     <thead>
         <tr>
             <th>
@@ -81,27 +81,31 @@
         {
             <tr>
                 <td>
-                    <img src="~/images/hostels/@(item.HostelPicUrl)" width="200" />
+                    <img src="~/images/hostels/@(item.HostelPicUrl)" width="300" />
                 </td>
-                <td>
+                <td style="text-align: center">
                     <a asp-page="HostelPics" asp-page-handler="delete" asp-route-id="@item.HostelPicsId">Delete</a>
                 </td>
             </tr>
         }
     </tbody>
 </table>
+
 <form method="post" enctype="multipart/form-data">
-    <span class="group-input-title" id="Images">Upload some images of your hostel</span>
-    <div class="group-input-hostel">
+    <div style=" border: 1px solid black; border-collapse: collapse; width: 40%; margin-left: 200px; margin-top: 50px">
+        <span class="group-input-title" id="Images">Upload some images of your hostel</span>
+        <div class="group-input-hostel" style="height: 50px">
+            <div class="form-group">
+                <label asp-for="@Model.FileUploads"></label>
+                <input asp-for="@Model.FileUploads" />
+                <span asp-validation-foraction="@Model.FileUploads"></span>
+            </div>
+        </div>
         <div class="form-group">
-            <label asp-for="@Model.FileUploads"></label>
-            <input asp-for="@Model.FileUploads" />
-            <span asp-validation-foraction="@Model.FileUploads"></span>
+            <input type="submit" value="Upload More" class="btn btn-primary" />
         </div>
     </div>
-    <div class="form-group">
-        <input type="submit" value="Upload More" class="btn btn-primary" />
-    </div>
 </form>
-
-<a asp-page="./Details" asp-route-id="@Model.HostelID">Return hostel detail page</a>
+<div>
+    <a asp-page="./Edit" asp-route-id="@Model.HostelID">Return hostels page</a>
+</div>

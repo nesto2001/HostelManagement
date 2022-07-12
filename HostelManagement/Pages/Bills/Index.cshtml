@@ -9,9 +9,6 @@
 
 <h1>Index</h1>
 
-<p>
-    <a asp-page="Create">Create New</a>
-</p>
 <table class="table">
     <thead>
         <tr>
@@ -42,9 +39,7 @@
                 </td>
                 <td>
                     <a asp-page="./Edit" asp-route-id="@item.BillId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.BillId">Details</a> |
-                    <a asp-page="./Delete" asp-route-id="@item.BillId">Delete</a>
-                </td>
+                    <a asp-page="./Details" asp-route-id="@item.BillId">Details</a>
             </tr>
         }
     </tbody>

@@ -8,9 +8,11 @@ using Microsoft.EntityFrameworkCore;
 using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
+    [Authorize(Roles = "Owner,Admin")]
     public class ChangeStatusModel : PageModel
     {
         private IHostelRepository hostelRepository;

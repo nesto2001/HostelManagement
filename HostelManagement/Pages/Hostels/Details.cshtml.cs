@@ -10,9 +10,11 @@ using DataAccess;
 using DataAccess.Repository;
 using Microsoft.AspNetCore.Http;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
+    [AllowAnonymous]
     public class DetailsModel : PageModel
     {
         private IHostelRepository hostelRepository;

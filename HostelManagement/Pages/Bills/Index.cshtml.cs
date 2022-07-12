@@ -9,9 +9,11 @@ using BusinessObject.BusinessObject;
 using DataAccess;
 using DataAccess.Repository;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Bills
 {
+    [AllowAnonymous]
     public class IndexModel : PageModel
     {
         private IAccountRepository accountRepository { get; }

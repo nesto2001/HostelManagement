@@ -6,9 +6,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Hostels
 {
+    [Authorize(Roles = "Admin")]
     public class RequestsModel : PageModel
     {
         private IHostelRepository hostelRepository;

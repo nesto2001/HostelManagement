@@ -11,9 +11,12 @@ using DataAccess.Repository;
 using System.Security.Claims;
 using Microsoft.AspNetCore.Http;
 using HostelManagement.Helpers;
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Rents
 {
+    [Authorize(Roles = "Renter")]
     public class CreateModel : PageModel
     {
         private IAccountRepository accountRepository { get; }
@@ -65,6 +68,8 @@ namespace HostelManagement.Pages.Rents
         [BindProperty]
         public Rent Rent { get; set; }
         [BindProperty]
+        [Required]
+        [Range(1, 24, ErrorMessage = "Your contract must be from 1 to 24 months.")]
         public int MonthRent { get; set; }
         [BindProperty]
         public RoomMember[] RoomMember { get; set; }
@@ -85,6 +90,7 @@ namespace HostelManagement.Pages.Rents
                 int UId = Int32.Parse(userId);
                 account = await accountRepository.GetAccountByID(UId);
                 room = await roomRepository.GetRoomByID(Rent.RoomId);
+                hostel = await hostelRepository.GetHostelByID(room.HostelId);
                 ViewData["RentedBy"] = account.UserEmail;
                 ViewData["RoomId"] = room.RoomId;
                 return Page();
@@ -136,15 +142,15 @@ namespace HostelManagement.Pages.Rents
             int countCurrent = 0;
             foreach (var RoomMem in RoomMember)
             { 
+
                 if (!String.IsNullOrEmpty(RoomMem.UserEmail))
                 {
                     RoomMem.RentId = Rent.RentId;
                     RoomMem.RoomId = Rent.RoomId;
                     RoomMem.StartRentDate = Rent.StartRentDate;
                     RoomMem.EndRentDate = Rent.EndRentDate;
-                    if(!(countCurrent>0)){
-                    RoomMem.IsPresentator = true;
-                    }
+                    RoomMem.IsPresentator = false;
+                    if (countCurrent == 0) RoomMem.IsPresentator = true;
                     RoomMem.Status = 1;
                     await roomMemberRepository.AddRoomMember(RoomMem);
                     countCurrent++;

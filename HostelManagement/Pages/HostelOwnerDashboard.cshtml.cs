@@ -1,4 +1,5 @@
 ﻿using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
@@ -11,6 +12,7 @@ using System.Threading.Tasks;
 
 namespace HostelManagement.Pages
 {
+    [Authorize (Roles = "Owner")]
     public class HostelOwnerDashboard : PageModel
     {
         private readonly IHostelRepository hostelRepository;

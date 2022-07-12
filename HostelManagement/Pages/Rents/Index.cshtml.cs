@@ -1,37 +1,50 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Rents
 {
+    [Authorize(Roles = "Admin,Owner,Renter")]
     public class IndexModel : PageModel
     {
         private IAccountRepository accountRepository { get; }
         private IRentRepository rentRepository { get; }
         private IRoomRepository roomRepository { get; }
+        private IHostelRepository hostelRepository { get; }
         private IRoomMemberRepository roomMemberRepository { get; }
         public IndexModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository)
+                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IHostelRepository _hostelRepository)
         {
             accountRepository = _accountRepository;
             rentRepository = _rentRepository;
             roomRepository = _roomRepository;
             roomMemberRepository = _roomMemberRepository;
+            hostelRepository = _hostelRepository;
         }
 
-        public IEnumerable<Rent> Rents { get;set; }
+        public IEnumerable<Rent> Rents { get; set; }
+
+        public IEnumerable<Hostel> Hostels { get; set; }
+
+        public IEnumerable<DisplayRoom> Rooms { get; set; }
+        public class DisplayRoom
+        {
+            public int RoomId { get; set; }
+            public string RoomTitle { get; set; }
+        }
 
         public async Task<ActionResult> OnGetAsync(int? id)
         {
             Rents = await rentRepository.GetRentList();
+            Rents = Rents.OrderByDescending(r => r.IsDeposited).ThenByDescending(r => r.RentId);
             if (id != null)
             {
                 Rents = Rents.Where(r => r.RoomId == (int)id);
@@ -41,7 +54,8 @@ namespace HostelManagement.Pages.Rents
             if (userId != null)
             {
                 UId = Int32.Parse(userId);
-            } else
+            }
+            else
             {
                 return RedirectToPage("/AccessDenied");
             }
@@ -53,19 +67,67 @@ namespace HostelManagement.Pages.Rents
             else if (userRole.Equals("Admin"))
             {
                 Rents = Rents.OrderByDescending(r => r.StartRentDate);
-            } else if (userRole.Equals("Owner"))
+            }
+            else if (userRole.Equals("Owner"))
             {
-                Rents = Rents.Where(r => r.Room.Hostel.HostelOwnerEmailNavigation.UserId == UId);
-                Rents = Rents.OrderByDescending(r => r.StartRentDate);
-            } else if (userRole.Equals("Renter"))
+                Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
+                ViewData["HostelId"] = new SelectList(Hostels, "HostelId", "HostelName");
+            }
+            else if (userRole.Equals("Renter"))
             {
                 Rents = Rents.Where(r => r.RentedByNavigation.UserId == UId);
                 Rents = Rents.OrderByDescending(r => r.StartRentDate);
-            } else
+            }
+            else
             {
                 return RedirectToPage("/AccessDenied");
             }
             return Page();
+        }
+
+        public async Task<ActionResult> OnPostAsync(int slHostel, int slRoom)
+        {
+            if (slHostel != 0)
+            {
+                if (slRoom != 0)
+                    Rents = await rentRepository.GetRentListByRoom(slRoom);
+                else
+                {
+                    var rooms = await roomRepository.GetRoomsOfAHostel(slHostel);
+                    //implement get all contract of each room and concat to create list contract of hostel
+                }
+            } else
+            {
+                Rents = await rentRepository.GetRentList();
+            }
+            
+            int UId = 0;
+            var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+            if (userId != null)
+            {
+                UId = Int32.Parse(userId);
+            }
+            Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
+            Rents = Rents.OrderByDescending(r => r.IsDeposited).ThenByDescending(r => r.RentId);
+            ViewData["HostelId"] = new SelectList(Hostels, "HostelId", "HostelName");
+            if (slHostel != 0) ViewData["HostelName"] = hostelRepository.GetHostelByID(slHostel).Result.HostelName;
+            if (slRoom != 0) ViewData["RoomName"] = roomRepository.GetRoomByID(slRoom).Result.RoomTitle;
+            return Page();
+        }
+
+        public async Task<JsonResult> OnGetLoadRoom(int HostelId)
+        {
+            IEnumerable<Room> rooms = await roomRepository.GetRoomsOfAHostel(HostelId);
+            var roomlist = rooms.Select(s => new
+            {
+                RoomId = s.RoomId,
+                RoomName = s.RoomTitle
+            });
+
+            foreach (var item in rooms)
+            {
+            }
+            return new JsonResult(roomlist);
         }
     }
 }

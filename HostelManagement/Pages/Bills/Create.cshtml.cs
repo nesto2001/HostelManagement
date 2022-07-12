@@ -10,9 +10,11 @@ using DataAccess;
 using DataAccess.Repository;
 using HostelManagement.Helpers;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Bills
 {
+    [Authorize(Roles ="Owner")]
     public class CreateModel : PageModel
     {
         private IAccountRepository accountRepository { get; }
@@ -50,7 +52,7 @@ namespace HostelManagement.Pages.Bills
             if (LastBill > DateTime.Now.AddDays(-15))
             {
                 HttpContext.Session.SetString("HostelOwnerDashboardMessage", "This contract have already exist bill in recent months.");
-                return RedirectToPage("../HostelOwnerDashboard");
+                return RedirectToPage("../Rents/Details", new {id= id });
             }
             rent.RentedByNavigation.Rents = null;
             rent.Room = null;
