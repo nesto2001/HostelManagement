@@ -9,6 +9,7 @@ using System.Threading.Tasks;
 using HostelManagement.Helpers;
 using System.Linq;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace HostelManagement.Pages.Accounts
 {
@@ -36,6 +37,7 @@ namespace HostelManagement.Pages.Accounts
         public IFormFile FrontPicUrl { get; set; }
         [BindProperty]
         public IFormFile BackPicUrl { get; set; }
+        public string MessageDob { get; set; }
         public class InputModel : Account
         {
             [Required]
@@ -68,6 +70,11 @@ namespace HostelManagement.Pages.Accounts
             else if (IdExists(Input.IdCardNumber))
             {
                 MessageExistId = "ID is existing. Please choose other ID.";
+                return Page();
+            }
+            else if (!CheckDob(Input.Dob))
+            {
+                MessageDob = "Invalid DOB.";
                 return Page();
             }
             else
@@ -116,6 +123,13 @@ namespace HostelManagement.Pages.Accounts
         {
             Task<IdentityCard> idCard = identityCardRepository.GetIdentityCardByID(id);
             if (idCard.Result != null) return true;
+            else return false;
+        }
+        public bool CheckDob(DateTime? Dob)
+        {
+            TimeSpan timeDifference = DateTime.Now - Dob.Value;
+            double Age = timeDifference.TotalDays / 365.2425;
+            if (Age >= 16) return true;
             else return false;
         }
     }
