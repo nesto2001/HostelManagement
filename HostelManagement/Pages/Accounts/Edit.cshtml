@@ -3,6 +3,23 @@
 
 @{
     ViewData["Title"] = "Edit";
+    var hiddenMsg = false;
+    if (Model.MessageExistId == null) hiddenMsg = true;
+    var readOnly = false;
+    if (Model.Account.IdCardNumberNavigation != null) readOnly = true;
+    var checkReq = false;
+    if (Model.Account.IdCardNumberNavigation == null) checkReq = true;
+    string profilePic = "ano-ava.jpg";
+    if (Model.Account.ProfilePicUrl != null)
+        profilePic = Model.Account.ProfilePicUrl;
+    string frontPic = "ano-ava.jpg";
+    if (Model.Account.IdCardNumberNavigation != null)
+        if (Model.Account.IdCardNumberNavigation.FrontIdPicUrl != null)
+            frontPic = Model.Account.IdCardNumberNavigation.FrontIdPicUrl;
+    string backPic = "ano-ava.jpg";
+    if (Model.Account.IdCardNumberNavigation != null)
+        if (Model.Account.IdCardNumberNavigation.BackIdPicUrl != null)
+            backPic = Model.Account.IdCardNumberNavigation.BackIdPicUrl;
 }
 
 <h1>Edit</h1>
@@ -16,16 +33,16 @@
             <input type="hidden" asp-for="Account.UserId" />
             <input type="hidden" asp-for="Account.RoleName" />
             <input type="hidden" asp-for="Account.ProfilePicUrl" />
-            <input type="hidden" asp-for="@Model.FrontPicUrl" />
-            <input type="hidden" asp-for="@Model.BackPicUrl" />
+            <input type="hidden" asp-for="Account.IdCardNumberNavigation.FrontIdPicUrl" />
+            <input type="hidden" asp-for="Account.IdCardNumberNavigation.BackIdPicUrl" />
             <div class="form-group">
                 <label asp-for="Account.UserEmail" class="control-label"></label>
-                <input asp-for="Account.UserEmail" class="form-control" />
+                <input asp-for="Account.UserEmail" class="form-control" readonly />
                 <span asp-validation-for="Account.UserEmail" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Account.UserPassword" class="control-label"></label>
-                <input asp-for="Account.UserPassword" class="form-control" />
+                <input asp-for="Account.UserPassword" class="form-control" required/>
                 <span asp-validation-for="Account.UserPassword" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -47,7 +64,7 @@
                 <label asp-for="@Model.FileUploads"></label>
                 <input id="fileImage" asp-for="@Model.FileUploads" />
                 <span asp-validation-foraction="@Model.FileUploads"></span>
-                <img id="preview" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+                <img id="preview" src="~/images/accounts/@profilePic" height="200" class="hidden" />
                 <script>
 
                     fileImage.onchange = evt => {
@@ -60,16 +77,23 @@
 
                 </script>
             </div>
-            <div class="form-group">
-                <label asp-for="Account.IdCardNumber" class="control-label"></label>
-                <input asp-for="Account.IdCardNumber" class="form-control" />
+            <div class="form-group row">
+                <div class="col-3">
+                    <label asp-for="Account.IdCardNumber" class="control-label"></label>
+                </div>
+                <div class="col-9">
+                    <input asp-for="Account.IdCardNumber" class="form-control" maxlength="15" required="@checkReq" readonly="@readOnly" />
+                </div>
+                <div class="col-9" hidden="@hiddenMsg">
+                    <span class="text-danger">@Model.MessageExistId</span>
+                </div>
                 <span asp-validation-for="Account.IdCardNumber" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.FrontPicUrl"></label>
-                <input id="frontImage" asp-for="@Model.FrontPicUrl" />
-                <span asp-validation-foraction="@Model.FrontPicUrl"></span>
-                <img id="previewF" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+                <label class="control-label">Front picture</label>
+                <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" hidden="@readOnly" />
+                <span asp-validation-for="@Model.FrontPicUrl" class="text-danger"></span>
+                <img id="previewF" src="~/images/accounts/@frontPic" height="200" class="hidden" />
                 <script>
 
                     frontImage.onchange = evt => {
@@ -83,10 +107,10 @@
                 </script>
             </div>
             <div class="form-group">
-                <label asp-for="@Model.BackPicUrl"></label>
-                <input id="backImage" asp-for="@Model.BackPicUrl" />
-                <span asp-validation-foraction="@Model.BackPicUrl"></span>
-                <img id="previewB" src="~/images/accounts/ano-ava.jpg" height="200" class="hidden" />
+                <label class="control-label">Back Picture</label>
+                <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px" hidden="@readOnly" />
+                <span asp-validation-for="@Model.BackPicUrl" class="text-danger"></span>
+                <img id="previewB" src="~/images/accounts/@backPic" height="200" class="hidden" />
                 <script>
 
                     backImage.onchange = evt => {

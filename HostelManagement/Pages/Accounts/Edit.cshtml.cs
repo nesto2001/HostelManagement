@@ -29,15 +29,19 @@ namespace HostelManagement.Pages.Accounts
 
         [BindProperty]
         public Account Account { get; set; }
+        public class InputModel : Account { }
+        [BindProperty]
+        public InputModel Input { get; set; }
         [BindProperty]
         public IdentityCard IdCard { get; set; }
-        public String RoleName { get; set; }
+        public IdentityCard IdCardNav { get; set; }
         [BindProperty]
         public IFormFile FileUploads { get; set; }
         [BindProperty]
         public IFormFile FrontPicUrl { get; set; }
         [BindProperty]
         public IFormFile BackPicUrl { get; set; }
+        public string MessageExistId { get; set; }
         public string MessageExistEmail { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -45,17 +49,12 @@ namespace HostelManagement.Pages.Accounts
             {
                 return NotFound();
             }
-
             Account = await _accountRepository.GetAccountByID(id.Value);
-
+            IdCardNav = Account.IdCardNumberNavigation;
             if (Account == null)
             {
                 return NotFound();
             }
-
-            ViewData["IdCardNumber"] = new SelectList(_context.IdentityCards, "IdCardNumber", "IdCardNumber");
-            ViewData["FrontPic"] = new SelectList(_context.IdentityCards, "FrontIdPicUrl", "FrontPicUrl");
-            ViewData["BackPic"] = new SelectList(_context.IdentityCards, "BackIdPicUrl", "BackPicUrl");
             return Page();
         }
 
@@ -63,49 +62,56 @@ namespace HostelManagement.Pages.Accounts
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+
             if (!ModelState.IsValid)
             {
                 return Page();
             }
-            if(Request.Form["role"] == "")
+            else if (IdExists(Input.IdCardNumber))
             {
-                
-                Account.RoleName =  Account.RoleName;
+                MessageExistId = "ID is existing. Please choose other ID.";
+                return Page();
             }
             else
             {
-                Account.RoleName = Request.Form["role"];
-            }
+                if (IdCardNav == null)
+                {
+                    IdCard.IdCardNumber = Account.IdCardNumber;
+                    if (FrontPicUrl != null && BackPicUrl != null)
+                    {
+                        IdCard.FrontIdPicUrl = await Utilities.UploadFile(FrontPicUrl, @"images\accounts\idCard", FrontPicUrl.FileName);
+                        IdCard.BackIdPicUrl = await Utilities.UploadFile(BackPicUrl, @"images\accounts\idCard", BackPicUrl.FileName);
+                    }
+                    else
+                    {
+                        IdCard.FrontIdPicUrl = IdCard.FrontIdPicUrl;
+                        IdCard.BackIdPicUrl = IdCard.BackIdPicUrl;
+                    }
+                    await _identityCardRepository.AddIdCard(IdCard);
+                }
 
-            IdCard.IdCardNumber = Account.IdCardNumber;
-            if (FrontPicUrl != null && BackPicUrl != null)
-            {
-                IdCard.FrontIdPicUrl = await Utilities.UploadFile(FrontPicUrl, @"images\accounts\idCard", FrontPicUrl.FileName);
-                IdCard.BackIdPicUrl = await Utilities.UploadFile(BackPicUrl, @"images\accounts\idCard", BackPicUrl.FileName);
-            }
-            else
-            {
-                IdCard.FrontIdPicUrl = IdCard.FrontIdPicUrl;
-                IdCard.BackIdPicUrl = IdCard.BackIdPicUrl;
-            }
-            await _identityCardRepository.UpdateIdCard(IdCard);
+                if (FileUploads != null)
+                {
+                    Account.ProfilePicUrl = await Utilities.UploadFile(FileUploads, @"images\accounts\", FileUploads.FileName);
+                }
+                else
+                {
+                    Account.ProfilePicUrl = Account.ProfilePicUrl;
+                }
+                await _accountRepository.UpdateAccount(Account);
 
-            if (FileUploads != null)
-            {
-                 Account.ProfilePicUrl = await Utilities.UploadFile(FileUploads, @"images\accounts\", FileUploads.FileName);
+                return RedirectToPage("./Index");
             }
-            else
-            {
-                Account.ProfilePicUrl = Account.ProfilePicUrl;
-            }
-            await _accountRepository.UpdateAccount(Account);
-
-            return RedirectToPage("./Index");
         }
         public bool CheckExist(string email)
         {
             Task<Account> acc = _accountRepository.GetAccountByEmail(email);
-            if (acc.Result != null) return true;
+            if (acc.Result != null)
+            {
+                if (acc.Result.UserId != Account.UserId)
+                    return true;
+                else return false;
+            }
             else return false;
         }
         private bool IdExists(string id)
