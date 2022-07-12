@@ -117,54 +117,44 @@
                     <h4 class="mb-3"><i class='bx bx-group'></i>Room Members</h4>
                 
                     <div class="grouped-form flex-wrap">
-                        @for (int i = 0; i < @Model.Rent.RoomMembers.Count; i++)
-                        {
-                            @if (Model.Rent.RoomMembers.ElementAt(i) != null)
-                            {
-                                @if (Model.Rent.RoomMembers.ElementAt(i).Status == 1)
-                                {
-                                    <div class="form-group">
-                                        <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-active">Active</span>
-                                        @if (i == 0)
-                                        {
-                                            <div class="input-group">
-                                                <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
-                                                <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2'></i></div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
-                                            <a asp-page-handler="changeStatus"></a>
-                                        }
-                                    </div>
+                    @for (int i = 0; i < @Model.Rent.Room.RomMaxCapacity; i++)
+                    {   
+                        @if(Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==1){
+                            <div class="form-group">
+                                <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-active">Active</span>
+                                @if (i==0){
+                                <div class="input-group">
+                                    <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
+                                    <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2' ></i></div>
+                                </div>
                                 }
-                                else if (role.Equals("Owner"))
-                                {
-                                    var memStatus = "Active";
-                                    if (Model.Rent.RoomMembers.ElementAt(i).Status == 0)
-                                    {
-                                        memStatus = "Inactive";
-                                    }
-                                    <div class="form-group">
-                                        <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-@memStatus.ToLower()">@memStatus</span>
-                                        @if (i == 0)
-                                        {
-                                            <div class="input-group">
-                                                <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
-                                                <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2'></i></div>
-                                            </div>
-                                        }
-                                        else
-                                        {
-                                            <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly />
-                                            <a asp-page-handler="changeStatus"></a>
-                                        }
-                                    </div>
+                                else{
+                                    <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
+                                    <a asp-page-handler="changeStatus"></a>
                                 }
-                            }
-
+                            </div>
                         }
+                        else if (role.Equals("Owner")){
+                            
+                            var memStatus="Active";
+                            if (Model.Rent.RoomMembers.ElementAt(i)!=null && Model.Rent.RoomMembers.ElementAt(i).Status==0){
+                                memStatus="Inactive";
+                            }
+                            <div class="form-group">
+                                <label class="control-label">Member @(i+1) Email</label> <span class="roommem-status status-@memStatus.ToLower()">@memStatus</span>
+                                @if (i==0){
+                                <div class="input-group">
+                                    <input value="@Model.Rent.RentedByNavigation.UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
+                                    <div class="d-flex align-items-center" style="line-height: 38px; border: 1px solid #ccc; border-radius: 0 8px 8px 0;"><i class='bx bx-flag py-0 px-2' ></i></div>
+                                </div>
+                                }
+                                else{
+                                    <input value="@Model.Rent.RoomMembers.ElementAt(i).UserEmail" class="form-control" form="rent-form" id="member-@(i+1)" readonly/>
+                                    <a asp-page-handler="changeStatus"></a>
+                                }
+                            </div>
+                        }
+                    }
                     </div>
                 </div>
             </div>
