@@ -3,3 +3,7 @@
 @{
 }
 <h1>AccessDenied</h1>
+@if (ViewData["AccessDeniedMessage"] != null)
+            {
+                <p class="text-danger">@ViewData["AccessDeniedMessage"]</p>
+            }

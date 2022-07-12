@@ -51,7 +51,7 @@ namespace HostelManagement.Pages.Rents
                 StartRentDate = rent.EndRentDate.AddDays(1);
                 HttpContext.Session.SetString("extend", StartRentDate.ToString());
             }
-            int UId;
+            int UId = 0;
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
             {
@@ -59,6 +59,12 @@ namespace HostelManagement.Pages.Rents
                account = await accountRepository.GetAccountByID(UId);
             }
             room = await roomRepository.GetRoomByID((int)id);
+
+            if (room.Hostel.HostelOwnerEmailNavigation.UserId == UId)
+            {
+                HttpContext.Session.SetString("AccessDeniedMessage", "You must not rent the room which the owner is you.");
+                return RedirectToPage("../AccessDenied");
+            }
             hostel = await hostelRepository.GetHostelByID(room.HostelId);
             ViewData["RentedBy"] = account.UserEmail;
             ViewData["RoomId"] = id;
