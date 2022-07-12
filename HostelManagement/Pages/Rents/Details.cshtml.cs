@@ -140,5 +140,24 @@ namespace HostelManagement.Pages.Rents
 
             return RedirectToPage("./Details", new { id = Rent.RentId });
         }
+
+        public async Task<IActionResult> OnGetCloseAsync(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            Rent = await rentRepository.GetRentByID((int)id);
+            if (Rent == null)
+            {
+                return NotFound();
+            }
+            if (Rent.Status == 1) Rent.Status = 6;
+
+            await rentRepository.UpdateRent(Rent);
+
+            return RedirectToPage("./Details", new { id = Rent.RentId });
+        }
     }
 }

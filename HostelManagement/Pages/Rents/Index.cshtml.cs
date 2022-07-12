@@ -70,6 +70,7 @@ namespace HostelManagement.Pages.Rents
             }
             else if (userRole.Equals("Owner"))
             {
+                Rents = Rents.Where(r => r.Room.Hostel.HostelOwnerEmailNavigation.UserId == UId);
                 Hostels = await hostelRepository.GetHostelsOfAnOwner(UId);
                 ViewData["HostelId"] = new SelectList(Hostels, "HostelId", "HostelName");
             }
