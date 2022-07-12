@@ -5,6 +5,7 @@
 @model HostelManagement.Pages.Rents.IndexModel
 
 @{
+    string activeNav = "contracts-nav";
     ViewData["Title"] = "Index";
 }
 
@@ -203,6 +204,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        $('#@activeNav').addClass('active');
         document.getElementById('HostelList').addEventListener('change', (e) => {
             document.getElementById('RoomList').innerHTML = "<option value=''>Select Room</option>";
             fetch(`?handler=LoadRoom&HostelId=${e.target.value}`)

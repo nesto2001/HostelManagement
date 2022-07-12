@@ -2,6 +2,7 @@
 @model HostelManagement.Pages.Rents.CreateModel
 
 @{
+    string activeNav = "contracts-nav";
     var hidden = false;
     if (Model.message == null) hidden = true;
     bool extend = false;
@@ -174,6 +175,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        $('#@activeNav').addClass('active');
         $(window).on('load',function(){
             $('.page-main').parent().closest('body').addClass('rent-main');
             $('#member-1').val('@ViewBag.RentedBy');

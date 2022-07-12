@@ -2,6 +2,7 @@
 @model HostelManagement.Pages.Accounts.DetailsModel
 
 @{
+    var activeNav = "accounts-nav";
     ViewData["Title"] = "Details";
     string profilePic = "ano-ava.jpg";
     if (Model.Account.ProfilePicUrl != null)
@@ -93,3 +94,10 @@
     <a asp-page="./Edit" asp-route-id="@Model.Account.UserId">Edit</a> |
     <a asp-page="./Index">Back to List</a>
 </div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $('#@activeNav').addClass('active');
+    </script>
+}

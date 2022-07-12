@@ -3,6 +3,7 @@
 @model HostelManagement.Pages.Hostels.DetailsModel
 
 @{
+    string activeNav = "listings-nav";
     ViewData["Title"] = "Details";
     var userRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
@@ -259,6 +260,7 @@
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
     <script>
+        $('#@activeNav').addClass('active');
         $('.edit-nav-item').click(function () {
             $('.edit-nav-item').removeClass('edit-nav-item-active');
             $(event.target).closest('.edit-nav-item').addClass('edit-nav-item-active');

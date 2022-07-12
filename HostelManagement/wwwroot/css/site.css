@@ -745,7 +745,7 @@ ol, ul {
   overflow: hidden;
 }
 
-.listings-hostel{
+.listings-hostel, .listings-user{
   margin-top: 16px!important;
   margin-right: auto;
   margin-left: auto;
@@ -760,7 +760,7 @@ ol, ul {
     border-radius: 5px;
 }
 
-.hostel-listings-card .card-inner .card-img-thumb{
+.hostel-listings-card .card-inner .card-img-thumb, .user-listings-card .card-inner .card-img-thumb{
   width: 100px;
   height: 100px;
   background-size: cover !important;
@@ -770,7 +770,7 @@ ol, ul {
   border-radius: 2px;
 }  
 
-.hostel-listings-card .card-inner .card-details{
+.hostel-listings-card .card-inner .card-details, .user-listings-card .card-inner .card-details{
   align-items: top;
   padding-right: 25px;
   display: flex;
@@ -781,7 +781,7 @@ ol, ul {
   margin-left: 4px;
 } 
 
-.hostel-listings-card .card-inner .card-details .card-info{
+.hostel-listings-card .card-inner .card-details .card-info, .user-listings-card .card-inner .card-details .card-info{
   max-width: 500px;
 } 
 
@@ -1296,7 +1296,7 @@ a.see-room-info{
   border-bottom: 3px solid #0083CC;
 }
 
-.listings-hostel-tab{
+.listings-hostel-tab, .listings-user-tab{
   margin-bottom: 20px;
 }
 

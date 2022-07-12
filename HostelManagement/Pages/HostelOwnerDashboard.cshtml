@@ -1,6 +1,7 @@
 ﻿@page
 @model HostelOwnerDashboard
 @{
+    string activeNav = "overview-nav";
 }
 <h1>Hello</h1>
 @if (ViewData["HostelOwnerDashboardMessage"] != null)
@@ -20,4 +21,9 @@
     <p>roomMemberCount- @ViewData["roomMemberCount"]</p>
     <p>revenues of current Year- @ViewData["revenuesYear"]</p>
     <p>revenues of current Month- @ViewData["revenuesMonth"]</p>
+}
+@section Scripts {
+    <script type="text/javascript">
+    $('#@activeNav').addClass('active');
+    </script>
 }

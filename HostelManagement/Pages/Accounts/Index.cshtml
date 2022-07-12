@@ -3,7 +3,7 @@
 
 @{
     ViewData["Title"] = "Index";
-    var activeNav = "listings-nav";
+    var activeNav = "accounts-nav";
 }
 
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
@@ -51,7 +51,7 @@
                         }
                         else
                         {
-                            <div class="card-img-thumb" style="background: url('../images/accounts/ano-ava.jpg');"></div>
+                            <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
                         }
                         <div class="card-details">
                             <div class="card-info">
@@ -60,18 +60,18 @@
                                     switch (item.Status)
                                     {
                                         case 1:
-                                            <text>
-                                                <span class="card-status status-active">
-                                                    Active
-                                                </span>
-                                            </text>
+                                                <text>
+                                                    <span class="card-status status-active">
+                                                        Active
+                                                    </span>
+                                                </text>
                                             break;
                                         case 0:
-                                            <text>
-                                                <span class="card-status status-inactive">
-                                                    Inactive
-                                                </span>
-                                            </text>
+                                                <text>
+                                                    <span class="card-status status-inactive">
+                                                        Inactive
+                                                    </span>
+                                                </text>
                                             break;
                                     }
                                 }
@@ -79,6 +79,7 @@
                         </div>
                         <div class="card-action">
                             <div class="btn-card-action"></div>
+                            @if(!item.RoleName.Equals("admin")){
                             <div class="btn-card-action btn-card-edit">
                                 <a asp-page="./Edit" asp-route-id="@item.UserId">
                                     <i class='bx bx-edit'></i>
@@ -89,16 +90,17 @@
                                     <i class='bx bx-power-off'></i>
                                 </a>
                             </div>
-                            @{
-                                var name = item.FullName;
-                            }
+                            
+                            var name = item.FullName;
+                            
                             <script type="text/javascript">
                             $('.btn-card-deactivate#@item.UserId').click(function(){
-                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.UserId'/>");
+                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.UserId' class='selected-user'/>");
                                 $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
                                 $('.popup-deactivate').show();
                             })
                             </script>
+                            }
                         </div>
                     </div>
                 </div>
@@ -119,7 +121,7 @@
                         }
                         else
                         {
-                            <div class="card-img-thumb" src="../images/accounts/ano-ava.jpg"></div>
+                            <div class="card-img-thumb" src="../images/accounts/placeholder.png"></div>
                         }
                         <div class="card-details">
                             <div class="card-info">
@@ -128,18 +130,18 @@
                                     switch (item.Status)
                                     {
                                         case 1:
-                                            <text>
-                                                <span class="card-status status-active">
-                                                    Active
-                                                </span>
-                                            </text>
+                                                <text>
+                                                    <span class="card-status status-active">
+                                                        Active
+                                                    </span>
+                                                </text>
                                             break;
                                         case 0:
-                                            <text>
-                                                <span class="card-status status-inactive">
-                                                    Inactive
-                                                </span>
-                                            </text>
+                                                <text>
+                                                    <span class="card-status status-inactive">
+                                                        Inactive
+                                                    </span>
+                                                </text>
                                             break;
                                     }
                                 }
@@ -161,7 +163,7 @@
                             }
                             <script type="text/javascript">
                             $('.btn-card-activate#@item.UserId').click(function(){
-                                $('.reactivate-form').append("<input type='hidden' name='id' value='@item.UserId'/>");
+                                $('.reactivate-form').append("<input type='hidden' name='id' value='@item.UserId' class='selected-user'/>");
                                 $('.popup-activate p').html('Do you really want to reactivate <strong>@name</strong>?');
                                 $('.popup-activate').show();
                             })
@@ -200,6 +202,7 @@
     <script type="text/javascript">
     $('#@activeNav').addClass('active');
     $('.btn-cancel').click(function(){
+        $('.selected-user').remove();
         $(event.target).parent().closest('.popup-deactivate').hide();
     });
     $('.listing-link-action').click(function(){

@@ -2,6 +2,7 @@
 @model HostelManagement.Pages.Accounts.DeleteModel
 
 @{
+    var activeNav = "accounts-nav";
     ViewData["Title"] = "Delete";
 }
 
@@ -79,3 +80,11 @@
         <a asp-page="./Index">Back to List</a>
     </form>
 </div>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript">
+        $('#@activeNav').addClass('active');
+    </script>
+}

@@ -1,9 +1,11 @@
 ﻿@page
 @model HostelManagement.Pages.AdminDashboardModel
 @{
+    string activeNav = "overview-nav";
 }
 
 <div class="main-content">
+<<<<<<< Updated upstream
     @if (ViewData["HostelOwnerDashboardMessage"] != null)
     {
         <p>@ViewData["HostelOwnerDashboardMessage"]</p>
@@ -23,3 +25,12 @@
         <p>revenues of current Month- @ViewData["revenuesMonth"]</p>
     }
 </div>
+=======
+</div>
+
+@section Scripts {
+    <script type="text/javascript">
+    $('#@activeNav').addClass('active');
+    </script>
+}
+>>>>>>> Stashed changes
