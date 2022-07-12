@@ -61,20 +61,25 @@
                     </div>
                 </div>
                 <div class="card-action">
-                    <div class="btn-card-action btn-card-edit">
+                    <div class="btn-card-action btn-card-edit btn btn-outline-primary">
                         <a asp-page="./View" asp-route-id="@Model.Hostel.HostelId">
                             Preview
                         </a>
                     </div>
-                    @if (userRole.Equals("Admin")){
+                    <div class="btn-card-action btn-card-edit btn btn-primary mx-2">
+                        <a asp-page="./ChangeStatus" asp-route-id="@Model.Hostel.HostelId">
+                            Change Status
+                        </a>
+                    </div>
+                    @if (userRole.Equals("Admin") && Model.Hostel.Status==0){
                     <div class="btn-card-action btn-card-activate">
                         <a asp-page-handler="ApproveHostel" asp-route-id="@Model.Hostel.HostelId">
-                            <i class='bx bx-check'></i>
+                            <i class='bx bx-check py-0'></i>
                         </a>
                     </div>
                     <div class="btn-card-action btn-card-denied btn-card-deactivate">
                         <a asp-page-handler="DenyHostel" asp-route-id="@Model.Hostel.HostelId">
-                            <i class='bx bx-x'></i>
+                            <i class='bx bx-x py-0'></i>
                         </a>
                     </div>
                     }

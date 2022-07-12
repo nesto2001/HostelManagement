@@ -1,8 +1,5 @@
 ﻿using BusinessObject.BusinessObject;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository
@@ -15,5 +12,7 @@ namespace DataAccess.Repository
         Task AddRoom(Room Room);
         Task<IEnumerable<Room>> GetRoomList();
         Task<IEnumerable<Room>> GetRoomsOfAHostel(int hostelId);
+        Task ActivateRoom(int id);
+        Task DenyRoom(int id);
     }
 }

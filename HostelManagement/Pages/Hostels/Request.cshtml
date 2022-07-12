@@ -81,26 +81,7 @@
                                 </div>
                             </div>
                             <div class="card-action">
-                                <div class="btn-card-action btn-card-activate" id="@item.HostelId">
-                                    <a>
-                                        <i class='bx bx-check'></i>
-                                    </a>
-                                </div>
-                                <div class="btn-card-action btn-card-denied btn-card-deactivate" id="@item.HostelId">
-                                    <a>
-                                        <i class='bx bx-x'></i>
-                                    </a>
-                                </div>
-                                @{
-                                    var name = item.HostelName;
-                                }
-                                <script type="text/javascript">
-                            $('.btn-card-deactivate#@item.HostelId').click(function(){
-                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.HostelId'/>");
-                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
-                                $('.popup-deactivate').show();
-                            })
-                                </script>
+                                
                             </div>
                         </div>
                 </div>
@@ -166,26 +147,7 @@
                                 </div>
                             </div>
                             <div class="card-action">
-                                <div class="btn-card-action btn-card-activate" id="@item.RoomId">
-                                    <a>
-                                        <i class='bx bx-check'></i>
-                                    </a>
-                                </div>
-                                <div class="btn-card-action btn-card-denied btn-card-deactivate" id="@item.RoomId">
-                                    <a>
-                                        <i class='bx bx-x'></i>
-                                    </a>
-                                </div>
-                                @{
-                                    var name = item.RoomTitle;
-                                }
-                                <script type="text/javascript">
-                            $('.btn-card-deactivate#@item.RoomId').click(function(){
-                                $('.deactivate-form').append("<input type='hidden' name='id' value='@item.RoomId'/>");
-                                $('.popup-deactivate p').html('Do you really want to deactivate <strong>@name</strong>?');
-                                $('.popup-deactivate').show();
-                            })
-                                </script>
+                                
                             </div>
                         </div>
                 </div>

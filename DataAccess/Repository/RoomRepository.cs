@@ -1,9 +1,6 @@
 ﻿using BusinessObject.BusinessObject;
 using DataAccess.DAO;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.Repository
@@ -19,5 +16,7 @@ namespace DataAccess.Repository
         public async Task<IEnumerable<Room>> GetRoomsOfAHostel(int hostelId) => await RoomDAO.Instance.GetRoomsOfAHostel(hostelId);
 
         public async Task UpdateRoom(Room Room) => await RoomDAO.Instance.UpdateRoom(Room);
+        public async Task ActivateRoom(int id) => await RoomDAO.Instance.ActivateRoom(id);
+        public async Task DenyRoom(int id) => await RoomDAO.Instance.DenyRoom(id);
     }
 }

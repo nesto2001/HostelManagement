@@ -1,16 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
+using System;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using Microsoft.AspNetCore.Authorization;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Rooms
 {
@@ -36,7 +33,8 @@ namespace HostelManagement.Pages.Rooms
             {
                 return NotFound();
             }
-            if (HttpContext.User.Claims != null) {            
+            if (HttpContext.User.Claims != null)
+            {
                 UserRole = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
             }
 
@@ -44,12 +42,24 @@ namespace HostelManagement.Pages.Rooms
             Room = await roomRepository.GetRoomByID((int)id);
             hostel = await hostelRepository.GetHostelByID(Room.HostelId);
             HttpContext.Session.SetInt32("RoomView", (int)id);
-            
+
             if (Room == null)
             {
                 return NotFound();
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnGetApproveRoom(int id)
+        {
+            await hostelRepository.ActivateHostel(id);
+            return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnGetDenyRoom(int id)
+        {
+            await hostelRepository.DenyHostel(id);
+            return RedirectToPage("./Index");
         }
     }
 }
