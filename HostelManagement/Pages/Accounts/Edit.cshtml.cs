@@ -49,12 +49,19 @@ namespace HostelManagement.Pages.Accounts
                 return NotFound();
             }
             Account = await _accountRepository.GetAccountByID(id.Value);
-            var _acc = Account;
-            _acc.IdCardNumberNavigation.Accounts = null;
-            _acc.Hostels = null;
-            _acc.Rents = null;
-            SessionHelper.SetObjectAsJson(HttpContext.Session, "AccountEdit", Account);
+            if(Account.IdCardNumberNavigation != null)
+            {
+                var _acc = Account;
+                _acc.IdCardNumberNavigation.Accounts = null;
+                _acc.Hostels = null;
+                _acc.Rents = null;
+                SessionHelper.SetObjectAsJson(HttpContext.Session, "AccountEdit", Account);
+                ViewData["Frontpic"] = Account.IdCardNumberNavigation.FrontIdPicUrl;
+                ViewData["Backpic"] = Account.IdCardNumberNavigation.BackIdPicUrl;
+            }
+            
             IdCardNav = Account.IdCardNumberNavigation;
+            
             if (Account == null)
             {
                 return NotFound();
@@ -70,6 +77,8 @@ namespace HostelManagement.Pages.Accounts
 
             if (!ModelState.IsValid)
             {
+                ViewData["Frontpic"] = Account.IdCardNumberNavigation.FrontIdPicUrl;
+                ViewData["Backpic"] = Account.IdCardNumberNavigation.BackIdPicUrl;
                 return Page();
             }
             else if (IdExists(Input.IdCardNumber))
