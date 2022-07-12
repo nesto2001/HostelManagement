@@ -16,13 +16,11 @@ namespace HostelManagement.Pages.Accounts
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccess.HostelManagementContext _context;
         private IAccountRepository _accountRepository { get; }
         private IIdentityCardRepository _identityCardRepository { get; }
 
-        public EditModel(DataAccess.HostelManagementContext context, IAccountRepository accountRepository, IIdentityCardRepository identityCardRepository)
+        public EditModel(IAccountRepository accountRepository, IIdentityCardRepository identityCardRepository)
         {
-            _context = context;
             _accountRepository = accountRepository;
             _identityCardRepository = identityCardRepository;
         }
@@ -50,6 +48,11 @@ namespace HostelManagement.Pages.Accounts
                 return NotFound();
             }
             Account = await _accountRepository.GetAccountByID(id.Value);
+            var _acc = Account;
+            _acc.IdCardNumberNavigation.Accounts = null;
+            _acc.Hostels = null;
+            _acc.Rents = null;
+            SessionHelper.SetObjectAsJson(HttpContext.Session, "AccountEdit", Account);
             IdCardNav = Account.IdCardNumberNavigation;
             if (Account == null)
             {
@@ -62,6 +65,7 @@ namespace HostelManagement.Pages.Accounts
         // For more details, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
+            Account acc = SessionHelper.GetObjectFromJson<Account>(HttpContext.Session, "AccountEdit");
 
             if (!ModelState.IsValid)
             {
@@ -74,7 +78,7 @@ namespace HostelManagement.Pages.Accounts
             }
             else
             {
-                if (IdCardNav == null)
+                if (acc.IdCardNumberNavigation == null)
                 {
                     IdCard.IdCardNumber = Account.IdCardNumber;
                     if (FrontPicUrl != null && BackPicUrl != null)
@@ -84,8 +88,8 @@ namespace HostelManagement.Pages.Accounts
                     }
                     else
                     {
-                        IdCard.FrontIdPicUrl = IdCard.FrontIdPicUrl;
-                        IdCard.BackIdPicUrl = IdCard.BackIdPicUrl;
+                        IdCard.FrontIdPicUrl = acc.IdCardNumberNavigation.FrontIdPicUrl;
+                        IdCard.BackIdPicUrl = acc.IdCardNumberNavigation.BackIdPicUrl;
                     }
                     await _identityCardRepository.AddIdCard(IdCard);
                 }
@@ -96,8 +100,9 @@ namespace HostelManagement.Pages.Accounts
                 }
                 else
                 {
-                    Account.ProfilePicUrl = Account.ProfilePicUrl;
+                    Account.ProfilePicUrl = acc.ProfilePicUrl;
                 }
+                Account.IdCardNumberNavigation = null;
                 await _accountRepository.UpdateAccount(Account);
 
                 return RedirectToPage("./Index");
