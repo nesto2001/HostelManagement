@@ -3,6 +3,17 @@
 
 @{
     ViewData["Title"] = "Details";
+    string profilePic = "ano-ava.jpg";
+    if (Model.Account.ProfilePicUrl != null)
+        profilePic = Model.Account.ProfilePicUrl;
+    string frontPic = "ano-ava.jpg";
+    if (Model.Account.IdCardNumberNavigation != null)
+        if (Model.Account.IdCardNumberNavigation.FrontIdPicUrl != null)
+            frontPic = Model.Account.IdCardNumberNavigation.FrontIdPicUrl;
+    string backPic = "ano-ava.jpg";
+    if (Model.Account.IdCardNumberNavigation != null)
+        if (Model.Account.IdCardNumberNavigation.BackIdPicUrl != null)
+            backPic = Model.Account.IdCardNumberNavigation.BackIdPicUrl;
 }
 
 <h1>Details</h1>
@@ -61,41 +72,26 @@
         <dt class="col-sm-2">
             @Html.DisplayNameFor(model => model.Account.ProfilePicUrl)
         </dt>
-        <dd>
-            @{
-                string profilePic = "anno-ava.jpg";
-                if (Model.Account.ProfilePicUrl != null)
-                    profilePic = Model.Account.ProfilePicUrl;
-            }
-            <img id="profilePic" src="~/Images/accounts/@profilePic" height="200" class="card-img" />
+        <dd class="col-sm-10">
+            <img src="~/Images/accounts/@profilePic" height="200" />
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.IdCardNumber)
+            @Html.DisplayNameFor(model => model.Account.IdCardNumberNavigation.IdCardNumber)
         </dt>
         <dd class="col-sm-10">
             @Html.DisplayFor(model => model.Account.IdCardNumberNavigation.IdCardNumber)
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.ProfilePicUrl)
+            @Html.DisplayNameFor(model => model.Account.IdCardNumberNavigation.FrontIdPicUrl)
         </dt>
-        <dd>
-            @{
-                string frontPic = "anno-ava.jpg";
-                if (Model.Account.IdCardNumberNavigation.FrontIdPicUrl != null)
-                    frontPic = Model.Account.IdCardNumberNavigation.FrontIdPicUrl;
-            }
-            <img id="profilePic" src="~/Images/accounts/@frontPic" height="200" class="card-img" />
+        <dd class="col-sm-10">
+            <img id="profilePic" src="~/Images/accounts/@frontPic" height="200" />
         </dd>
         <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Account.ProfilePicUrl)
+            @Html.DisplayNameFor(model => model.Account.IdCardNumberNavigation.BackIdPicUrl)
         </dt>
-        <dd>
-            @{
-                string backPic = "anno-ava.jpg";
-                if (Model.Account.IdCardNumberNavigation.BackIdPicUrl != null)
-                    backPic = Model.Account.IdCardNumberNavigation.BackIdPicUrl;
-            }
-            <img id="profilePic" src="~/Images/accounts/@backPic" height="200" class="card-img" />
+        <dd class="col-sm-10">
+            <img id="profilePic" src="~/Images/accounts/@backPic" height="200" />
         </dd>
     </dl>
 </div>
