@@ -1,18 +1,15 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.EntityFrameworkCore;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
-using Microsoft.AspNetCore.Http;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -144,6 +141,18 @@ namespace HostelManagement.Pages.Hostels
                 return NotFound();
             }
             return Page();
+        }
+
+        public async Task<IActionResult> OnGetApproveHostel(int id)
+        {
+            await hostelRepository.ActivateHostel(id);
+            return RedirectToPage("./Index");
+        }
+
+        public async Task<IActionResult> OnGetDenyHostel(int id)
+        {
+            await hostelRepository.DenyHostel(id);
+            return RedirectToPage("./Index");
         }
     }
 }

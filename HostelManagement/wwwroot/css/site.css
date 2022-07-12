@@ -1953,3 +1953,34 @@ button.btn-logout a{
 .user-menu .user-menu-inner li:hover{
   background: rgba(159, 201, 255, 0.322);
 }
+
+.owner-dasboardblocks {
+  display: flex;
+}
+
+.owner-dasboard {
+  padding: 0 1000px;
+}
+
+.count-section {
+  border-radius: .25rem;
+  padding: 20px 20px 0px 20px;
+  margin: 20px 0;
+}
+
+.owner-dashboardprofile {
+  margin: 20px 0;
+  height: fit-content;
+  padding: 30px;
+}
+
+.account-name:hover {
+  color: #0083CC;
+}
+.account-name p {
+  position: relative;
+}
+.edit-icon {
+  position: absolute;
+  margin: -4px 0 0 4px;
+}

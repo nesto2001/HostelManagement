@@ -20,5 +20,7 @@ namespace DataAccess.Repository
         public async Task DeactivateHostel(int id) => await HostelDAO.Instance.DeactivateHostel(id);
 
         public async Task ActivateHostel(int id) => await HostelDAO.Instance.ActivateHostel(id);
+
+        public async Task DenyHostel(int id) => await HostelDAO.Instance.DenyHostel(id);
     }
 }

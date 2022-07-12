@@ -14,5 +14,6 @@ namespace DataAccess.Repository
         Task<IEnumerable<Hostel>> GetHostelsOfAnOwner(int id);
         Task DeactivateHostel(int id);
         Task ActivateHostel(int id);
+        Task DenyHostel(int id);
     }
 }

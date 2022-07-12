@@ -8,8 +8,81 @@
     var userRole = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
 }
 
-<h1>Details</h1>
+<section class="listings-hostel edit-listings">
+    <div class="listings-hostel-wrapper">
 
+        <div class="hostel-listings-card">
+            <div class="card-inner">
+                @if (@Model.Hostel.HostelPics.Count > 0)
+                {
+                    <div class="card-img-thumb" style="background: url('../images/hostels/@Model.Hostel.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+                }
+                else
+                {
+                    <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+                }
+                <div class="card-details">
+                    <div class="card-info">
+                        <div class="card-title">[@Model.Hostel.Category.CategoryName] @Model.Hostel.HostelName</div>
+                        @{
+                            switch (@Model.Hostel.Status)
+                            {
+                                case 1:
+                                        <text>
+                                            <span class="card-status status-active">
+                                                Active
+                                            </span>
+                                        </text>
+                                    break;
+                                case 2:
+                                        <text>
+                                            <span class="card-status status-inactive">
+                                                Inactive
+                                            </span>
+                                        </text>
+                                    break;
+                                case 3:
+                                        <text>
+                                            <span class="card-status status-denied">
+                                                Denied
+                                            </span>
+                                        </text>
+                                    break;
+                                default:
+                                        <text>
+                                            <span class="card-status status-pending">
+                                                Pending
+                                            </span>
+                                        </text>
+                                    break;
+                            }
+                        }
+                        <span class="card-location">@Model.Hostel.Location.Ward.District.Province.ProvinceName, @Model.Hostel.Location.Ward.District.DistrictName</span>
+                    </div>
+                </div>
+                <div class="card-action">
+                    <div class="btn-card-action btn-card-edit">
+                        <a asp-page="./View" asp-route-id="@Model.Hostel.HostelId">
+                            Preview
+                        </a>
+                    </div>
+                    @if (userRole.Equals("Admin")){
+                    <div class="btn-card-action btn-card-activate">
+                        <a asp-page-handler="ApproveHostel" asp-route-id="@Model.Hostel.HostelId">
+                            <i class='bx bx-check'></i>
+                        </a>
+                    </div>
+                    <div class="btn-card-action btn-card-denied btn-card-deactivate">
+                        <a asp-page-handler="DenyHostel" asp-route-id="@Model.Hostel.HostelId">
+                            <i class='bx bx-x'></i>
+                        </a>
+                    </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
 <section class="hostel-edit-nav">
     <div class="edit-nav-wrapper">
         <div class="edit-nav-item edit-nav-item-active" data-target="#/edit-listing">
