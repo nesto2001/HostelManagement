@@ -1,9 +1,11 @@
 ﻿@using System.Security.Claims
+@using DataAccess.Repository
 @{ 
     var Role = User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value;
     string role = null;
     if (Role == "Owner") role = "owner";
     else if (Role == "Admin") role = "owner";
+    IAccountRepository accountRepo = new AccountRepository();
 }
 <!DOCTYPE html>
 <html lang="en">
@@ -107,14 +109,32 @@
                         else
                         {
                             <li class="nav-item">
+                                @{
+                                    var sessionUser= await accountRepo.GetAccountByID(Int32.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value));
+                                }
                                 <a class="nav-link">
                                     Welcome @User.Identity.Name
+                                    <div class="profile-wrapper">
+                                        <div class="avatar-wrapper">
+                                            <div class="avatar">
+                                                @{
+                                                    var userAvatar="placeholder.png";
+                                                    if(sessionUser.ProfilePicUrl != null && sessionUser.ProfilePicUrl.Length>0){
+                                                        userAvatar="accounts/"+sessionUser.ProfilePicUrl;
+                                                    }
+                                                }
+                                                <img src="~/images/userAvatar" alt="">
+                                            </div>
+                                        </div>
+                                    </div>
                                 </a>
                             </li>
-                            <li class="nav-item">
-                                <a class="nav-link" asp-area="" asp-page="/Accounts/Logout">
-                                    Log Out
-                                </a>
+                            <li class="nav-item d-flex align-items-center ml-3">
+                                <button class="btn btn-logout">
+                                    <a class="nav-link" asp-area="" asp-page="/Accounts/Logout">
+                                        Log Out
+                                    </a>
+                                </button>
                             </li>
                         }
                     </ul>
