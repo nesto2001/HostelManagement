@@ -27,7 +27,6 @@
 
 <h1 class="text-center" style="margin-bottom:50px; margin-top: 50px">Edit Account</h1>
 
-<hr />
 <div class="container border h-100 d-flex align-items-center justify-content-center" style="padding: 20px; width: 500px">
 
     <form method="post" enctype="multipart/form-data">
@@ -35,6 +34,7 @@
         <input type="hidden" asp-for="Account.UserId" />
         <input type="hidden" asp-for="Account.RoleName" />
         <input type="hidden" asp-for="Account.ProfilePicUrl" />
+        <input type="hidden" asp-for="Account.Status" />
         <input type="hidden" asp-for="Account.IdCardNumberNavigation.FrontIdPicUrl" />
         <input type="hidden" asp-for="Account.IdCardNumberNavigation.BackIdPicUrl" />
         <div class="form-group row">
@@ -54,7 +54,7 @@
                 <label asp-for="Account.UserPassword" class="control-label"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Account.UserPassword" class="form-control" required />
+                <input asp-for="Account.UserPassword" class="form-control" required value="Account.UserPassword" />
             </div>
             <div class="col-sm-8">
                 <span asp-validation-for="Account.UserPassword" class="text-danger"></span>
@@ -87,7 +87,7 @@
                 <label asp-for="Account.Dob" class="control-label"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Account.Dob" class="form-control" />
+                <input asp-for="Account.Dob" class="form-control" required/>
             </div>
             <div class="col-sm-8" hidden="@dob">
                 <span class="text-danger">@Model.MessageDob</span>
@@ -100,7 +100,7 @@
             <div class="col-sm-4">
                 <label asp-for="@Model.FileUploads">Avatar</label>
             </div>
-
+            
             <input id="fileImage" asp-for="@Model.FileUploads" style="margin-left: 14px" />
             <span asp-validation-foraction="@Model.FileUploads"></span>
             <div class="col-sm-4"></div>
@@ -133,11 +133,15 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-4">
-                <label class="control-label">Front picture</label>
+                <label asp-for="@Model.FrontPicUrl">Front picture</label>
             </div>
-            <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 40px" hidden="@readOnly" />
+            @{
+                var margin = "14px";
+                if (readOnly == false) margin = "180px";
+            }
+            <input id="frontImage" asp-for="@Model.FrontPicUrl" type="file" style="margin-left: 14px" hidden="@readOnly" />
             <span asp-validation-for="@Model.FrontPicUrl" class="text-danger"></span>
-            <img id="previewF" src="~/images/accounts/@frontPic" height="200" class="hidden" style="margin-left: 14px" />
+            <img id="previewF" src="~/images/accounts/@frontPic" height="200" class="hidden" style="margin-left: @margin" />
             <script>
 
                 frontImage.onchange = evt => {
@@ -152,11 +156,11 @@
         </div>
         <div class="form-group row">
             <div class="col-sm-4">
-                <label class="control-label">Back Picture</label>
+                <label asp-for="@Model.BackPicUrl">Back Picture</label>
             </div>
-            <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 40px" hidden="@readOnly" />
+            <input id="backImage" asp-for="@Model.BackPicUrl" type="file" style="margin-left: 14px" hidden="@readOnly" />
             <span asp-validation-for="@Model.BackPicUrl" class="text-danger"></span>
-            <img id="previewB" src="~/images/accounts/@backPic" height="200" class="hidden" style="margin-left: 14px" />
+            <img id="previewB" src="~/images/accounts/@backPic" height="200" class="hidden" style="margin-left: @margin" />
             <script>
 
                 backImage.onchange = evt => {
