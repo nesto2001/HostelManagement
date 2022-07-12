@@ -43,6 +43,7 @@ namespace HostelManagement.Pages.Rents
             {
                 return RedirectToPage("../AccessDenied");
             }
+
             ViewData["extend"] = false;
             if (extend != null)
             {
@@ -59,7 +60,11 @@ namespace HostelManagement.Pages.Rents
                account = await accountRepository.GetAccountByID(UId);
             }
             room = await roomRepository.GetRoomByID((int)id);
-
+            if (room.Status != 1)
+            {
+                HttpContext.Session.SetString("AccessDeniedMessage", "This room is not available.");
+                return RedirectToPage("../AccessDenied");
+            }
             if (room.Hostel.HostelOwnerEmailNavigation.UserId == UId)
             {
                 HttpContext.Session.SetString("AccessDeniedMessage", "You must not rent the room which the owner is you.");

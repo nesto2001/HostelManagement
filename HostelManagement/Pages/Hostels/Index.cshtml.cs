@@ -8,6 +8,7 @@ using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 
 namespace HostelManagement.Pages.Hostels
 {
@@ -16,11 +17,14 @@ namespace HostelManagement.Pages.Hostels
     {
         private IHostelRepository hostelRepository;
         private IAccountRepository accountRepository;
+        private IRentRepository rentRepository;
 
-        public IndexModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository)
+        public IndexModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
+                            IRentRepository _rentRepository)
         {
             hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
+            rentRepository = _rentRepository;
         }
 
         public IEnumerable<Hostel> Hostels { get; set; }
@@ -42,6 +46,23 @@ namespace HostelManagement.Pages.Hostels
 
         public async Task<IActionResult> OnPostDeactivate(int id)
         {
+            var Hostel =await hostelRepository.GetHostelByID(id);
+            foreach (var item in Hostel.Rooms)
+            {
+                var rents = await rentRepository.GetRentListByRoom(item.RoomId);
+                if (rents != null)
+                {
+
+                    foreach (var it in rents)
+                    {
+                        if (it.Status == 2 || it.Status == 5)
+                        {
+                            HttpContext.Session.SetString("AccessDeniedMessage", "Don't accept Inactive an hostel that exist room is renting.");
+                            return RedirectToPage("../AccessDenied");
+                        }
+                    }
+                }
+            }
             await hostelRepository.DeactivateHostel(id);
             return RedirectToPage("./Index");
         }
