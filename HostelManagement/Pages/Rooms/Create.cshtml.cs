@@ -50,6 +50,7 @@ namespace HostelManagement.Pages.Rooms
         public async Task<IActionResult> OnGetAsync(int countPics, int countRooms)
         {
             countPic = countPics;
+            HttpContext.Session.SetInt32("countPicture", countPics);
             countRoom = countRooms;
             return Page();
         }
@@ -71,12 +72,15 @@ namespace HostelManagement.Pages.Rooms
             {
                 await hostelRepository.AddHostel(hostel);
             }
+            countPic = (int)HttpContext.Session.GetInt32("countPicture");
             for (int i = 1; i <= countPic; i++)
             {
                 string key = $"hostelPicPending{i}";
                 HostelPic hostelPic = SessionHelper.GetObjectFromJson<HostelPic>(HttpContext.Session,key);
                 if (hostelPic != null)
                 {
+                    hostelPic.Hostel = null;
+                    hostelPic.HostelId = hostel.HostelId;
                     await hostelPicRepository.AddHostelPic(hostelPic);
                 }
             }
