@@ -72,8 +72,8 @@ namespace HostelManagement.Pages
             var rents = await rentRepository.GetRentList();
             rents = rents.Where(r => r.Room.Hostel.HostelOwnerEmailNavigation.UserId == UId);
             ViewData["rentingCount"] = rents.Count();
-            ViewData["runningRent"] = rents.Count(r => r.Status == 1 || r.Status == 2);
-            ViewData["completedRent"] = rents.Count(r => r.Status == 3 || r.Status == 4);
+            ViewData["runningRent"] = rents.Count(r => r.Status == 1 || r.Status == 2 || r.Status == 5);
+            ViewData["completedRent"] = rents.Count(r => r.Status == 3 || r.Status == 6);
             ViewData["pendingStartRent"] = rents.Count(r => r.Status == 0);
             //renter count, roomMember count
             List<string> renters = new List<string>();

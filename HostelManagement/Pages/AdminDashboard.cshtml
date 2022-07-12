@@ -4,4 +4,22 @@
 }
 
 <div class="main-content">
+    @if (ViewData["HostelOwnerDashboardMessage"] != null)
+    {
+        <p>@ViewData["HostelOwnerDashboardMessage"]</p>
+    }
+    @if (ViewData["hostelCount"] != null)
+    {
+        <p>hostelCount - @ViewData["hostelCount"]</p>
+        <p>roomCount- @ViewData["roomCount"]</p>
+        <p>rentingCount- @ViewData["rentingCount"]</p>
+        <p>rentedRoomCount- @ViewData["rentedRoomCount"]</p>
+        <p>runningRent- @ViewData["runningRent"]</p>
+        <p>completedRent- @ViewData["completedRent"]</p>
+        <p>pendingStartRent- @ViewData["pendingStartRent"]</p>
+        <p>renterCount- @ViewData["renterCount"]</p>
+        <p>roomMemberCount- @ViewData["roomMemberCount"]</p>
+        <p>revenues of current Year- @ViewData["revenuesYear"]</p>
+        <p>revenues of current Month- @ViewData["revenuesMonth"]</p>
+    }
 </div>
