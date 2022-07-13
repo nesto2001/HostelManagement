@@ -74,12 +74,13 @@
         <div class="row">
             <h4 class="mt-5">Room: @Model.Room.RoomTitle</h4>
             <div class="card-action">
-                    <div class="btn-card-action btn-card-edit btn btn-primary mx-2">
-                        <a asp-page="./ChangeStatus" asp-route-id="@Model.Room.RoomId">
-                            Change Status
-                        </a>
-                    </div>
-                    @if (userRole.Equals("Admin") && Model.Room.Status==0){
+                <div class="btn-card-action btn-card-edit btn btn-primary mx-2">
+                    <a asp-page="./ChangeStatus" asp-route-id="@Model.Room.RoomId">
+                        Change Status
+                    </a>
+                </div>
+                @if (userRole.Equals("Admin") && Model.Room.Status == 0)
+                {
                     <div class="btn-card-action btn-card-activate">
                         <a asp-page-handler="ApproveRoom" asp-route-id="@Model.Room.RoomId">
                             <i class='bx bx-check py-0'></i>
@@ -90,8 +91,8 @@
                             <i class='bx bx-x py-0'></i>
                         </a>
                     </div>
-                    }
-                </div>
+                }
+            </div>
         </div>
         <hr />
         <div class="row">
@@ -106,7 +107,7 @@
                                     roomThumb = "rooms/" + Model.Room.RoomPics.ElementAt(0).RoomPicUrl;
                                 }
                             }
-                            <img src="~/images/@roomThumb" alt="" style="width: 100%;"/>
+                            <img src="~/images/@roomThumb" alt="" style="width: 100%;" />
                         </div>
                     </div>
                 </div>
@@ -222,6 +223,13 @@
             <div class="border-top" style="width: 100%">
                 <a asp-page="../Rents/Index" asp-route-id="@Model.Room.RoomId">View Rent History</a> |
                 <a asp-page="../Hostels/Edit" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
+            </div>
+        }
+        @if (Model.UserRole == "Admin")
+        {
+            <div class="border-top" style="width: 100%">
+                <a asp-page="../Rents/Index" asp-route-id="@Model.Room.RoomId">View Rent History</a> |
+                <a asp-page="../Hostels/Details" asp-route-id="@Model.Room.HostelId">Back to Hostel Detail</a>
             </div>
         }
     </div>

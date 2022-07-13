@@ -146,13 +146,13 @@ namespace HostelManagement.Pages.Hostels
         public async Task<IActionResult> OnGetApproveHostel(int id)
         {
             await hostelRepository.ActivateHostel(id);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new {id = id});
         }
 
         public async Task<IActionResult> OnGetDenyHostel(int id)
         {
             await hostelRepository.DenyHostel(id);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new { id = id });
         }
     }
 }

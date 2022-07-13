@@ -52,14 +52,14 @@ namespace HostelManagement.Pages.Rooms
 
         public async Task<IActionResult> OnGetApproveRoom(int id)
         {
-            await hostelRepository.ActivateHostel(id);
-            return RedirectToPage("./Index");
+            await roomRepository.ActivateRoom(id);
+            return RedirectToPage("./Details",new { id = id });
         }
 
         public async Task<IActionResult> OnGetDenyRoom(int id)
         {
-            await hostelRepository.DenyHostel(id);
-            return RedirectToPage("./Index");
+            await roomRepository.DenyRoom(id);
+            return RedirectToPage("./Details", new { id = id });
         }
     }
 }
