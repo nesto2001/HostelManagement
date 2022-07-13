@@ -316,8 +316,6 @@ else
 <div>
     <a asp-page="./Index">Back to List</a>
 </div>
-<<<<<<< Updated upstream
-=======
 @{
     if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Owner")
     {
@@ -356,4 +354,3 @@ else
         $('#@activeNav').addClass('active');
     </script>
 }
->>>>>>> Stashed changes

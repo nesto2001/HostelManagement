@@ -83,7 +83,7 @@
                 </div>
                 <div class="form-group">
                     <label asp-for="@Model.Room.RoomDescription" class="control-label"></label>
-                    <input asp-for="@Model.Room.RoomDescription" class="form-control" />
+                    <textarea asp-for="@Model.Room.RoomDescription" class="form-control"  style="height:200px"></textarea>
                     <span asp-validation-for="@Model.Room.RoomDescription" class="text-danger"></span>
                 </div>
                 <div class="form-group">
@@ -91,7 +91,7 @@
                     <input asp-for="@Model.Room.RomMaxCapacity" class="form-control" />
                     <span asp-validation-for="@Model.Room.RomMaxCapacity" class="text-danger"></span>
                 </div>
-                <div class="form-group">
+                <div class="form-group" hidden="hidden">
                     <label asp-for="@Model.Room.RoomCurrentCapacity" class="control-label"></label>
                     <input asp-for="@Model.Room.RoomCurrentCapacity" class="form-control" value="0" readonly/>
                     <span asp-validation-for="@Model.Room.RoomCurrentCapacity" class="text-danger"></span>
@@ -102,7 +102,7 @@
                     <span asp-validation-for="@Model.Room.Status" class="text-danger"></span>
                 </div>
                 <div class="form-group">
-                    <label asp-for="@Model.Room.Price" class="control-label"></label>
+                    <label class="control-label">Price / Month</label>
                     <input asp-for="@Model.Room.Price" class="form-control" />
                     <span asp-validation-for="@Model.Room.Price" class="text-danger"></span>
                 </div>
