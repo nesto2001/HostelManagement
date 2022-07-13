@@ -15,17 +15,10 @@ namespace HostelManagement.Pages.Rents
     [Authorize(Roles = "Renter")]
     public class DeleteModel : PageModel
     {
-        private IAccountRepository accountRepository { get; }
         private IRentRepository rentRepository { get; }
-        private IRoomRepository roomRepository { get; }
-        private IRoomMemberRepository roomMemberRepository { get; }
-        public DeleteModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository)
+        public DeleteModel(IRentRepository _rentRepository)
         {
-            accountRepository = _accountRepository;
             rentRepository = _rentRepository;
-            roomRepository = _roomRepository;
-            roomMemberRepository = _roomMemberRepository;
         }
 
         [BindProperty]

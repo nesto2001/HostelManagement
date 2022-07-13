@@ -15,38 +15,16 @@ namespace HostelManagement.Pages
     public class AdminDashboardModel : PageModel
     {
         private readonly IHostelRepository hostelRepository;
-        private readonly IAccountRepository accountRepository;
-        private readonly ICategoryRepository categoryRepository;
-        private readonly IProvinceRepository provinceRepository;
-        private readonly IDistrictRepository districtRepository;
-        private readonly IWardRepository wardRepository;
-        private readonly ILocationRepository locationRepository;
-        private readonly IHostelPicRepository hostelPicRepository;
         private readonly IRoomRepository roomRepository;
-        private readonly IRoomMemberRepository roomMemberRepository;
         private readonly IRentRepository rentRepository;
-        private readonly IBillRepository billRepository;
         private readonly IBillDetailRepository billDetailRepository;
 
-        public AdminDashboardModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
-            ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
-            IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository,
-            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IRentRepository _rentRepository,
-            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
+        public AdminDashboardModel(IHostelRepository _hostelRepository,
+            IRoomRepository _roomRepository, IRentRepository _rentRepository, IBillDetailRepository _billDetailRepository)
         {
             hostelRepository = _hostelRepository;
-            accountRepository = _accountRepository;
-            categoryRepository = _categoryRepository;
-            provinceRepository = _provinceRepository;
-            districtRepository = _districtRepository;
-            wardRepository = _wardRepository;
-            locationRepository = _locationRepository;
-            hostelPicRepository = _hostelPicRepository;
             roomRepository = _roomRepository;
-            roomMemberRepository = _roomMemberRepository;
             rentRepository = _rentRepository;
-            billRepository = _billRepository;
             billDetailRepository = _billDetailRepository;
         }
 

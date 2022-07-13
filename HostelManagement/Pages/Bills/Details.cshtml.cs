@@ -15,22 +15,10 @@ namespace HostelManagement.Pages.Bills
     [Authorize]
     public class DetailsModel : PageModel
     {
-        private IAccountRepository accountRepository { get; }
-        private IRentRepository rentRepository { get; }
-        private IRoomRepository roomRepository { get; }
-        private IRoomMemberRepository roomMemberRepository { get; }
         private IBillRepository billRepository { get; }
-        private IBillDetailRepository billDetailRepository { get; }
-        public DetailsModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository,
-                            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
+        public DetailsModel(IBillRepository _billRepository)
         {
-            accountRepository = _accountRepository;
-            rentRepository = _rentRepository;
-            roomRepository = _roomRepository;
-            roomMemberRepository = _roomMemberRepository;
             billRepository = _billRepository;
-            billDetailRepository = _billDetailRepository;
         }
 
 

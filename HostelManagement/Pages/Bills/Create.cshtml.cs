@@ -17,21 +17,14 @@ namespace HostelManagement.Pages.Bills
     [Authorize(Roles ="Owner")]
     public class CreateModel : PageModel
     {
-        private IAccountRepository accountRepository { get; }
         private IRentRepository rentRepository { get; }
-        private IRoomRepository roomRepository { get; }
-        private IRoomMemberRepository roomMemberRepository { get; }
         private IBillRepository billRepository { get; }
         private IBillDetailRepository billDetailRepository { get; }
         private ISendMailService sendMailService { get; }
-        public CreateModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository,
-                            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository, ISendMailService _sendMailService)
+        public CreateModel( IRentRepository _rentRepository, IBillRepository _billRepository, 
+            IBillDetailRepository _billDetailRepository, ISendMailService _sendMailService)
         {
-            accountRepository = _accountRepository;
             rentRepository = _rentRepository;
-            roomRepository = _roomRepository;
-            roomMemberRepository = _roomMemberRepository;
             billRepository = _billRepository;
             billDetailRepository = _billDetailRepository;
             sendMailService = _sendMailService;

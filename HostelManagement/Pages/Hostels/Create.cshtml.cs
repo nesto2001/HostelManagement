@@ -22,30 +22,24 @@ namespace HostelManagement.Pages.Hostels
     [Authorize(Roles ="Owner")]
     public class CreateModel : PageModel
     {
-        private readonly IHostelRepository hostelRepository;
         private readonly IAccountRepository accountRepository;
         private readonly ICategoryRepository categoryRepository;
         private readonly IProvinceRepository provinceRepository;
         private readonly IDistrictRepository districtRepository;
         private readonly IWardRepository wardRepository;
         private readonly ILocationRepository locationRepository;
-        private readonly IHostelPicRepository hostelPicRepository;
-        private readonly IRoomRepository roomRepository;
 
-        public CreateModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
+        public CreateModel(IAccountRepository _accountRepository,
             ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
             IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
+            ILocationRepository _locationRepository)
         {
-            hostelRepository = _hostelRepository;
             accountRepository = _accountRepository;
             categoryRepository = _categoryRepository;
             provinceRepository = _provinceRepository;
             districtRepository = _districtRepository;
             wardRepository = _wardRepository;
             locationRepository = _locationRepository;
-            hostelPicRepository = _hostelPicRepository;
-            roomRepository = _roomRepository;
         }
 
         public async Task<IActionResult> OnGetAsync()

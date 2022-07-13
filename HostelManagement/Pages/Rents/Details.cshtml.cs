@@ -12,15 +12,13 @@ namespace HostelManagement.Pages.Rents
     [Authorize]
     public class DetailsModel : PageModel
     {
-        private IAccountRepository accountRepository { get; }
         private IRentRepository rentRepository { get; }
         private IRoomRepository roomRepository { get; }
         private IHostelRepository hostelRepository { get; }
         private IRoomMemberRepository roomMemberRepository { get; }
-        public DetailsModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
+        public DetailsModel( IRentRepository _rentRepository,
                             IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IHostelRepository _hostelRepository)
         {
-            accountRepository = _accountRepository;
             rentRepository = _rentRepository;
             roomRepository = _roomRepository;
             roomMemberRepository = _roomMemberRepository;

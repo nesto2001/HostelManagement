@@ -13,25 +13,13 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace HostelManagement.Pages.Bills
 {
-    [AllowAnonymous]
+    [Authorize]
     public class IndexModel : PageModel
     {
-        private IAccountRepository accountRepository { get; }
-        private IRentRepository rentRepository { get; }
-        private IRoomRepository roomRepository { get; }
-        private IRoomMemberRepository roomMemberRepository { get; }
         private IBillRepository billRepository { get; }
-        private IBillDetailRepository billDetailRepository { get; }
-        public IndexModel(IAccountRepository _accountRepository, IRentRepository _rentRepository,
-                            IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository,
-                            IBillRepository _billRepository, IBillDetailRepository _billDetailRepository)
+        public IndexModel(IBillRepository _billRepository)
         {
-            accountRepository = _accountRepository;
-            rentRepository = _rentRepository;
-            roomRepository = _roomRepository;
-            roomMemberRepository = _roomMemberRepository;
             billRepository = _billRepository;
-            billDetailRepository = _billDetailRepository;
         }
 
 

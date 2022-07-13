@@ -18,28 +18,11 @@ namespace HostelManagement.Pages.Rooms
     public class ChangeStatusModel : PageModel
     {
         private IHostelRepository hostelRepository;
-        private IAccountRepository accountRepository;
-        private ICategoryRepository categoryRepository;
-        private IProvinceRepository provinceRepository;
-        private IDistrictRepository districtRepository;
-        private IWardRepository wardRepository;
-        private ILocationRepository locationRepository;
-        private IHostelPicRepository hostelPicRepository;
         private IRoomRepository roomRepository;
 
-        public ChangeStatusModel(IHostelRepository _hostelRepository, IAccountRepository _accountRepository,
-            ICategoryRepository _categoryRepository, IProvinceRepository _provinceRepository,
-            IDistrictRepository _districtRepository, IWardRepository _wardRepository,
-            ILocationRepository _locationRepository, IHostelPicRepository _hostelPicRepository, IRoomRepository _roomRepository)
+        public ChangeStatusModel(IHostelRepository _hostelRepository, IRoomRepository _roomRepository)
         {
             hostelRepository = _hostelRepository;
-            accountRepository = _accountRepository;
-            categoryRepository = _categoryRepository;
-            provinceRepository = _provinceRepository;
-            districtRepository = _districtRepository;
-            wardRepository = _wardRepository;
-            locationRepository = _locationRepository;
-            hostelPicRepository = _hostelPicRepository;
             roomRepository = _roomRepository;
         }
 
