@@ -5,16 +5,77 @@
     ViewData["Title"] = "Edit";
 }
 
-<h1>Edit</h1>
+<div class="listings-hostel-wrapper">
 
-<h4>Room</h4>
+    <div class="hostel-listings-card">
+        <div class="card-inner">
+            @if (@Model.hostel.HostelPics.Count > 0)
+            {
+                <div class="card-img-thumb" style="background: url('../images/hostels/@Model.hostel.HostelPics.ElementAt(0).HostelPicUrl');"></div>
+            }
+            else
+            {
+                <div class="card-img-thumb" style="background: url('../images/placeholder.png');"></div>
+            }
+            <div class="card-details">
+                <div class="card-info">
+                    <div class="card-title">[@Model.hostel.Category.CategoryName] @Model.hostel.HostelName</div>
+                    @{
+                        switch (@Model.hostel.Status)
+                        {
+                            case 1:
+                                <text>
+                                    <span class="card-status status-active">
+                                        Active
+                                    </span>
+                                </text>
+                                break;
+                            case 2:
+                                <text>
+                                    <span class="card-status status-inactive">
+                                        Inactive
+                                    </span>
+                                </text>
+                                break;
+                            case 3:
+                                <text>
+                                    <span class="card-status status-denied">
+                                        Denied
+                                    </span>
+                                </text>
+                                break;
+                            default:
+                                <text>
+                                    <span class="card-status status-pending">
+                                        Pending
+                                    </span>
+                                </text>
+                                break;
+                        }
+                    }
+                    <span class="card-location">@Model.hostel.Location.Ward.District.Province.ProvinceName, @Model.hostel.Location.Ward.District.DistrictName</span>
+                </div>
+            </div>
+            <div class="card-action">
+                <div class="btn-card-action btn-card-edit btn btn-outline-primary">
+                    <a asp-page="./View" asp-route-id="@Model.hostel.HostelId">
+                        Preview
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<h1 style="text-align:center">Edit Room</h1>
+
 <hr />
 <div class="row">
     <div class="col-md-4">
         <form method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Room.RoomId" />
-            <div class="form-group">
+            <div class="form-group" hidden="hidden">
                 <label asp-for="Room.HostelId" class="control-label"></label>
                 <input asp-for="Room.HostelId" class="form-control" asp-items="@ViewBag.HostelId" readonly />
                 <span asp-validation-for="Room.HostelId" class="text-danger"></span>
@@ -25,16 +86,16 @@
                 <span asp-validation-for="Room.RoomTitle" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Room.RoomDescription" class="control-label"></label>
+                <label class="control-label">Description</label>
                 <input asp-for="Room.RoomDescription" class="form-control" />
                 <span asp-validation-for="Room.RoomDescription" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Room.RomMaxCapacity" class="control-label"></label>
-                <input asp-for="Room.RomMaxCapacity" class="form-control" />
+                <label class="control-label">Max Capacity</label>
+                <input asp-for="Room.RomMaxCapacity" class="form-control" required min="1" max="20"/>
                 <span asp-validation-for="Room.RomMaxCapacity" class="text-danger"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group" hidden>
                 <label asp-for="Room.RoomCurrentCapacity" class="control-label"></label>
                 <input asp-for="Room.RoomCurrentCapacity" class="form-control" />
                 <span asp-validation-for="Room.RoomCurrentCapacity" class="text-danger"></span>
@@ -45,13 +106,13 @@
                 <span asp-validation-for="Room.Status" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Room.Price" class="control-label"></label>
-                <input asp-for="Room.Price" class="form-control" />
+                <label class="control-label">Price / Month</label>
+                <input asp-for="Room.Price" class="form-control" required min="100000" />
                 <span asp-validation-for="Room.Price" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Room.Deposit" class="control-label"></label>
-                <input asp-for="Room.Deposit" class="form-control" />
+                <input asp-for="Room.Deposit" class="form-control" required min="0"/>
                 <span asp-validation-for="Room.Deposit" class="text-danger"></span>
             </div>
             <div class="form-group">

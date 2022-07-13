@@ -17,14 +17,17 @@ namespace HostelManagement.Pages.Rooms
     public class EditModel : PageModel
     {
         private IRoomRepository roomRepository;
+        private IHostelRepository hostelRepository;
 
-        public EditModel(IRoomRepository _roomRepository)
+        public EditModel(IRoomRepository _roomRepository, IHostelRepository _hostelRepository)
         {
             roomRepository = _roomRepository;
+            hostelRepository = _hostelRepository;
         }
 
         [BindProperty]
         public Room Room { get; set; }
+        public Hostel hostel { get; set; }
 
         public async Task<IActionResult> OnGetAsync(int? id)
         {
@@ -38,6 +41,7 @@ namespace HostelManagement.Pages.Rooms
             {
                 return NotFound();
             }
+            hostel = await hostelRepository.GetHostelByID(Room.HostelId);
             ViewData["HostelId"] = Room.HostelId;
             return Page();
         }
