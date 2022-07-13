@@ -258,7 +258,7 @@
     </form>
 </div>
     }
-    @if (Model.Hostel.Status != 2 && userRole == "Owner")
+    @if ((Model.Hostel.Status == 0 || Model.Hostel.Status == 1) && userRole == "Owner")
     {
 <div style="width: 10%; margin-left: 20px">
     <form method="post" asp-page-handler="Inactive" asp-route-id="@Model.Hostel.HostelId">
@@ -267,7 +267,7 @@
     </form>
 </div>
     }
-    @if ((Model.Hostel.Status == 0 || Model.Hostel.Status == 2) && userRole == "Admin")
+    @if ((Model.Hostel.Status == 0 || Model.Hostel.Status == 1 || Model.Hostel.Status == 2) && userRole == "Admin")
     {
 <div style="width: 10%; margin-left: 20px">
     <form method="post" asp-page-handler="Denied" asp-route-id="@Model.Hostel.HostelId">

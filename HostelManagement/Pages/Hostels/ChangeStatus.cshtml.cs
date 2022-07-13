@@ -159,7 +159,7 @@ namespace HostelManagement.Pages.Hostels
 
                     foreach (var it in rents)
                     {
-                        if (it.Status == 2 || it.Status == 5)
+                        if (it.Status == 1 || it.Status == 2 || it.Status == 5)
                         {
                             HttpContext.Session.SetString("AccessDeniedMessage", "Don't accept Inactive an hostel that exist room is renting.");
                             return RedirectToPage("../AccessDenied");

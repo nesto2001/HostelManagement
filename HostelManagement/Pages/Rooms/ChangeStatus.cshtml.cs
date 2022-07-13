@@ -114,7 +114,7 @@ namespace HostelManagement.Pages.Rooms
 
             Room = await roomRepository.GetRoomByID((int)id);
             foreach (var it in Room.Rents){
-                if (it.Status == 2 || it.Status == 5)
+                if (it.Status == 1 || it.Status == 2 || it.Status == 5)
                 {
                     HttpContext.Session.SetString("AccessDeniedMessage", "Don't accept Inactive an room that exist room is renting.");
                     return RedirectToPage("../AccessDenied");

@@ -55,7 +55,7 @@ namespace HostelManagement.Pages.Rooms
                 ViewData["HostelId"] = Room.HostelId;
                 return Page();
             }
-
+            Room.Status = 0;
             await roomRepository.UpdateRoom(Room);
             return RedirectToPage("./Details", new { id = Room.RoomId });
         }
