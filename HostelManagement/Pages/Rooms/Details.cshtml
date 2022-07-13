@@ -96,10 +96,7 @@
         <hr />
         <div class="row">
             <div class="row border" style="width: 100%; margin-left: 20px">
-                <div class="border-right pl-3 pt-2" style="width: 30%;">
-                    <div>
-                        <b>Room Picture</b>
-                    </div>
+                <div class="border-right pl-3 pt-2 pr-2 pb-2" style="width: 28%;">
                     <div>
                         <div>
                             @{
@@ -121,7 +118,7 @@
                         @Html.DisplayFor(model => model.Room.RoomDescription)
                     </div>
                 </div>
-                <div style="width:30%;">
+                <div style="width:32%;">
 
                     <dl class="row pl-3 pt-2">
 
@@ -171,10 +168,10 @@
                             <span class="currency">₫</span>@Html.DisplayFor(model => model.Room.Deposit)
                         </dd>
                         <dt class="col-sm-5">
-                            <span class="currency">₫</span>@Html.DisplayNameFor(model => model.Room.Price)
+                            Price / Month
                         </dt>
                         <dd class="col-sm-7">
-                            @Html.DisplayFor(model => model.Room.Price)
+                            <span class="currency">₫</span>@Html.DisplayFor(model => model.Room.Price)
                         </dd>
                     </dl>
                 </div>
@@ -186,7 +183,7 @@
                     </div>
                 }
             </div>
-            <div style="width:30%">
+            <div style="width:100%; align-content:center; margin-top: 50px">
 
                 <div class="slideshow-container" style="text-align:center">
                     @{

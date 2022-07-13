@@ -855,6 +855,10 @@ ol, ul {
   background-color: #f03434;
 }
 
+.status-occupied {
+    background-color: #f03434;
+}
+
 .card-location {
   color: #777;
 }
