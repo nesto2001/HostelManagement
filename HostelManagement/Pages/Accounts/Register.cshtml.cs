@@ -74,7 +74,7 @@ namespace HostelManagement.Pages.Accounts
             }
             else if (!CheckDob(Input.Dob))
             {
-                MessageDob = "Invalid DOB.";
+                MessageDob = "Invalid DOB. Your age must be 16 or greater.";
                 return Page();
             }
             else
@@ -129,7 +129,7 @@ namespace HostelManagement.Pages.Accounts
         {
             TimeSpan timeDifference = DateTime.Now - Dob.Value;
             double Age = timeDifference.TotalDays / 365.2425;
-            if (Age >= 16) return true;
+            if (Age >= 16 && Age <=100) return true;
             else return false;
         }
     }

@@ -65,12 +65,12 @@
                     <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                     <div class="form-group">
                         <label asp-for="Hostel.HostelName" class="control-label"></label>
-                        <input asp-for="Hostel.HostelName" class="form-control" />
+                        <input asp-for="Hostel.HostelName" class="form-control" required />
                         <span asp-validation-for="Hostel.HostelName" class="text-danger"></span>
                     </div>
                     <div class="form-group">
                         <label asp-for="Hostel.Description" class="control-label"></label>
-                        <textarea asp-for="Hostel.Description" class="form-control"  style="height:200px"></textarea>
+                        <textarea asp-for="Hostel.Description" class="form-control" required  style="height:200px"></textarea>
                         <span asp-validation-for="Hostel.Description" class="text-danger"></span>
                     </div>
                     <div class="form-group" hidden="hidden">
@@ -88,40 +88,40 @@
 
                     <div class="form-group">
                         <label class="control-label">Province</label>
-                        <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control">
+                        <select id="ProvinceList" asp-items="@ViewBag.ProvinceId" class="form-control" required>
                             <option>Select Province</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">District</label>
-                        <select id="DistrictList" class="form-control">
+                        <select id="DistrictList" class="form-control" required>
                             <option>Select District</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label class="control-label">Ward</label>
-                        <select id="WardList" class="form-control" asp-for="Location.WardId">
+                        <select id="WardList" class="form-control" asp-for="Location.WardId" required>
                             <option>Select Ward</option>
                         </select>
                     </div>
                     <div class="form-group">
                         <label asp-for="Location.AddressString" class="control-label"></label>
-                        <input asp-for="Location.AddressString" class="form-control" />
+                        <input asp-for="Location.AddressString" class="form-control" required />
                         <span asp-validation-for="Location.AddressString" class="text-danger"></span>
                     </div>
                 </div>
                 <span class="group-input-title" id="Images">Upload some images of your hostel</span>
                 <div class="group-input-hostel">
                     <div class="form-group">
-                        <label asp-for="@Model.FileUploads"></label>
-                        <input asp-for="@Model.FileUploads" />
+                        <label>Choose Hostel images(s) <p class="text-danger">(Required)</p></label>
+                        <input asp-for="@Model.FileUploads" required/>
                         <span asp-validation-foraction="@Model.FileUploads"></span>
                     </div>
                 </div>
                 <div class="group-input-hostel">
                     <div class="form-group">
                         <label asp-for="@Model.countRoom"></label>
-                        <input asp-for="@Model.countRoom" />
+                        <input asp-for="@Model.countRoom" min="1" max="100" required/>
                         <span asp-validation-foraction="@Model.countRoom"></span>
                     </div>
                 </div>

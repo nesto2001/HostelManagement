@@ -65,7 +65,8 @@
                 <label asp-for="Input.Dob" class="control-label"></label>
             </div>
             <div class="col-sm-9">
-                <input asp-for="Input.Dob" class="form-control" type="date" />
+                <input asp-for="Input.Dob" class="form-control" type="date" 
+                       min="@DateTime.Now.AddYears(-100).ToString("yyyy-MM-dd")" max="@DateTime.Now.AddYears(-16).ToString("yyyy-MM-dd")" required  />
             </div>
             <div class="col-sm-9" hidden="@dob">
                 <span class="text-danger">@Model.MessageDob</span>
