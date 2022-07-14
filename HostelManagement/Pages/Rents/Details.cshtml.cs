@@ -64,14 +64,14 @@ namespace HostelManagement.Pages.Rents
                 return NotFound();
             }
             var room = await roomRepository.GetRoomByID(roomMember.RoomId);
-            if (roomMember.IsPresentator == true)
+            if (roomMember.Status == 1)
             {
-                roomMember.IsPresentator = false;
+                roomMember.Status = 0;
                 room.RoomCurrentCapacity = room.RoomCurrentCapacity - 1;
             }
             else
             {
-                roomMember.IsPresentator = true;
+                roomMember.Status = 1;
                 room.RoomCurrentCapacity = room.RoomCurrentCapacity + 1;
             }
             await roomMemberRepository.UpdateRoomMember(roomMember);
