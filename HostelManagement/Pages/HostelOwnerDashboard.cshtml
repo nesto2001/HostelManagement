@@ -1,7 +1,9 @@
 ﻿@page
+@using System.Security.Claims
 @model HostelOwnerDashboard
 @{
     string activeNav = "overview-nav";
+    var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
 }
 <div class="owner-dasboard pr-5 pl-5 pt-5">
 
@@ -62,7 +64,7 @@
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
                                     <a class="small text-white stretched-link" asp-page="./Hostels/Index">View all</a>
-                                    
+
                                 </div>
                             </div>
                         </div>
@@ -203,27 +205,27 @@
                         </div>
                     </div>
                     @*
-                <p>roomCount- @ViewData["roomCount"]</p>
-                <p>rentingCount- @ViewData["rentingCount"]</p>
-                <p>rentedRoomCount- @ViewData["rentedRoomCount"]</p>
-                <p>runningRent- @ViewData["runningRent"]</p>
-                <p>completedRent- @ViewData["completedRent"]</p>
-                <p>pendingStartRent- @ViewData["pendingStartRent"]</p>
-                <p>renterCount- @ViewData["renterCount"]</p>
-                <p>roomMemberCount- @ViewData["roomMemberCount"]</p>
-                <p>revenues of current Year- @ViewData["revenuesYear"]</p>
-                <p>revenues of current Month- @ViewData["revenuesMonth"]</p>*@
+                        <p>roomCount- @ViewData["roomCount"]</p>
+                        <p>rentingCount- @ViewData["rentingCount"]</p>
+                        <p>rentedRoomCount- @ViewData["rentedRoomCount"]</p>
+                        <p>runningRent- @ViewData["runningRent"]</p>
+                        <p>completedRent- @ViewData["completedRent"]</p>
+                        <p>pendingStartRent- @ViewData["pendingStartRent"]</p>
+                        <p>renterCount- @ViewData["renterCount"]</p>
+                        <p>roomMemberCount- @ViewData["roomMemberCount"]</p>
+                        <p>revenues of current Year- @ViewData["revenuesYear"]</p>
+                        <p>revenues of current Month- @ViewData["revenuesMonth"]</p>*@
                 </div>
             </div>
             <div class="col-lg-3 owner-dashboard__profile bg-light shadow-lg pt-3">
                 <div class="align-items-center d-flex flex-column">
                     <img class="rounded-circle w-50" src="~/images/placeholder.png" />
-                    <a href="fb.com" class="account-name mt-3">
+                    <a asp-page="./Accounts/Edit" asp-route-id="@userId" class="account-name mt-3">
                         <p class="font-weight-bold">
                             @User.Identity.Name
-                        <span class="edit-icon">
-                            <i class='bx bx-edit-alt bx-sm ' style='color:#0083CC; padding: 2px;'></i>
-                        </span>
+                            <span class="edit-icon">
+                                <i class='bx bx-edit-alt bx-sm ' style='color:#0083CC; padding: 2px;'></i>
+                            </span>
                         </p>
                     </a>
 
