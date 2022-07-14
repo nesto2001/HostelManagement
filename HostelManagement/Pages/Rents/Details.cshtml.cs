@@ -64,6 +64,11 @@ namespace HostelManagement.Pages.Rents
                 return NotFound();
             }
             var room = await roomRepository.GetRoomByID(roomMember.RoomId);
+            if (roomMember.IsPresentator == true)
+            {
+                HttpContext.Session.SetString("AccessDeniedMessage", "This member is Presentator. Don't accept change status.");
+                return RedirectToPage("../AccessDenied");
+            }
             if (roomMember.Status == 1)
             {
                 roomMember.Status = 0;
