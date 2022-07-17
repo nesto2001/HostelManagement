@@ -87,7 +87,7 @@
                 <label asp-for="Account.Dob" class="control-label"></label>
             </div>
             <div class="col-sm-8">
-                <input asp-for="Account.Dob" class="form-control" required/>
+                <input asp-for="Account.Dob" class="form-control" required type="date"/>
             </div>
             <div class="col-sm-8" hidden="@dob">
                 <span class="text-danger">@Model.MessageDob</span>
