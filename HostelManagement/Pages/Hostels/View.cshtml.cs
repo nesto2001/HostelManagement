@@ -41,7 +41,7 @@ namespace HostelManagement.Pages.Hostels
             HttpContext.Session.SetInt32("HostelID", (int)id);
             Hostel = await _hostelRepository.GetHostelByID((int)id);
             Rooms = await _roomRepository.GetRoomsOfAHostel((int)id);
-
+            Rooms = Rooms.Where(room => room.Status == 1);
             if (Hostel == null)
             {
                 return NotFound();
