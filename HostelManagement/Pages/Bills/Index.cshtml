@@ -7,8 +7,12 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<h1>Bill Management</h1>
 
+@if (ViewData["mailMessage"] != null)
+{
+    <p class="text-danger">@ViewData["mailMessage"]</p>
+}
 <table class="table">
     <thead>
         <tr>
@@ -20,6 +24,9 @@
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Bill.First().Rent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Bill.First().Rent.Room.RoomTitle)
             </th>
             <th></th>
         </tr>
@@ -38,8 +45,20 @@
                     @Html.DisplayFor(modelItem => item.Rent.RentedBy)
                 </td>
                 <td>
-                    <a asp-page="./Edit" asp-route-id="@item.BillId">Edit</a> |
-                    <a asp-page="./Details" asp-route-id="@item.BillId">Details</a>
+                    @Html.DisplayFor(modelItem => item.Rent.Room.RoomTitle)
+                </td>
+                <td>
+                    @if (item.CreatedDate < item.DueDate)
+                    {
+                        <a asp-page-handler="SendMail" asp-route-id="@item.Rent.RentedBy" class="btn btn-danger">Mail Remind</a>
+
+                        <a asp-page="./Details" asp-route-id="@item.BillId">Details</a>
+                    }
+                    else
+                    {
+                        <a asp-page="./Details" asp-route-id="@item.BillId" class="btn btn-dark">Check</a>
+                    }
+
             </tr>
         }
     </tbody>

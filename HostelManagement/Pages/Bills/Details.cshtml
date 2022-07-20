@@ -97,7 +97,7 @@
                         <button class="btn btn-danger">NOT PAID</button>
                         @if (role == "Renter")
                         {
-                            <a asp-page-handler="Check" asp-route-id="@Model.Bill.BillId">Already paid?</a>
+                            <a asp-page-handler="Check" asp-route-id="@Model.Bill.BillId" class="btn btn-danger">Already paid?</a>
                         }
 
                     }
@@ -106,8 +106,8 @@
                         <button class="btn btn-danger">CHECKING</button>
                         @if (role == "Owner")
                         {
-                            <a asp-page-handler="Confirm" asp-route-id="@Model.Bill.BillId">Comfirm paid</a>
-                            <a asp-page-handler="NotConfirm" asp-route-id="@Model.Bill.BillId">Not paid</a>
+                            <a asp-page-handler="Confirm" asp-route-id="@Model.Bill.BillId" class="btn btn-outline-dark">Comfirm paid</a>
+                            <a asp-page-handler="NotConfirm" asp-route-id="@Model.Bill.BillId" class="btn btn-outline-dark">Not paid</a>
                         }
                     }
                     @if (Model.Bill.DueDate == Model.Bill.CreatedDate)
