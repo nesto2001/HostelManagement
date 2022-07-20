@@ -14,5 +14,6 @@ namespace DataAccess.Repository
         Task<IEnumerable<Room>> GetRoomsOfAHostel(int hostelId);
         Task ActivateRoom(int id);
         Task DenyRoom(int id);
+        Task PendingRoom(int id);
     }
 }

@@ -75,7 +75,7 @@
                             </div>
                             <div class="form-group">
                                 <label class="control-label">Description</label>
-                                <textarea asp-for="@Model.Rooms[i].RoomDescription" class="form-control" ></textarea>
+                                <textarea asp-for="@Model.Rooms[i].RoomDescription" class="form-control" required></textarea>
                                 <span asp-validation-for="@Model.Rooms[i].RoomDescription" class="text-danger"></span>
                             </div>
                             <div class="form-group">

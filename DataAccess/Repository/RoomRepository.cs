@@ -18,5 +18,6 @@ namespace DataAccess.Repository
         public async Task UpdateRoom(Room Room) => await RoomDAO.Instance.UpdateRoom(Room);
         public async Task ActivateRoom(int id) => await RoomDAO.Instance.ActivateRoom(id);
         public async Task DenyRoom(int id) => await RoomDAO.Instance.DenyRoom(id);
+        public async Task PendingRoom(int id) => await RoomDAO.Instance.PendingRoom(id);
     }
 }

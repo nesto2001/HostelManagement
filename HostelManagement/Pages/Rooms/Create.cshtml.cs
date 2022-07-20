@@ -103,7 +103,7 @@ namespace HostelManagement.Pages.Rooms
                 }
                 a++;
             }
-            return RedirectToPage("../Hostels/Details", new {id=hostel.HostelId});
+            return RedirectToPage("../Hostels/Edit", new {id=hostel.HostelId});
         }
     }
 }

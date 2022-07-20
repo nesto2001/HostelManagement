@@ -112,6 +112,10 @@ namespace HostelManagement.Pages.Hostels
             }
             Hostel.Status = 0;
             await hostelRepository.UpdateHostel(Hostel);
+            foreach (var item in Hostel.Rooms)
+            {
+                await roomRepository.PendingRoom(item.RoomId);
+            }
             return RedirectToPage("./Details", new { id = Hostel.HostelId });
         }
 

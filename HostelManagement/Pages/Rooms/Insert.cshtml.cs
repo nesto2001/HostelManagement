@@ -67,7 +67,7 @@ namespace HostelManagement.Pages.Rooms
                     await roomPicRepository.AddRoomPic(roomPic);
                 }
             }
-            return RedirectToPage("../Hostels/Details", new { id = Room.HostelId });
+            return RedirectToPage("../Hostels/Edit", new { id = Room.HostelId });
         }
     }
 }

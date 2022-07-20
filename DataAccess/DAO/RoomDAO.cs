@@ -143,5 +143,21 @@ namespace DataAccess.DAO
                 throw new Exception(ex.Message);
             }
         }
+
+        public async Task PendingRoom(int id)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                var room = HostelManagementContext.Rooms.SingleOrDefault(h => h.RoomId.Equals(id));
+                HostelManagementContext.Rooms.Attach(room);
+                room.Status = 0;
+                await HostelManagementContext.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
     }
 }

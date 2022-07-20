@@ -115,7 +115,7 @@ namespace HostelManagement.Pages.Accounts
                 Account.IdCardNumberNavigation = null;
                 await _accountRepository.UpdateAccount(Account);
 
-                return RedirectToPage("./Index");
+                return RedirectToPage("./Details", new { id= Account.UserId });
             }
         }
         public bool CheckExist(string email)

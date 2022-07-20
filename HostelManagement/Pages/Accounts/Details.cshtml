@@ -1,4 +1,5 @@
 ﻿@page
+@using System.Security.Claims
 @model HostelManagement.Pages.Accounts.DetailsModel
 
 @{
@@ -20,7 +21,7 @@
 <h1 class="text-center" style="margin-bottom:50px; margin-top: 50px">Details of @Model.Account.FullName</h1>
 
 <div class="container border h-100 d-flex align-items-center justify-content-center" style="padding: 20px; width: 500px">
-    
+
     <hr />
     <dl class="form-group row">
         <dt class="col-sm-4">
@@ -92,7 +93,10 @@
 </div>
 <div class="text-center">
     <a asp-page="./Edit" asp-route-id="@Model.Account.UserId">Edit</a> |
-    <a asp-page="./Index">Back to List</a>
+    @if (User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.Role)?.Value == "Admin")
+    {
+        <a asp-page="./Index">Back to List</a>
+    }
 </div>
 
 @section Scripts {
