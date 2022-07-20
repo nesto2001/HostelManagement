@@ -18,14 +18,17 @@ namespace HostelManagement.Pages
         private readonly IRoomRepository roomRepository;
         private readonly IRentRepository rentRepository;
         private readonly IBillDetailRepository billDetailRepository;
+        private readonly IAccountRepository accountRepository;
 
         public AdminDashboardModel(IHostelRepository _hostelRepository,
-            IRoomRepository _roomRepository, IRentRepository _rentRepository, IBillDetailRepository _billDetailRepository)
+            IRoomRepository _roomRepository, IRentRepository _rentRepository, IBillDetailRepository _billDetailRepository,
+            IAccountRepository _accountRepository)
         {
             hostelRepository = _hostelRepository;
             roomRepository = _roomRepository;
             rentRepository = _rentRepository;
             billDetailRepository = _billDetailRepository;
+            accountRepository = _accountRepository;
         }
 
         public async Task<IActionResult> OnGetAsync()
@@ -63,6 +66,9 @@ namespace HostelManagement.Pages
             var billDetailsMonth = billDetailsYear.Where(b => b.Bill.CreatedDate.Value.Month == DateTime.Now.Month);
             ViewData["revenuesYear"] = billDetailsYear.Sum(b => b.Fee);
             ViewData["revenuesMonth"] = billDetailsMonth.Sum(b => b.Fee);
+
+            var accounts = await accountRepository.GetAccountList();
+            ViewData["accountCount"] = accounts.Count();
             return Page();
         }
     }

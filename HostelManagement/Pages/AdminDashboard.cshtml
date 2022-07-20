@@ -51,22 +51,6 @@
                             </div>
                         </div>
 
-                        <div class="col-xxl-3 col-lg-6">
-                            <div class="card text-white mb-4" style="background-color: #FFA07A	;">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="me-3">
-                                            <div class="text-white-75">Number of rentings:</div>
-                                            <div class="text-xl-left fw-bold h1">@ViewData["rentingCount"]</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" asp-page="./Rents/Index">View all</a>
-                                </div>
-                            </div>
-                        </div>
-
                         <div class="col-xxl-4 col-lg-6">
                             <div class="card text-white mb-4" style="background-color: #FF6347	;">
                                 <div class="card-body">
@@ -124,8 +108,8 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="me-3">
-                                            <div class="text-white-75">Number of pending contract: </div>
-                                            <div class="text-xl-left fw-bold h1">@ViewData["pendingStartRent"]</div>
+                                            <div class="text-white-75">Number of renters:</div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["renterCount"]</div>
                                         </div>
                                     </div>
                                 </div>
@@ -144,28 +128,13 @@
                                 <div class="card-body">
                                     <div class="d-flex justify-content-between align-items-center">
                                         <div class="me-3">
-                                            <div class="text-white-75">Number of hostels</div>
-                                            <div class="text-xl-left fw-bold h1">@ViewData["hostelCount"]</div>
+                                            <div class="text-white-75">Number of account: </div>
+                                            <div class="text-xl-left fw-bold h1">@ViewData["accountCount"]</div>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" asp-page="./Hostels/Index">View all</a>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-xxl-3 col-lg-6">
-                            <div class="card text-white mb-4" style="background-color: #6495ED	;">
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between align-items-center">
-                                        <div class="me-3">
-                                            <div class="text-white-75">Number of renters:</div>
-                                            <div class="text-xl-left fw-bold h1">@ViewData["renterCount"]</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="card-footer d-flex align-items-center justify-content-between">
-                                    <a class="small text-white stretched-link" asp-page="./Rents/Index">View all</a>
+                                    <a class="small text-white stretched-link" asp-page="./Accounts/Index">View all</a>
                                 </div>
                             </div>
                         </div>
@@ -187,27 +156,6 @@
     </div>
 </div>
 
-<div class="main-content">
-
-    @if (ViewData["HostelOwnerDashboardMessage"] != null)
-    {
-        <p>@ViewData["HostelOwnerDashboardMessage"]</p>
-    }
-    @if (ViewData["hostelCount"] != null)
-    {
-        <p>hostelCount - @ViewData["hostelCount"]</p>
-        <p>roomCount- @ViewData["roomCount"]</p>
-        <p>rentingCount- @ViewData["rentingCount"]</p>
-        <p>rentedRoomCount- @ViewData["rentedRoomCount"]</p>
-        <p>runningRent- @ViewData["runningRent"]</p>
-        <p>completedRent- @ViewData["completedRent"]</p>
-        <p>pendingStartRent- @ViewData["pendingStartRent"]</p>
-        <p>renterCount- @ViewData["renterCount"]</p>
-        <p>roomMemberCount- @ViewData["roomMemberCount"]</p>
-        <p>revenues of current Year- @ViewData["revenuesYear"]</p>
-        <p>revenues of current Month- @ViewData["revenuesMonth"]</p>
-    }
-</div>
 
 
 @section Scripts {
