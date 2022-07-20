@@ -192,6 +192,15 @@
             </form>
         </div>
     }
+    @if (Model.Room.Status == 2 && userRole == "Owner")
+    {
+        <div style="width: 10%; margin-left: 20px">
+            <form method="post" asp-page-handler="Active" asp-route-id="@Model.Room.RoomId">
+                <input type="hidden" asp-for="Room.RoomId" />
+                <input type="submit" value="Active" class="btn btn-danger" />
+            </form>
+        </div>
+    }
     @if ((Model.Room.Status == 0 || Model.Room.Status == 1 || Model.Room.Status == 2) && userRole == "Admin")
     {
         <div style="width: 10%; margin-left: 20px">

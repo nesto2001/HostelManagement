@@ -109,7 +109,6 @@ namespace HostelManagement.Pages.Rents
                 Rent.StartRentDate = DateTime.Parse(HttpContext.Session.GetString("extend"));
                 Rent.IsDeposited = 2;
                 Rent.Status = 1;
-                HttpContext.Session.Remove("extend");
             }
             else
             {
@@ -120,13 +119,13 @@ namespace HostelManagement.Pages.Rents
 
 
             IEnumerable<Rent> rents = await rentRepository.GetRentListByRoom(Rent.RoomId);
-            Rent re = rents.FirstOrDefault(r => r.Status == 2);
+            Rent re = rents.FirstOrDefault(r => r.EndRentDate.AddDays(5).Date >= Rent.StartRentDate.Date);
             bool check = false;
-            if (re != null)
+            if (re != null && HttpContext.Session.GetString("extend") == null)
             {
                 if (re.EndRentDate.AddDays(5).Date >= Rent.StartRentDate.Date)
                 {
-                    message += $"This room already exist an contract to {re.EndRentDate.ToString("dd/MM/yyyy")}. \n";
+                    message += $"This room already exist an contract to {re.EndRentDate.ToString("dd/MM/yyyy")}. (+5 days to clean room)\n";
                     check = true;
                 }
                 if (check)
@@ -136,6 +135,7 @@ namespace HostelManagement.Pages.Rents
                     int UId = Int32.Parse(userId);
                     account = await accountRepository.GetAccountByID(UId);
                     room = await roomRepository.GetRoomByID(Rent.RoomId);
+                    hostel = await hostelRepository.GetHostelByID(room.HostelId);
                     ViewData["RentedBy"] = account.UserEmail;
                     ViewData["RoomId"] = room.RoomId;
                     return Page();
@@ -189,6 +189,7 @@ namespace HostelManagement.Pages.Rents
             room.RoomCurrentCapacity = countCurrent;
             room.Status = 4;
             await roomRepository.UpdateRoom(room);
+            HttpContext.Session.Remove("extend");
             return RedirectToPage("./Details", new { id = Rent.RentId });
         }
     }

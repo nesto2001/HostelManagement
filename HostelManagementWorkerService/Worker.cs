@@ -173,6 +173,10 @@ namespace HostelManagementWorkerService
                     {
                         item.Status = 3;
                         await rentRepository.UpdateRent(item);
+                        Room room = await roomRepository.GetRoomByID(item.RoomId);
+                        room.Status = 1;
+                        room.RoomCurrentCapacity = 0;
+                        await roomRepository.UpdateRoom(room);
                         string body = "Thank you for your service hostel renting. \n" +
                             "Your contract number " + item.RentId + "\n" +
                             " is ended at " + DateTime.Now.ToString("dd-MM-yyyy") + " \n" +
