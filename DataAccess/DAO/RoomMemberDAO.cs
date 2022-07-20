@@ -2,8 +2,6 @@
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace DataAccess.DAO
@@ -76,6 +74,21 @@ namespace DataAccess.DAO
                 return await HostelManagementContext.RoomMembers
                     .Include(r => r.Rent)
                     .FirstOrDefaultAsync(m => m.RoomMemberId == id);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
+        public async Task<RoomMember> GetRoomMemberByEmail(string email, int rentId)
+        {
+            try
+            {
+                var HostelManagementContext = new HostelManagementContext();
+                return await HostelManagementContext.RoomMembers
+                    .Include(r => r.Rent)
+                    .FirstOrDefaultAsync(m => m.UserEmail == email && m.RentId == rentId);
             }
             catch (Exception ex)
             {

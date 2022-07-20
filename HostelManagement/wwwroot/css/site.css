@@ -1860,13 +1860,13 @@ br{
   box-shadow: rgb(0 0 0 / 20%) 0px 1px 3px 1px;
 }
 
-table tbody tr{
-  cursor: pointer;
+table:not(.table.roommem-table) tbody tr {
+    cursor: pointer;
 }
 
-table tbody tr:hover td{
-  background: rgba(0, 0, 0, .05);
-}
+    table:not(.table.roommem-table) tbody tr:hover td {
+        background: rgba(0, 0, 0, .05);
+    }
 
 .profile-wrapper{
   display: inline-flex;

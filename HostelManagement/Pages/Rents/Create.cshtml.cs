@@ -1,18 +1,16 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using BusinessObject.BusinessObject;
+using DataAccess.Repository;
+using HostelManagement.Helpers;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using BusinessObject.BusinessObject;
-using DataAccess;
-using DataAccess.Repository;
-using System.Security.Claims;
-using Microsoft.AspNetCore.Http;
-using HostelManagement.Helpers;
+using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using Microsoft.AspNetCore.Authorization;
+using System.Linq;
+using System.Security.Claims;
+using System.Threading.Tasks;
 
 namespace HostelManagement.Pages.Rents
 {
@@ -35,7 +33,7 @@ namespace HostelManagement.Pages.Rents
             roomMemberRepository = _roomMemberRepository;
             sendMailService = _sendMailService;
             hostelRepository = _hostelRepository;
-        } 
+        }
 
         public async Task<IActionResult> OnGetAsync(int? id, int? extend)
         {
@@ -56,8 +54,8 @@ namespace HostelManagement.Pages.Rents
             var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
             if (userId != null)
             {
-               UId = Int32.Parse(userId);
-               account = await accountRepository.GetAccountByID(UId);
+                UId = Int32.Parse(userId);
+                account = await accountRepository.GetAccountByID(UId);
             }
             room = await roomRepository.GetRoomByID((int)id);
             if (room.Status != 1)
@@ -112,13 +110,14 @@ namespace HostelManagement.Pages.Rents
                 Rent.IsDeposited = 2;
                 Rent.Status = 1;
                 HttpContext.Session.Remove("extend");
-            } else
+            }
+            else
             {
                 Rent.IsDeposited = 0;
                 Rent.Status = 0;
             }
             Rent.EndRentDate = Rent.StartRentDate.AddMonths(MonthRent);
-            
+
 
             IEnumerable<Rent> rents = await rentRepository.GetRentListByRoom(Rent.RoomId);
             Rent re = rents.FirstOrDefault(r => r.Status == 2);
@@ -152,7 +151,7 @@ namespace HostelManagement.Pages.Rents
 
             int countCurrent = 0;
             foreach (var RoomMem in RoomMember)
-            { 
+            {
 
                 if (!String.IsNullOrEmpty(RoomMem.UserEmail))
                 {
@@ -176,7 +175,8 @@ namespace HostelManagement.Pages.Rents
                     "Thank you. \n" +
                     "Please send your feedback by reply mail.\n" +
                     "Best Regard,";
-            } else
+            }
+            else
             {
                 body = "Dear, \n" +
                     "Your rent number is " + Rent.RentId + "\n" +
@@ -189,7 +189,7 @@ namespace HostelManagement.Pages.Rents
             room.RoomCurrentCapacity = countCurrent;
             room.Status = 4;
             await roomRepository.UpdateRoom(room);
-            return RedirectToPage("./Index");
+            return RedirectToPage("./Details", new { id = Rent.RentId });
         }
     }
 }

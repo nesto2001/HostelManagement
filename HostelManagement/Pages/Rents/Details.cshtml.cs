@@ -16,7 +16,7 @@ namespace HostelManagement.Pages.Rents
         private IRoomRepository roomRepository { get; }
         private IHostelRepository hostelRepository { get; }
         private IRoomMemberRepository roomMemberRepository { get; }
-        public DetailsModel( IRentRepository _rentRepository,
+        public DetailsModel(IRentRepository _rentRepository,
                             IRoomRepository _roomRepository, IRoomMemberRepository _roomMemberRepository, IHostelRepository _hostelRepository)
         {
             rentRepository = _rentRepository;
@@ -28,6 +28,9 @@ namespace HostelManagement.Pages.Rents
         public Rent Rent { get; set; }
         public Room Room { get; set; }
         public Hostel Hostel { get; set; }
+
+        [BindProperty]
+        public RoomMember[] RoomMember { get; set; }
         public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
@@ -160,6 +163,49 @@ namespace HostelManagement.Pages.Rents
 
             await rentRepository.UpdateRent(Rent);
 
+            return RedirectToPage("./Details", new { id = Rent.RentId });
+        }
+
+        public async Task<IActionResult> OnPostUpdateMembers(int? id)
+        {
+            if (ModelState.IsValid)
+            {
+                Rent = await rentRepository.GetRentByID((int)id);
+                var room = await roomRepository.GetRoomByID(Rent.RoomId);
+                foreach (var mem in RoomMember)
+                {
+                    if (await roomMemberRepository.GetRoomMemberByEmail(mem.UserEmail, Rent.RentId) != null)
+                    {
+                        var existedMem = await roomMemberRepository.GetRoomMemberByEmail(mem.UserEmail, Rent.RentId);
+                        if (existedMem.Status == 0)
+                        {
+                            existedMem.Status = 1;
+                            room.RoomCurrentCapacity += 1;
+                        }
+                        if (room.RoomCurrentCapacity <= room.RomMaxCapacity)
+                        {
+                            await roomMemberRepository.UpdateRoomMember(existedMem);
+                            await roomRepository.UpdateRoom(room);
+                        }
+
+                    }
+                    else if (!string.IsNullOrWhiteSpace(mem.UserEmail) && mem.UserEmail.Length > 0)
+                    {
+                        mem.RoomId = Rent.RoomId;
+                        mem.RentId = Rent.RentId;
+                        mem.EndRentDate = Rent.EndRentDate;
+                        mem.Status = 1;
+                        mem.StartRentDate = Rent.StartRentDate;
+                        mem.IsPresentator = false;
+                        room.RoomCurrentCapacity += 1;
+                        if (room.RoomCurrentCapacity <= room.RomMaxCapacity)
+                        {
+                            await roomMemberRepository.AddRoomMember(mem);
+                            await roomRepository.UpdateRoom(room);
+                        }
+                    }
+                }
+            }
             return RedirectToPage("./Details", new { id = Rent.RentId });
         }
     }
