@@ -71,7 +71,7 @@
                             }
                             <label class="control-label">Deposit Status</label>
                             <span class="deposit-status status-@classStatus">@deposit</span>
-                            @if (Model.Rent.IsDeposited == 0 && role == "Renter" && Model.Rent.RentedByNavigation.UserEmail.Equals(sessionUser))
+                            @if (Model.Rent.IsDeposited == 0 && role == "Renter" && Model.Rent.RentedByNavigation.UserEmail.Equals(sessionUser) && Model.Rent.Status != 4)
                             {
                                 <div class="btn btn-danger">
                                     <a asp-page-handler="DepositedCheck" asp-route-id="@Model.Rent.RentId">Send Check Deposited</a>
@@ -114,8 +114,8 @@
                                         classStatus1 = "inactive";
                                         break;
                                     case 6:
-                                        status = "Canceled";
-                                        classStatus1 = "inactive";
+                                        status = "Terminated";
+                                        classStatus1 = "denied";
                                         break;
                                     default:
                                         status = "Pending";
@@ -133,7 +133,11 @@
                     <h4 class="mb-3"><i class='bx bx-group'></i>Room Members</h4>
                     @if (Model.Rent.RentedByNavigation.UserEmail.Equals(sessionUser) || role.Equals("Owner"))
                     {
-                        readOnly = "";
+                        @if (Model.Rent.Status == 5 || Model.Rent.Status == 6 || Model.Rent.Status == 4)
+                        {
+                            readOnly = "readonly";
+                        }
+                        else readOnly = "";
                     }
                     <div class="grouped-form flex-wrap">
                         @for (int i = 0; i < @Model.Rent.RoomMembers.Count; i++)
@@ -201,22 +205,24 @@
                                 </div>
                             }*@
                         }
-                        @if (Model.Rent.Room.RomMaxCapacity - Model.Rent.Room.RoomCurrentCapacity > 0)
-                        {
-                            var j=0;
-                            
-                            @for (int i = (int)Model.Rent.Room.RoomCurrentCapacity; i < Model.Rent.Room.RomMaxCapacity; i++)
+                        @if (Model.Rent.Status!=6 && Model.Rent.Status!=5 && Model.Rent.Status != 4){
+                            @if (Model.Rent.Room.RomMaxCapacity - Model.Rent.Room.RoomCurrentCapacity > 0)
                             {
+                                var j=0;
+                            
+                                @for (int i = (int)Model.Rent.Room.RoomCurrentCapacity; i < Model.Rent.Room.RomMaxCapacity; i++)
+                                {
                                 
-                                <div class="form-group @readOnly">
-                                    <label class="control-label">Member @(i+1) Email</label>
-                                    <input asp-for="RoomMember[j].UserEmail" class="form-control" form="updateMem" id="member-@(i+1)"/>
-                                </div>
-                                j++;
-                            }                            
+                                    <div class="form-group @readOnly">
+                                        <label class="control-label">Member @(i+1) Email</label>
+                                        <input asp-for="RoomMember[j].UserEmail" class="form-control" form="updateMem" id="member-@(i+1)"/>
+                                    </div>
+                                    j++;
+                                }                            
                         } 
+                        }
                     </div>
-                    @if (Model.Rent.RentedByNavigation.UserEmail.Equals(sessionUser) || role.Equals("Owner"))
+                    @if ((Model.Rent.Status != 4 && Model.Rent.Status!=5 && Model.Rent.Status!=6) && (Model.Rent.RentedByNavigation.UserEmail.Equals(sessionUser) || role.Equals("Owner")) )
                     {
                         <button class="btn btn-primary align-self-end" style="height: 40px;" type="submit" form="updateMem" onclick="SubmitMyForm()">Update</button>
                     }
