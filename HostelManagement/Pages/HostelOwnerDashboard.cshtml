@@ -1,12 +1,16 @@
 ﻿@page
 @using System.Security.Claims
+@using DataAccess.Repository
 @model HostelOwnerDashboard
 @{
     string activeNav = "overview-nav";
     var userId = HttpContext.User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value;
+    IAccountRepository accountRepo = new AccountRepository();
 }
 <div class="owner-dasboard pr-5 pl-5 pt-5">
-
+    @{
+        var sessionUser= await accountRepo.GetAccountByID(Int32.Parse(User.Claims.FirstOrDefault(x => x.Type == ClaimTypes.NameIdentifier)?.Value));
+    }
     <h1 class="">Owner Dashboard</h1>
     <div class="row w-75 justify-content-center m-auto">
         @if (ViewData["HostelOwnerDashboardMessage"] != null)
@@ -219,7 +223,13 @@
             </div>
             <div class="col-lg-3 owner-dashboard__profile bg-light shadow-lg pt-3">
                 <div class="align-items-center d-flex flex-column">
-                    <img class="rounded-circle w-50" src="~/images/placeholder.png" />
+                    @{
+                        var userAvatar="placeholder.png";
+                        if(sessionUser.ProfilePicUrl != null && sessionUser.ProfilePicUrl.Length>0){
+                            userAvatar="accounts/"+sessionUser.ProfilePicUrl;
+                        }
+                    }
+                    <img class="rounded-circle w-50" src="~/images/@userAvatar" />
                     <a asp-page="./Accounts/Edit" asp-route-id="@userId" class="account-name mt-3">
                         <p class="font-weight-bold">
                             @User.Identity.Name
