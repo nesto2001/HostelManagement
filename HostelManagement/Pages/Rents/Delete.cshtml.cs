@@ -16,9 +16,11 @@ namespace HostelManagement.Pages.Rents
     public class DeleteModel : PageModel
     {
         private IRentRepository rentRepository { get; }
-        public DeleteModel(IRentRepository _rentRepository)
+        private IRoomRepository roomRepository { get; }
+        public DeleteModel(IRentRepository _rentRepository, IRoomRepository _roomRepository)
         {
             rentRepository = _rentRepository;
+            roomRepository = _roomRepository;
         }
 
         [BindProperty]
@@ -56,6 +58,10 @@ namespace HostelManagement.Pages.Rents
             {
                 Rent.Status = 4;
                 await rentRepository.UpdateRent(Rent);
+                Room room = await roomRepository.GetRoomByID(Rent.RoomId);
+                room.Status = 1;
+                room.RoomCurrentCapacity = 0;
+                await roomRepository.UpdateRoom(room);
             }
 
             return RedirectToPage("./Index");

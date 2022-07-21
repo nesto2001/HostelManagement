@@ -45,6 +45,10 @@ namespace HostelManagementWorkerService
                     {
                         item.Status = 4;
                         await rentRepository.UpdateRent(item);
+                        Room _room = await roomRepository.GetRoomByID(item.RoomId);
+                        _room.Status = 1;
+                        _room.RoomCurrentCapacity = 0;
+                        await roomRepository.UpdateRoom(_room);
                         _logger.LogInformation("The rent {0} of {1} is cancel at {2}", item.RentId, item.RentedBy, DateTime.Now);
                     }
                     

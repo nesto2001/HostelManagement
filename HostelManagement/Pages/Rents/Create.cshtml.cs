@@ -119,7 +119,7 @@ namespace HostelManagement.Pages.Rents
 
 
             IEnumerable<Rent> rents = await rentRepository.GetRentListByRoom(Rent.RoomId);
-            Rent re = rents.FirstOrDefault(r => r.EndRentDate.AddDays(5).Date >= Rent.StartRentDate.Date);
+            Rent re = rents.FirstOrDefault(r => r.EndRentDate.AddDays(5).Date >= Rent.StartRentDate.Date && r.Status == 3);
             bool check = false;
             if (re != null && HttpContext.Session.GetString("extend") == null)
             {

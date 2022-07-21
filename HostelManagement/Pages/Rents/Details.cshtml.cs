@@ -162,6 +162,10 @@ namespace HostelManagement.Pages.Rents
             if (Rent.Status == 1) Rent.Status = 6;
 
             await rentRepository.UpdateRent(Rent);
+            Room _room = await roomRepository.GetRoomByID(Rent.RoomId);
+            _room.Status = 1;
+            _room.RoomCurrentCapacity = 0;
+            await roomRepository.UpdateRoom(_room);
 
             return RedirectToPage("./Details", new { id = Rent.RentId });
         }
